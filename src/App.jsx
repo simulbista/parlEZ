@@ -711,10 +711,15 @@ function App() {
         <section className="hero-card hero-card--top">
         <div>
           <p className="eyebrow">French vocab practice for English speakers</p>
-          <h1 className="brand-title">
-            <span className="brand-word">ParlEZ</span>
-            <span className="brand-flag" aria-hidden="true" />
-          </h1>
+          <div className="brand-row">
+            <h1 className="brand-title">
+              <span className="brand-word">ParlEZ</span>
+              <span className="brand-flag" aria-hidden="true" />
+            </h1>
+            <p className="signature-note signature-note--mobile">
+              Made by {CREATOR_SIGNATURE}
+            </p>
+          </div>
           <p className="hero-copy">
             Answer once, then tap any card to roll open the French meaning, usage
             example, and audio.
@@ -1028,7 +1033,7 @@ function App() {
           {questionIndex === deck.length - 1 ? 'Finish round' : 'Next question'}
         </button>
       </div>
-      <p className="signature-note">Made by {CREATOR_SIGNATURE}</p>
+      <p className="signature-note signature-note--footer">Made by {CREATOR_SIGNATURE}</p>
     </main>
     </>
   )

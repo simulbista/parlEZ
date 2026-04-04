@@ -404,6 +404,13 @@ a {
   gap: 0.5rem;
 }
 
+.brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
 .brand-word {
   font-family: var(--font-brand) !important;
   font-size: 0.8em;
@@ -1132,6 +1139,12 @@ a {
   pointer-events: none;
 }
 
+.signature-note--mobile {
+  display: none;
+  margin: 0;
+  white-space: nowrap;
+}
+
 :root[data-theme='dark'] .meta-pill,
 :root[data-theme='dark'] .summary-strip > div {
   border-color: rgba(162, 147, 237, 0.26);
@@ -1352,6 +1365,24 @@ a {
 
   .brand-title {
     gap: 0.44rem;
+  }
+
+  .brand-row {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .signature-note--mobile {
+    display: block;
+    margin: 0;
+    font-size: 0.6rem;
+    opacity: 0.54;
+    text-align: right;
+    margin-left: auto;
+  }
+
+  .signature-note--footer {
+    display: none;
   }
 
   .signature-note {
