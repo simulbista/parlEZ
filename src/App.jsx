@@ -1,5 +1,5 @@
 import { startTransition, useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { ExplanationPanel } from './components/ExplanationPanel'
 import { OptionCard } from './components/OptionCard'
 import vocabBank from './data/vocab.json'
@@ -9,6 +9,7 @@ import {
   duckBackgroundMusic,
   getBackgroundMusicVolume,
   initializeAudio,
+  pauseBackgroundMusic,
   playBackgroundMusic,
   playCorrectSound,
   playIncorrectSound,
@@ -19,9 +20,13 @@ import {
 import './App.css'
 
 const ROUND_SIZE = 20
+const MIN_ROUND_SIZE = 8
+const MAX_ROUND_SIZE = Math.floor(vocabBank.length * 0.8)
+const WEAK_WORDS_LIMIT = 8
 const PROGRESS_STORAGE_KEY = 'parlez-progress'
 const AUDIO_STORAGE_KEY = 'parlez-audio-enabled'
 const SETTINGS_STORAGE_KEY = 'parlez-settings'
+const CREATOR_SIGNATURE = 'Simul Bista'
 const MotionSpan = motion.span
 const vocabMap = Object.fromEntries(vocabBank.map((entry) => [entry.id, entry]))
 
@@ -112,7 +117,7 @@ function getInitialSettings() {
     )
 
     return {
-      roundSize: Math.max(8, Math.min(40, nextRoundSize)),
+      roundSize: Math.max(MIN_ROUND_SIZE, Math.min(MAX_ROUND_SIZE, nextRoundSize)),
       backgroundVolume: Math.max(0, Math.min(1, nextVolume)),
     }
   } catch {
@@ -126,9 +131,12 @@ function getInitialSettings() {
 function App() {
   const initialSettings = getInitialSettings()
   const [theme, setTheme] = useState(getInitialTheme)
+  const [themeTransition, setThemeTransition] = useState(false)
   const [audioEnabled, setAudioEnabled] = useState(getInitialAudioEnabled)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [weakPaneOpen, setWeakPaneOpen] = useState(false)
+  const [weakPaneIds, setWeakPaneIds] = useState([])
+  const [settingsSpinKey, setSettingsSpinKey] = useState(0)
   const [roundSize, setRoundSize] = useState(initialSettings.roundSize)
   const [backgroundVolume, setBackgroundVolume] = useState(
     initialSettings.backgroundVolume,
@@ -146,6 +154,7 @@ function App() {
   const sessionComplete = questionIndex >= deck.length
   const currentQuestion = sessionComplete ? null : deck[questionIndex]
   const answered = selectedOptionId !== null
+  const questionAudioId = currentQuestion ? `question-${currentQuestion.id}` : null
   const progressValue = sessionComplete
     ? 100
     : ((questionIndex + (answered ? 1 : 0)) / deck.length) * 100
@@ -178,9 +187,13 @@ function App() {
   }, [])
 
   useEffect(() => {
-    if (audioEnabled && !sessionComplete) {
+    if (audioEnabled) {
       const timer = setTimeout(() => {
         playBackgroundMusic()
+        if (sessionComplete) {
+          // Increase volume by 10% on result screen
+          setBackgroundMusicVolume(backgroundVolume * 1.1)
+        }
       }, 100)
 
       return () => {
@@ -189,7 +202,7 @@ function App() {
     }
 
     stopBackgroundMusic()
-  }, [audioEnabled, sessionComplete])
+  }, [audioEnabled, sessionComplete, backgroundVolume])
 
   useEffect(() => {
     if (!audioEnabled || sessionComplete) {
@@ -204,9 +217,52 @@ function App() {
     restoreBackgroundMusicVolume()
   }, [audioEnabled, sessionComplete, answered, questionIndex])
 
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        pauseBackgroundMusic()
+        return
+      }
+
+      if (!audioEnabled || sessionComplete) {
+        return
+      }
+
+      if (answered) {
+        duckBackgroundMusic()
+      } else {
+        restoreBackgroundMusicVolume()
+      }
+
+      playBackgroundMusic()
+    }
+
+    const handlePageHide = () => {
+      pauseBackgroundMusic()
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    window.addEventListener('pagehide', handlePageHide)
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      window.removeEventListener('pagehide', handlePageHide)
+    }
+  }, [audioEnabled, sessionComplete, answered])
+
   const toggleTheme = () => {
+    setThemeTransition(true)
     setTheme((current) => (current === 'dark' ? 'light' : 'dark'))
   }
+
+  useEffect(() => {
+    if (themeTransition) {
+      const timer = setTimeout(() => {
+        setThemeTransition(false)
+      }, 900)
+      return () => clearTimeout(timer)
+    }
+  }, [themeTransition])
 
   const themeLabel =
     theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
@@ -217,7 +273,7 @@ function App() {
     ? Math.round((score / attemptedQuestions) * 100)
     : 0
 
-  const weakTerms = Object.entries(progressData.terms)
+  const rankedWeakTerms = Object.entries(progressData.terms)
     .map(([id, stats]) => {
       const incorrect = Number(stats.incorrect || 0)
       const correct = Number(stats.correct || 0)
@@ -248,7 +304,9 @@ function App() {
 
       return a.english.localeCompare(b.english)
     })
-    .slice(0, 7)
+
+  const topWeakTerms = rankedWeakTerms.slice(0, WEAK_WORDS_LIMIT)
+  const weakTerms = topWeakTerms
 
   const toggleAudio = () => {
     setAudioEnabled((current) => {
@@ -273,13 +331,105 @@ function App() {
     setSettingsOpen((current) => !current)
   }
 
+  const handleSettingsIconClick = () => {
+    setSettingsSpinKey((current) => current + 1)
+    toggleSettings()
+  }
+
   const toggleWeakPane = () => {
-    setWeakPaneOpen((current) => !current)
+    if (!rankedWeakTerms.length) {
+      return
+    }
+
+    if (weakPaneOpen) {
+      setWeakPaneOpen(false)
+      return
+    }
+
+    setWeakPaneIds(topWeakTerms.map((term) => term.id))
+    setWeakPaneOpen(true)
+  }
+
+  const clearWeakWord = (id) => {
+    setWeakPaneIds((current) => current.filter((itemId) => itemId !== id))
+
+    setProgressData((current) => {
+      const existing = current.terms[id]
+
+      if (!existing || Number(existing.incorrect || 0) <= 0) {
+        return current
+      }
+
+      const nextTerms = {
+        ...current.terms,
+      }
+
+      const hasCorrectHistory = Number(existing.correct || 0) > 0
+
+      if (hasCorrectHistory) {
+        nextTerms[id] = {
+          ...existing,
+          incorrect: 0,
+          lastOutcome:
+            existing.lastOutcome === 'incorrect' ? 'correct' : existing.lastOutcome,
+        }
+      } else {
+        delete nextTerms[id]
+      }
+
+      return {
+        ...current,
+        terms: nextTerms,
+      }
+    })
+  }
+
+  const clearAllWeakWords = () => {
+    setWeakPaneIds([])
+
+    setProgressData((current) => {
+      const nextTerms = {
+        ...current.terms,
+      }
+      let changed = false
+
+      Object.entries(current.terms).forEach(([id, stats]) => {
+        const incorrect = Number(stats?.incorrect || 0)
+
+        if (incorrect <= 0) {
+          return
+        }
+
+        const hasCorrectHistory = Number(stats?.correct || 0) > 0
+
+        if (hasCorrectHistory) {
+          nextTerms[id] = {
+            ...stats,
+            incorrect: 0,
+            lastOutcome:
+              stats.lastOutcome === 'incorrect' ? 'correct' : stats.lastOutcome,
+          }
+        } else {
+          delete nextTerms[id]
+        }
+
+        changed = true
+      })
+
+      if (!changed) {
+        return current
+      }
+
+      return {
+        ...current,
+        terms: nextTerms,
+      }
+    })
   }
 
   const handleRoundSizeChange = (event) => {
     const next = Number(event.target.value)
-    setRoundSize(Math.max(8, Math.min(40, next)))
+    setRoundSize(Math.max(MIN_ROUND_SIZE, Math.min(MAX_ROUND_SIZE, next)))
   }
 
   const handleVolumeChange = (event) => {
@@ -289,6 +439,7 @@ function App() {
 
   const resetRound = () => {
     stop()
+    setSettingsOpen(false)
 
     startTransition(() => {
       setDeck(createRound(progressData.terms, roundSize))
@@ -297,11 +448,6 @@ function App() {
       setExpandedOptionId(null)
       setScore(0)
     })
-  }
-
-  const applySettingsAndReshuffle = () => {
-    setSettingsOpen(false)
-    resetRound()
   }
 
   const handleOptionAction = (optionId) => {
@@ -392,7 +538,18 @@ function App() {
     const percentage = Math.round((score / deck.length) * 100)
 
     return (
-      <main className="app-shell">
+      <>
+        {themeTransition && (
+          <motion.div
+            className="theme-transition-overlay"
+            data-theme={theme === 'dark' ? 'to-dark' : 'to-light'}
+            initial={{ x: '-100%' }}
+            animate={{ x: '100%' }}
+            transition={{ duration: 0.9, ease: 'easeInOut' }}
+            onAnimationComplete={() => setThemeTransition(false)}
+          />
+        )}
+        <main className="app-shell">
         <section className="hero-card hero-card--summary">
           <p className="eyebrow">ParlEZ practice recap</p>
           <h1>Round complete.</h1>
@@ -424,14 +581,21 @@ function App() {
           <div className="hero-actions">
             <button
               className="secondary-button icon-button"
-              onClick={toggleSettings}
+              onClick={handleSettingsIconClick}
               aria-label={settingsLabel}
               title={settingsLabel}
             >
-              <svg viewBox="0 0 24 24" aria-hidden="true">
+              <motion.svg
+                key={`settings-summary-${settingsSpinKey}`}
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                initial={{ rotate: 0, scale: 1 }}
+                animate={{ rotate: [0, 220, 360], scale: [1, 1.06, 1] }}
+                transition={{ duration: 0.55, ease: 'easeInOut' }}
+              >
                 <circle cx="12" cy="12" r="3" />
                 <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 .6 1.65 1.65 0 0 0-.33 1V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-.33-1 1.65 1.65 0 0 0-1-.6 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-.6-1 1.65 1.65 0 0 0-1-.33H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1-.33 1.65 1.65 0 0 0 .6-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-.6 1.65 1.65 0 0 0 .33-1V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 .33 1 1.65 1.65 0 0 0 1 .6 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.24.3.44.64.6 1a1.65 1.65 0 0 0 1 .33H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1 .33 1.65 1.65 0 0 0-.51.34z" />
-              </svg>
+              </motion.svg>
             </button>
             <button
               className="secondary-button icon-button"
@@ -459,35 +623,97 @@ function App() {
               aria-label={themeLabel}
               title={themeLabel}
             >
-              {theme === 'dark' ? (
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <circle cx="12" cy="12" r="4" />
-                  <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-                </svg>
-              ) : (
-                <svg viewBox="0 0 24 24" aria-hidden="true">
+              <motion.svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                key={theme}
+                initial={{ opacity: 0, rotate: theme === 'dark' ? -180 : 180 }}
+                animate={{ opacity: 1, rotate: 0 }}
+                exit={{ opacity: 0, rotate: theme === 'dark' ? 180 : -180 }}
+                transition={{ duration: 0.5, ease: 'easeInOut' }}
+              >
+                {theme === 'dark' ? (
+                  <>
+                    <circle cx="12" cy="12" r="4" />
+                    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+                  </>
+                ) : (
                   <path d="M21 12.79A9 9 0 1 1 11.21 3c-.11.56-.16 1.14-.16 1.73a7 7 0 0 0 8.95 6.7z" />
-                </svg>
-              )}
+                )}
+              </motion.svg>
             </button>
             <button className="primary-button" onClick={resetRound}>
               Shuffle a new round
             </button>
           </div>
         </section>
+
+        <section
+          className={`settings-drawer ${settingsOpen ? 'is-open' : ''}`}
+          aria-label="Practice settings"
+          aria-hidden={!settingsOpen}
+        >
+          <div className="settings-drawer-inner">
+            <div className="settings-row">
+              <label htmlFor="round-size">Round size</label>
+              <input
+                id="round-size"
+                type="range"
+                min="8"
+                max="40"
+                step="1"
+                value={roundSize}
+                onChange={handleRoundSizeChange}
+              />
+              <strong>{roundSize}</strong>
+            </div>
+            <div className="settings-row">
+              <label htmlFor="bg-volume">Music volume</label>
+              <input
+                id="bg-volume"
+                type="range"
+                min="0"
+                max="1"
+                step="0.05"
+                value={backgroundVolume}
+                onChange={handleVolumeChange}
+              />
+              <strong>{Math.round(backgroundVolume * 100)}%</strong>
+            </div>
+          </div>
+        </section>
+        <p className="signature-note">Made by {CREATOR_SIGNATURE}</p>
       </main>
+      </>
     )
   }
 
   const answerEntry = vocabMap[currentQuestion.answerId]
+  const questionAudioLabel = speechSupported
+    ? speakingId === questionAudioId
+      ? 'Stop question pronunciation'
+      : 'Play question pronunciation'
+    : 'Speech not supported in this browser'
 
   return (
-    <main className="app-shell">
-      <section className="hero-card hero-card--top">
+    <>
+      {themeTransition && (
+        <motion.div
+          className="theme-transition-overlay"
+          data-theme={theme === 'dark' ? 'to-dark' : 'to-light'}
+          initial={{ x: '-100%' }}
+          animate={{ x: '100%' }}
+          transition={{ duration: 0.9, ease: 'easeInOut' }}
+          onAnimationComplete={() => setThemeTransition(false)}
+        />
+      )}
+      <main className="app-shell">
+        <section className="hero-card hero-card--top">
         <div>
           <p className="eyebrow">French vocab practice for English speakers</p>
           <h1 className="brand-title">
-            ParlEZ <span className="brand-flag" aria-hidden="true" />
+            <span className="brand-word">ParlEZ</span>
+            <span className="brand-flag" aria-hidden="true" />
           </h1>
           <p className="hero-copy">
             Answer once, then tap any card to roll open the French meaning, usage
@@ -504,43 +730,47 @@ function App() {
             <span>Session</span>
             <strong>{roundSize}-question round</strong>
           </div>
-          <div className="meta-pill">
-            <span>Score</span>
-            <strong>
-              {score}/{Math.max(questionIndex, 0)}
-            </strong>
-          </div>
-          <div className="meta-pill">
-            <span>Streak</span>
-            <strong>
-              {progressData.currentStreak} (best {progressData.bestStreak})
-            </strong>
-          </div>
         </div>
       </section>
 
       <section className="stats-panel" aria-label="Learning stats">
         <div className="stats-pill">
-          <span>Session accuracy</span>
+          <span>Score</span>
+          <strong>
+            {attemptedQuestions ? `${score}/${attemptedQuestions}` : '0'}
+          </strong>
+        </div>
+        <div className="stats-pill">
+          <span>Accuracy</span>
           <strong>{liveAccuracy}%</strong>
         </div>
         <div className="stats-pill">
-          <span>Attempted this round</span>
+          <span>Attempts</span>
           <strong>{attemptedQuestions}</strong>
         </div>
-        <div className="stats-pill stats-pill--toughest">
-          <span>Review weak words</span>
-          <button
-            className="secondary-button"
-            onClick={toggleWeakPane}
-            disabled={!weakTerms.length}
-          >
-            {weakPaneOpen ? 'Hide list' : `Open list (${weakTerms.length})`}
-          </button>
+        <div className="stats-pill">
+          <span>Streak</span>
+          <strong>
+            {progressData.currentStreak} (best {progressData.bestStreak})
+          </strong>
         </div>
+        <button
+          type="button"
+          className="stats-pill stats-pill--toughest stats-pill-toggle"
+          onClick={toggleWeakPane}
+          disabled={!weakTerms.length}
+          aria-expanded={weakPaneOpen}
+          aria-controls="weak-terms-pane"
+        >
+          <span>Review weak words</span>
+          <strong>
+            {weakPaneOpen ? 'Hide list' : `Open list (${weakTerms.length})`}
+          </strong>
+        </button>
       </section>
 
       <section
+        id="weak-terms-pane"
         className={`weak-terms-pane ${weakPaneOpen ? 'is-open' : ''}`}
         onClick={() => {
           if (weakPaneOpen) {
@@ -548,16 +778,58 @@ function App() {
           }
         }}
       >
-        <div className="weak-terms-inner">
+        <div
+          className="weak-terms-inner"
+          onClick={(event) => {
+            event.stopPropagation()
+          }}
+        >
           {weakTerms.length ? (
-            <ul className="weak-terms-list">
-              {weakTerms.map((term) => (
-                <li key={term.id}>
-                  <span className="weak-term-fr">{term.french}</span>
-                  <span className="weak-term-en">{term.english}</span>
-                </li>
-              ))}
-            </ul>
+            <>
+              <div className="weak-terms-actions">
+                <button
+                  className="ghost-button weak-terms-clear-all"
+                  onClick={clearAllWeakWords}
+                >
+                  Clear all weak words
+                </button>
+              </div>
+              <ul className="weak-terms-list">
+                <AnimatePresence initial={false}>
+                  {weakTerms.map((term) => (
+                    <motion.li
+                      key={term.id}
+                      layout
+                      initial={{ opacity: 0, y: 8, scale: 0.985 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -10, scale: 0.97 }}
+                      transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      <div className="weak-term-copy">
+                        <span className="weak-term-fr">{term.french}</span>
+                        <span className="weak-term-en">{term.english}</span>
+                      </div>
+                      <button
+                        className="ghost-button weak-term-clear"
+                        aria-label={`Delete ${term.french}`}
+                        title={`Delete ${term.french}`}
+                        onClick={() => {
+                          clearWeakWord(term.id)
+                        }}
+                      >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M6 9v10c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V9" />
+                          <path d="M9 5c0-.6.4-1 1-1h4c.6 0 1 .4 1 1" />
+                          <path d="M4 9h16" />
+                          <path d="M10 12v6" />
+                          <path d="M14 12v6" />
+                        </svg>
+                      </button>
+                    </motion.li>
+                  ))}
+                </AnimatePresence>
+              </ul>
+            </>
           ) : (
             <p className="weak-terms-empty">
               No weak terms yet. Keep practicing and this list will update.
@@ -566,7 +838,9 @@ function App() {
         </div>
       </section>
 
-      <section className="quiz-card">
+      <section
+        className={`quiz-card ${expandedOptionId !== null ? 'is-option-expanded' : ''}`}
+      >
         <div className="quiz-header">
           <div>
             <p className="question-step">
@@ -576,14 +850,21 @@ function App() {
           <div className="header-actions">
             <button
               className="secondary-button icon-button"
-              onClick={toggleSettings}
+              onClick={handleSettingsIconClick}
               aria-label={settingsLabel}
               title={settingsLabel}
             >
-              <svg viewBox="0 0 24 24" aria-hidden="true">
+              <motion.svg
+                key={`settings-quiz-${settingsSpinKey}`}
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                initial={{ rotate: 0, scale: 1 }}
+                animate={{ rotate: [0, 220, 360], scale: [1, 1.06, 1] }}
+                transition={{ duration: 0.55, ease: 'easeInOut' }}
+              >
                 <circle cx="12" cy="12" r="3" />
                 <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 .6 1.65 1.65 0 0 0-.33 1V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-.33-1 1.65 1.65 0 0 0-1-.6 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-.6-1 1.65 1.65 0 0 0-1-.33H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1-.33 1.65 1.65 0 0 0 .6-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-.6 1.65 1.65 0 0 0 .33-1V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 .33 1 1.65 1.65 0 0 0 1 .6 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.24.3.44.64.6 1a1.65 1.65 0 0 0 1 .33H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1 .33 1.65 1.65 0 0 0-.51.34z" />
-              </svg>
+              </motion.svg>
             </button>
             <button
               className="secondary-button icon-button"
@@ -621,17 +902,6 @@ function App() {
                   <path d="M21 12.79A9 9 0 1 1 11.21 3c-.11.56-.16 1.14-.16 1.73a7 7 0 0 0 8.95 6.7z" />
                 </svg>
               )}
-            </button>
-            <button
-              className="secondary-button icon-button"
-              onClick={resetRound}
-              aria-label="Reshuffle round"
-              title="Reshuffle round"
-            >
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M21 12a9 9 0 1 1-2.64-6.36" />
-                <path d="M21 4v6h-6" />
-              </svg>
             </button>
           </div>
         </div>
@@ -668,9 +938,6 @@ function App() {
               />
               <strong>{Math.round(backgroundVolume * 100)}%</strong>
             </div>
-            <button className="secondary-button" onClick={applySettingsAndReshuffle}>
-              Apply and reshuffle
-            </button>
           </div>
         </section>
 
@@ -686,7 +953,35 @@ function App() {
         <div className="quiz-main-grid">
           <header className="question-card">
             <div className="question-header">
-              <p className="question-phrase">{currentQuestion.promptTerm}</p>
+              <div className="question-phrase-row">
+                <p className="question-phrase">{currentQuestion.promptTerm}</p>
+                <button
+                  className="ghost-button icon-button audio-icon-button"
+                  onClick={() => {
+                    if (speakingId === questionAudioId) {
+                      stop()
+                      return
+                    }
+
+                    speak(questionAudioId, currentQuestion.promptTerm)
+                  }}
+                  disabled={!speechSupported}
+                  aria-label={questionAudioLabel}
+                  title={questionAudioLabel}
+                >
+                  {speakingId === questionAudioId ? (
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M6 6h12v12H6z" />
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M5 9v6h4l5 4V5L9 9H5z" />
+                      <path d="M16 9a5 5 0 0 1 0 6" />
+                      <path d="M18.5 6.5a8.5 8.5 0 0 1 0 11" />
+                    </svg>
+                  )}
+                </button>
+              </div>
               <span className="question-type">{currentQuestion.entryType}</span>
             </div>
           </header>
@@ -718,21 +1013,24 @@ function App() {
           </div>
         </div>
 
-        <div className="footer-bar">
-          {answered ? (
-            <p className="footer-copy">{`Correct answer: ${answerEntry.english}.`}</p>
-          ) : null}
-
-          <button
-            className="primary-button"
-            onClick={handleNext}
-            disabled={!answered}
-          >
-            {questionIndex === deck.length - 1 ? 'Finish round' : 'Next question'}
-          </button>
-        </div>
       </section>
+
+      <div className="footer-bar">
+        {answered ? (
+          <p className="footer-copy">{`Correct answer: ${answerEntry.english}.`}</p>
+        ) : null}
+
+        <button
+          className="primary-button"
+          onClick={handleNext}
+          disabled={!answered}
+        >
+          {questionIndex === deck.length - 1 ? 'Finish round' : 'Next question'}
+        </button>
+      </div>
+      <p className="signature-note">Made by {CREATOR_SIGNATURE}</p>
     </main>
+    </>
   )
 }
 

@@ -2,12 +2,46 @@ let audioContext = null
 let isAudioInitialized = false
 
 const BACKGROUND_TRACK_PATH = `${import.meta.env.BASE_URL}audio/background.mp3`
-const BACKGROUND_BASE_VOLUME = 0.1
+const BACKGROUND_BASE_VOLUME = 0.09
 
 let backgroundAudio = null
 let backgroundTrackUnavailable = false
 let interactionListenerAttached = false
 let configuredBackgroundVolume = BACKGROUND_BASE_VOLUME
+let backgroundSourceNode = null
+let backgroundGainNode = null
+
+function applyTrackVolume(value) {
+  const normalized = Math.max(0, Math.min(1, Number(value) || 0))
+
+  if (backgroundGainNode && audioContext) {
+    backgroundGainNode.gain.setValueAtTime(normalized, audioContext.currentTime)
+    return
+  }
+
+  if (backgroundAudio) {
+    backgroundAudio.volume = normalized
+  }
+}
+
+function ensureBackgroundRouting(track) {
+  const ctx = getAudioContext()
+
+  if (!ctx || !track || backgroundSourceNode) {
+    return
+  }
+
+  try {
+    backgroundSourceNode = ctx.createMediaElementSource(track)
+    backgroundGainNode = ctx.createGain()
+    backgroundSourceNode.connect(backgroundGainNode)
+    backgroundGainNode.connect(ctx.destination)
+  } catch (err) {
+    console.warn('Could not create media element audio routing:', err)
+    backgroundSourceNode = null
+    backgroundGainNode = null
+  }
+}
 
 function attachFirstInteractionRetry() {
   if (interactionListenerAttached) {
@@ -59,7 +93,6 @@ function getBackgroundAudio() {
     backgroundAudio = new Audio(BACKGROUND_TRACK_PATH)
     backgroundAudio.loop = true
     backgroundAudio.preload = 'auto'
-    backgroundAudio.volume = configuredBackgroundVolume
 
     backgroundAudio.addEventListener('error', () => {
       backgroundTrackUnavailable = true
@@ -67,6 +100,9 @@ function getBackgroundAudio() {
         `Background track not found at ${BACKGROUND_TRACK_PATH}. Add your MP3 there.`,
       )
     })
+
+    ensureBackgroundRouting(backgroundAudio)
+    applyTrackVolume(configuredBackgroundVolume)
   }
 
   return backgroundAudio
@@ -81,6 +117,11 @@ export function initializeAudio() {
     })
   }
 
+  if (backgroundAudio) {
+    ensureBackgroundRouting(backgroundAudio)
+    applyTrackVolume(configuredBackgroundVolume)
+  }
+
   isAudioInitialized = true
 }
 
@@ -91,7 +132,8 @@ export function playBackgroundMusic() {
     return
   }
 
-  track.volume = configuredBackgroundVolume
+  ensureBackgroundRouting(track)
+  applyTrackVolume(configuredBackgroundVolume)
 
   if (!track.paused) {
     return
@@ -118,7 +160,7 @@ export function duckBackgroundMusic() {
     return
   }
 
-  track.volume = Math.max(configuredBackgroundVolume * 0.35, 0.02)
+  applyTrackVolume(Math.max(configuredBackgroundVolume * 0.35, 0.02))
 }
 
 export function restoreBackgroundMusicVolume() {
@@ -128,7 +170,7 @@ export function restoreBackgroundMusicVolume() {
     return
   }
 
-  track.volume = configuredBackgroundVolume
+  applyTrackVolume(configuredBackgroundVolume)
 }
 
 export function setBackgroundMusicVolume(value) {
@@ -139,10 +181,7 @@ export function setBackgroundMusicVolume(value) {
   }
 
   configuredBackgroundVolume = Math.max(0, Math.min(1, numeric))
-
-  if (backgroundAudio) {
-    backgroundAudio.volume = configuredBackgroundVolume
-  }
+  applyTrackVolume(configuredBackgroundVolume)
 }
 
 export function getBackgroundMusicVolume() {
@@ -156,6 +195,14 @@ export function stopBackgroundMusic() {
 
   backgroundAudio.pause()
   backgroundAudio.currentTime = 0
+}
+
+export function pauseBackgroundMusic() {
+  if (!backgroundAudio) {
+    return
+  }
+
+  backgroundAudio.pause()
 }
 
 export function playCorrectSound() {
