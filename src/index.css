@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --paper: #17142d;
+  --surface: rgba(27, 23, 51, 0.74);
+  --ink: #f4f1ff;
+  --muted: #b2abd9;
+  --line: rgba(174, 160, 242, 0.24);
+  --accent: #ff8d57;
+  --accent-strong: #ff5a36;
+  --gold: #ffd166;
+  --electric: #38e2cc;
+  --berry: #b67bff;
+  --success: #45d39f;
+  --danger: #ff6b7c;
+  --shadow-soft: 0 16px 38px rgba(10, 7, 30, 0.5);
+  --font-body: 'Manrope', sans-serif;
+  --font-display: 'Fraunces', serif;
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  font-weight: 500;
+  background:
+    radial-gradient(circle at 8% 8%, rgba(255, 141, 87, 0.2), transparent 34%),
+    radial-gradient(circle at 88% 12%, rgba(182, 123, 255, 0.24), transparent 30%),
+    radial-gradient(circle at 74% 86%, rgba(56, 226, 204, 0.16), transparent 28%),
+    linear-gradient(165deg, #0f0b1f 0%, #1a1533 48%, #10222e 100%);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root[data-theme='light'] {
+  --paper: #fffaf0;
+  --surface: rgba(255, 255, 255, 0.8);
+  --ink: #1e1b38;
+  --muted: #5c587a;
+  --line: rgba(40, 36, 72, 0.14);
+  --accent: #ff6b35;
+  --accent-strong: #d9480f;
+  --gold: #ffd166;
+  --electric: #2ec4b6;
+  --berry: #7b2cbf;
+  --success: #1f9d75;
+  --danger: #d62839;
+  --shadow-soft: 0 16px 35px rgba(60, 36, 135, 0.16);
+  background:
+    radial-gradient(circle at 8% 8%, rgba(255, 209, 102, 0.45), transparent 35%),
+    radial-gradient(circle at 88% 12%, rgba(123, 44, 191, 0.2), transparent 28%),
+    radial-gradient(circle at 74% 86%, rgba(46, 196, 182, 0.2), transparent 25%),
+    linear-gradient(160deg, #fff4dd 0%, #f4edff 52%, #e8fff9 100%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(182, 123, 255, 0.2) 1px, transparent 0),
+    radial-gradient(circle at 1px 1px, rgba(56, 226, 204, 0.14) 1px, transparent 0);
+  background-position:
+    0 0,
+    14px 14px;
+  background-size: 28px 28px;
+  opacity: 0.28;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: -20% -10% auto auto;
+  width: 460px;
+  height: 460px;
+  border-radius: 42% 58% 57% 43% / 44% 39% 61% 56%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 141, 87, 0.24), rgba(182, 123, 255, 0.16) 70%);
+  filter: blur(20px);
+  pointer-events: none;
+  z-index: -1;
+  animation: driftBlob 14s ease-in-out infinite alternate;
+}
+
+:root[data-theme='light'] body::before {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(123, 44, 191, 0.14) 1px, transparent 0),
+    radial-gradient(circle at 1px 1px, rgba(46, 196, 182, 0.14) 1px, transparent 0);
+  opacity: 0.35;
+}
+
+:root[data-theme='light'] body::after {
+  background: radial-gradient(circle at 30% 30%, rgba(255, 107, 53, 0.35), rgba(123, 44, 191, 0.08) 70%);
+}
+
+button {
+  font: inherit;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+@keyframes driftBlob {
+  from {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  to {
+    transform: translate3d(-50px, 26px, 0) rotate(12deg);
+  }
+}
