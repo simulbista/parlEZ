@@ -1,7 +1,7 @@
 let audioContext = null
 let isAudioInitialized = false
 
-const BACKGROUND_TRACK_PATH = '/audio/background.mp3'
+const BACKGROUND_TRACK_PATH = `${import.meta.env.BASE_URL}audio/background.mp3`
 const BACKGROUND_BASE_VOLUME = 0.1
 
 let backgroundAudio = null
