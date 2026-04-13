@@ -9,7 +9,9 @@
     "note": "Used for a farm or agricultural holding where crops and animals are raised.",
     "exampleFrench": "La ferme familiale produit du lait et des légumes toute l'année.",
     "exampleEnglish": "The family farm produces milk and vegetables all year.",
-    "imagePrompt": "A warm editorial illustration of a family farm with a barn, fields, and morning light."
+    "imagePrompt": "A warm editorial illustration of a family farm with a barn, fields, and morning light.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "farmer",
@@ -22,7 +24,9 @@
     "note": "These related words describe someone who works the land or runs a farm.",
     "exampleFrench": "L'agriculteur commence sa journée avant le lever du soleil.",
     "exampleEnglish": "The farmer starts the day before sunrise.",
-    "imagePrompt": "A farmer in boots walking between rows of crops at sunrise, painted in a soft modern style."
+    "imagePrompt": "A farmer in boots walking between rows of crops at sunrise, painted in a soft modern style.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "farm-animals",
@@ -33,7 +37,9 @@
     "note": "A collective expression for animals kept on a farm such as cows, rabbits, ducks, and chickens.",
     "exampleFrench": "Les enfants adorent donner à manger aux animaux de la ferme.",
     "exampleEnglish": "The children love feeding the farm animals.",
-    "imagePrompt": "A lively farmyard with cows, rabbits, ducks, dogs, cats, and chickens in a bright illustration."
+    "imagePrompt": "A lively farmyard with cows, rabbits, ducks, dogs, cats, and chickens in a bright illustration.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "wheat",
@@ -44,7 +50,9 @@
     "note": "A common grain crop used for bread and flour.",
     "exampleFrench": "Le blé devient doré juste avant la récolte.",
     "exampleEnglish": "The wheat turns golden just before harvest.",
-    "imagePrompt": "Golden wheat fields moving in the wind under a pale summer sky."
+    "imagePrompt": "Golden wheat fields moving in the wind under a pale summer sky.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "corn",
@@ -55,7 +63,9 @@
     "note": "Used for maize or corn plants and kernels.",
     "exampleFrench": "Le maïs pousse très vite pendant les semaines chaudes.",
     "exampleEnglish": "Corn grows very quickly during the warm weeks.",
-    "imagePrompt": "Tall green corn plants in neat rows with warm late-afternoon sunlight."
+    "imagePrompt": "Tall green corn plants in neat rows with warm late-afternoon sunlight.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "holidays",
@@ -67,7 +77,9 @@
     "note": "Both can refer to vacation time, while congés often sounds more administrative or work-related.",
     "exampleFrench": "Je prends des congés en août pour partir en vacances.",
     "exampleEnglish": "I'm taking time off in August to go on holiday.",
-    "imagePrompt": "A suitcase by a train window with sunglasses and tickets, bright summer travel mood."
+    "imagePrompt": "A suitcase by a train window with sunglasses and tickets, bright summer travel mood.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "hurry-up",
@@ -78,7 +90,9 @@
     "note": "An imperative telling one person to move faster or stop wasting time.",
     "exampleFrench": "Dépêche-toi, nous allons manquer le bus !",
     "exampleEnglish": "Hurry up, we are going to miss the bus!",
-    "imagePrompt": "A student running toward a bus stop while checking a watch, energetic comic-style scene."
+    "imagePrompt": "A student running toward a bus stop while checking a watch, energetic comic-style scene.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "sunburn",
@@ -89,7 +103,9 @@
     "note": "Used when the skin becomes red or painful after too much sun exposure.",
     "exampleFrench": "Après la plage, il a eu un coup de soleil sur les épaules.",
     "exampleEnglish": "After the beach, he got a sunburn on his shoulders.",
-    "imagePrompt": "A beach scene with someone applying aloe vera to sunburned shoulders, clean editorial illustration."
+    "imagePrompt": "A beach scene with someone applying aloe vera to sunburned shoulders, clean editorial illustration.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "uv-rays",
@@ -100,7 +116,9 @@
     "note": "Usually mentioned when talking about sun protection or skin damage.",
     "exampleFrench": "Cette crème protège bien contre les ultraviolets.",
     "exampleEnglish": "This cream protects well against ultraviolet rays.",
-    "imagePrompt": "A sunscreen bottle, sunglasses, and a bright sun icon in a summer safety poster style."
+    "imagePrompt": "A sunscreen bottle, sunglasses, and a bright sun icon in a summer safety poster style.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "currently",
@@ -111,7 +129,9 @@
     "note": "A common adverb meaning at the present time.",
     "exampleFrench": "Actuellement, je révise mon vocabulaire de français chaque soir.",
     "exampleEnglish": "Currently, I review my French vocabulary every evening.",
-    "imagePrompt": "A desk with open notebooks, tea, and evening study light, calm academic mood."
+    "imagePrompt": "A desk with open notebooks, tea, and evening study light, calm academic mood.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "vineyard",
@@ -123,7 +143,9 @@
     "note": "Used for grapevines or the vineyard area where they are grown.",
     "exampleFrench": "Le vignoble de Bordeaux attire des visiteurs du monde entier.",
     "exampleEnglish": "The Bordeaux vineyard attracts visitors from around the world.",
-    "imagePrompt": "Rows of grapevines on rolling hills near Bordeaux, elegant travel-poster composition."
+    "imagePrompt": "Rows of grapevines on rolling hills near Bordeaux, elegant travel-poster composition.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "grapes",
@@ -134,7 +156,9 @@
     "note": "Used for grapes as fruit or harvest produce.",
     "exampleFrench": "Le raisin est très sucré cette année.",
     "exampleEnglish": "The grapes are very sweet this year.",
-    "imagePrompt": "A close-up bunch of ripe purple grapes in soft vineyard light."
+    "imagePrompt": "A close-up bunch of ripe purple grapes in soft vineyard light.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "wine",
@@ -145,7 +169,9 @@
     "note": "The standard word for wine.",
     "exampleFrench": "Ce restaurant sert un très bon vin rouge.",
     "exampleEnglish": "This restaurant serves a very good red wine.",
-    "imagePrompt": "A refined table scene with a glass of red wine and candlelight, tasteful illustration."
+    "imagePrompt": "A refined table scene with a glass of red wine and candlelight, tasteful illustration.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "record-label",
@@ -157,7 +183,9 @@
     "note": "Used for a music company that signs and promotes artists.",
     "exampleFrench": "La chanteuse a signé avec un grand label musical.",
     "exampleEnglish": "The singer signed with a major record label.",
-    "imagePrompt": "A young singer in a studio meeting music executives, sleek contemporary illustration."
+    "imagePrompt": "A young singer in a studio meeting music executives, sleek contemporary illustration.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "vinyl-record",
@@ -168,7 +196,9 @@
     "note": "A physical record played on a turntable.",
     "exampleFrench": "Il collectionne les disques vinyles des années quatre-vingt.",
     "exampleEnglish": "He collects vinyl records from the eighties.",
-    "imagePrompt": "A turntable spinning a colorful vinyl record in a retro living room."
+    "imagePrompt": "A turntable spinning a colorful vinyl record in a retro living room.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "cd",
@@ -179,7 +209,9 @@
     "note": "The same abbreviation is used in French.",
     "exampleFrench": "J'ai encore quelques CD dans ma voiture.",
     "exampleEnglish": "I still have a few CDs in my car.",
-    "imagePrompt": "A stack of compact discs catching rainbow reflections in sunlight."
+    "imagePrompt": "A stack of compact discs catching rainbow reflections in sunlight.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "noticed-by-professional",
@@ -190,7 +222,9 @@
     "note": "Used when talent or work gets attention from an expert in the field.",
     "exampleFrench": "Elle espère être remarquée par un professionnel pendant le concours.",
     "exampleEnglish": "She hopes to be noticed by a professional during the competition.",
-    "imagePrompt": "A performer on stage while a judge takes notes in the front row."
+    "imagePrompt": "A performer on stage while a judge takes notes in the front row.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "make-remarks",
@@ -202,7 +236,9 @@
     "note": "Remarques can be neutral comments, while reproches often means criticism or blame.",
     "exampleFrench": "Le chef a fait des remarques sur notre présentation.",
     "exampleEnglish": "The boss made remarks about our presentation.",
-    "imagePrompt": "An office meeting where a manager gives feedback to a team around a table."
+    "imagePrompt": "An office meeting where a manager gives feedback to a team around a table.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "fresh-start",
@@ -213,7 +249,9 @@
     "note": "Used for beginning again after a change, setback, or major transition.",
     "exampleFrench": "Après la crise, le pays veut prendre un nouveau départ.",
     "exampleEnglish": "After the crisis, the country wants to make a fresh start.",
-    "imagePrompt": "A sunrise over a city skyline with people walking forward, hopeful civic-poster mood."
+    "imagePrompt": "A sunrise over a city skyline with people walking forward, hopeful civic-poster mood.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "book",
@@ -225,7 +263,9 @@
     "note": "Ouvrage often sounds a bit more formal than livre.",
     "exampleFrench": "Cet ouvrage historique est facile à lire malgré sa longueur.",
     "exampleEnglish": "This historical work is easy to read despite its length.",
-    "imagePrompt": "A beautifully bound book open on a wooden desk beside handwritten notes."
+    "imagePrompt": "A beautifully bound book open on a wooden desk beside handwritten notes.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "friend",
@@ -239,7 +279,9 @@
     "note": "Copain and copine are casual, while ami and amie are more standard.",
     "exampleFrench": "Je retrouve une amie au café après les cours.",
     "exampleEnglish": "I'm meeting a friend at the cafe after class.",
-    "imagePrompt": "Two friends chatting over coffee at a Parisian terrace, friendly and relaxed."
+    "imagePrompt": "Two friends chatting over coffee at a Parisian terrace, friendly and relaxed.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "partner",
@@ -251,7 +293,9 @@
     "note": "Used for a romantic partner, not just an ordinary friend.",
     "exampleFrench": "Elle a présenté son petit copain à sa famille.",
     "exampleEnglish": "She introduced her boyfriend to her family.",
-    "imagePrompt": "A young couple meeting family at dinner, warm domestic illustration."
+    "imagePrompt": "A young couple meeting family at dinner, warm domestic illustration.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "however",
@@ -260,9 +304,12 @@
     ],
     "english": "however",
     "note": "A formal connector used to introduce contrast.",
+    "quizMode": "cloze",
+    "blankTerm": "Toutefois",
     "exampleFrench": "Le film est long. Toutefois, il reste passionnant.",
     "exampleEnglish": "The film is long. However, it remains fascinating.",
-    "imagePrompt": "A stylish movie poster composition with contrasting light and shadow."
+    "imagePrompt": "A stylish movie poster composition with contrasting light and shadow.",
+    "category": "vocab"
   },
   {
     "id": "besides",
@@ -271,9 +318,12 @@
     ],
     "english": "besides / moreover",
     "note": "Useful for adding a side comment or extra supporting point.",
+    "quizMode": "cloze",
+    "blankTerm": "d'ailleurs",
     "exampleFrench": "Il parle très bien français. D'ailleurs, il a vécu à Lyon.",
     "exampleEnglish": "He speaks French very well. Besides, he lived in Lyon.",
-    "imagePrompt": "A conversational cafe scene with subtle speech bubbles and map elements of Lyon."
+    "imagePrompt": "A conversational cafe scene with subtle speech bubbles and map elements of Lyon.",
+    "category": "vocab"
   },
   {
     "id": "consequently",
@@ -283,9 +333,12 @@
     ],
     "english": "consequently",
     "note": "A connector used to show result or consequence.",
+    "quizMode": "cloze",
+    "blankTerm": "En conséquence",
     "exampleFrench": "Le train a été annulé. En conséquence, nous sommes rentrés tard.",
     "exampleEnglish": "The train was cancelled. Consequently, we got home late.",
-    "imagePrompt": "A delayed train board with travelers adjusting plans, clean editorial travel style."
+    "imagePrompt": "A delayed train board with travelers adjusting plans, clean editorial travel style.",
+    "category": "vocab"
   },
   {
     "id": "award",
@@ -296,7 +349,9 @@
     "note": "Used when a prize, title, or honor is formally given.",
     "exampleFrench": "Le jury a décerné le prix du meilleur film à la réalisatrice.",
     "exampleEnglish": "The jury awarded the best film prize to the director.",
-    "imagePrompt": "A film awards stage with spotlight, envelope, and applause."
+    "imagePrompt": "A film awards stage with spotlight, envelope, and applause.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "decree",
@@ -307,7 +362,9 @@
     "note": "Used when an authority officially orders or declares something.",
     "exampleFrench": "La mairie a décrété un couvre-feu après les violences.",
     "exampleEnglish": "The city council decreed a curfew after the violence.",
-    "imagePrompt": "A city at night under curfew with streetlights and official notices, serious news illustration."
+    "imagePrompt": "A city at night under curfew with streetlights and official notices, serious news illustration.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "designate",
@@ -318,7 +375,9 @@
     "note": "Used when someone is officially chosen for a role or responsibility.",
     "exampleFrench": "Le parti a désigné un nouveau premier ministre.",
     "exampleEnglish": "The party appointed a new prime minister.",
-    "imagePrompt": "A formal political announcement with microphones and a new leader stepping forward."
+    "imagePrompt": "A formal political announcement with microphones and a new leader stepping forward.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "broadcast",
@@ -329,7 +388,9 @@
     "note": "Can refer to broadcasting a TV program or spreading a smell or message.",
     "exampleFrench": "Cette chaîne diffuse le match en direct ce soir.",
     "exampleEnglish": "This channel is broadcasting the match live tonight.",
-    "imagePrompt": "A TV control room with live sports footage on multiple screens."
+    "imagePrompt": "A TV control room with live sports footage on multiple screens.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "drop",
@@ -340,7 +401,9 @@
     "note": "Used for a drop of water, liquid, or even a tiny amount.",
     "exampleFrench": "Il n'y a plus une goutte d'eau dans son verre.",
     "exampleEnglish": "There is not a single drop of water left in his glass.",
-    "imagePrompt": "A nearly empty glass with one shining drop left at the bottom, cinematic close-up."
+    "imagePrompt": "A nearly empty glass with one shining drop left at the bottom, cinematic close-up.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "avoid-trouble",
@@ -351,7 +414,9 @@
     "note": "An idiom for escaping a problem or unpleasant situation by luck.",
     "exampleFrench": "Avec cette grève, nous avons eu de la chance et nous sommes passés entre les gouttes.",
     "exampleEnglish": "With that strike, we were lucky and narrowly avoided trouble.",
-    "imagePrompt": "Someone slipping between heavy raindrops with an umbrella, playful metaphorical illustration."
+    "imagePrompt": "Someone slipping between heavy raindrops with an umbrella, playful metaphorical illustration.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "tear",
@@ -362,7 +427,9 @@
     "note": "Also used figuratively for a tiny splash in a drink in informal speech.",
     "exampleFrench": "Une larme a coulé sur sa joue pendant le film.",
     "exampleEnglish": "A tear rolled down her cheek during the film.",
-    "imagePrompt": "A close-up portrait with one tear and soft cinema light reflected in the eye."
+    "imagePrompt": "A close-up portrait with one tear and soft cinema light reflected in the eye.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "raining-heavily",
@@ -374,7 +441,9 @@
     "note": "An idiom meaning it is raining very hard.",
     "exampleFrench": "Prends ton parapluie, il pleut des cordes dehors.",
     "exampleEnglish": "Take your umbrella, it's raining heavily outside.",
-    "imagePrompt": "A city street in strong rain with umbrellas bending in the wind, dramatic poster style."
+    "imagePrompt": "A city street in strong rain with umbrellas bending in the wind, dramatic poster style.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "operating-system",
@@ -385,7 +454,9 @@
     "note": "Used in tech for systems like Windows or iOS, and metaphorically for systems of exploitation in society.",
     "exampleFrench": "Mon PC fonctionne avec le système d'exploitation Windows.",
     "exampleEnglish": "My PC runs on the Windows operating system.",
-    "imagePrompt": "A laptop desktop interface with layered windows and clean modern tech visuals."
+    "imagePrompt": "A laptop desktop interface with layered windows and clean modern tech visuals.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "loneliness",
@@ -397,7 +468,9 @@
     "note": "Used for the state of being alone, often with an emotional weight.",
     "exampleFrench": "De plus en plus de personnes souffrent de solitude.",
     "exampleEnglish": "More and more people suffer from loneliness.",
-    "imagePrompt": "A solitary figure in a city apartment at dusk, reflective and gentle illustration."
+    "imagePrompt": "A solitary figure in a city apartment at dusk, reflective and gentle illustration.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "not-cope",
@@ -408,7 +481,9 @@
     "note": "Used when a task or situation feels too difficult to handle.",
     "exampleFrench": "Cet exercice est trop difficile, je ne m'en sors pas.",
     "exampleEnglish": "This exercise is too difficult, I'm not managing.",
-    "imagePrompt": "A stressed student at a desk full of notes, trying to solve a hard exercise."
+    "imagePrompt": "A stressed student at a desk full of notes, trying to solve a hard exercise.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "lose-loved-one",
@@ -420,7 +495,9 @@
     "note": "Used for bereavement or deep personal loss.",
     "exampleFrench": "Après avoir perdu un proche, il a eu besoin de temps pour se reconstruire.",
     "exampleEnglish": "After losing a loved one, he needed time to rebuild himself.",
-    "imagePrompt": "A quiet memorial moment with a framed photo, candlelight, and soft muted tones."
+    "imagePrompt": "A quiet memorial moment with a framed photo, candlelight, and soft muted tones.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "all-alone",
@@ -432,7 +509,9 @@
     "note": "A stronger, more personal version of simply being alone.",
     "exampleFrench": "Elle est restée toute seule dans l'appartement pendant le week-end.",
     "exampleEnglish": "She stayed all alone in the apartment during the weekend.",
-    "imagePrompt": "A quiet apartment interior at night with one person by the window."
+    "imagePrompt": "A quiet apartment interior at night with one person by the window.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "beginning-of-the-end",
@@ -443,7 +522,9 @@
     "note": "A dramatic expression used when a decline has clearly started.",
     "exampleFrench": "Pour cette entreprise, cette décision a marqué le début de la fin.",
     "exampleEnglish": "For that company, that decision marked the beginning of the end.",
-    "imagePrompt": "A collapsing corporate skyline with one tower dimming first, symbolic editorial art."
+    "imagePrompt": "A collapsing corporate skyline with one tower dimming first, symbolic editorial art.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "cheat",
@@ -454,7 +535,9 @@
     "note": "Used for cheating in class, a game, or an exam.",
     "exampleFrench": "Il a triché pendant le contrôle en regardant le téléphone de son voisin.",
     "exampleEnglish": "He cheated during the test by looking at his neighbor's phone.",
-    "imagePrompt": "A classroom test scene with one student secretly glancing sideways, tense academic mood."
+    "imagePrompt": "A classroom test scene with one student secretly glancing sideways, tense academic mood.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "deceive",
@@ -466,7 +549,9 @@
     "note": "Depending on context, tromper means mislead, deceive, or be unfaithful.",
     "exampleFrench": "Tromper son conjoint est très grave pour beaucoup de couples.",
     "exampleEnglish": "Cheating on your partner is very serious for many couples.",
-    "imagePrompt": "A dramatic relationship scene with two people in tense conversation at home."
+    "imagePrompt": "A dramatic relationship scene with two people in tense conversation at home.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "liar",
@@ -479,7 +564,9 @@
     "note": "Used for someone who lies or the act of lying.",
     "exampleFrench": "Je ne lui fais plus confiance, c'est un menteur.",
     "exampleEnglish": "I don't trust him anymore, he is a liar.",
-    "imagePrompt": "A stylized portrait with crossed fingers hidden behind the back, symbolic of lying."
+    "imagePrompt": "A stylized portrait with crossed fingers hidden behind the back, symbolic of lying.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "german-shepherd",
@@ -490,7 +577,9 @@
     "note": "The dog breed, not a shepherd from Germany.",
     "exampleFrench": "Le berger allemand du voisin aboie quand quelqu'un arrive.",
     "exampleEnglish": "The neighbor's German shepherd barks when someone arrives.",
-    "imagePrompt": "A loyal German shepherd by a garden gate, realistic but warm illustration."
+    "imagePrompt": "A loyal German shepherd by a garden gate, realistic but warm illustration.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "swear",
@@ -501,7 +590,9 @@
     "note": "Can mean to take an oath or to promise strongly.",
     "exampleFrench": "Je te jure que je dis la vérité.",
     "exampleEnglish": "I swear to you that I am telling the truth.",
-    "imagePrompt": "A close-up of someone with a hand on a book, making a solemn promise."
+    "imagePrompt": "A close-up of someone with a hand on a book, making a solemn promise.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "internship",
@@ -514,7 +605,9 @@
     "note": "Stage can mean internship or practical training depending on context.",
     "exampleFrench": "Elle fait un stage en entreprise pendant l'été.",
     "exampleEnglish": "She is doing an internship in a company during the summer.",
-    "imagePrompt": "A young intern in an office with a badge and laptop, modern professional setting."
+    "imagePrompt": "A young intern in an office with a badge and laptop, modern professional setting.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "stadium",
@@ -525,7 +618,9 @@
     "note": "Often confused with stage, which means internship or training period.",
     "exampleFrench": "Le concert aura lieu dans un grand stade ce week-end.",
     "exampleEnglish": "The concert will take place in a large stadium this weekend.",
-    "imagePrompt": "A packed stadium lit for a night concert, high-energy wide-angle scene."
+    "imagePrompt": "A packed stadium lit for a night concert, high-energy wide-angle scene.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "waste-money",
@@ -536,7 +631,9 @@
     "note": "An idiom for wasting money carelessly.",
     "exampleFrench": "Acheter ce gadget inutile, c'est jeter l'argent par les fenêtres.",
     "exampleEnglish": "Buying that useless gadget is throwing money away.",
-    "imagePrompt": "Banknotes flying from an open window in a playful satirical illustration."
+    "imagePrompt": "Banknotes flying from an open window in a playful satirical illustration.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "complain",
@@ -549,7 +646,9 @@
     "note": "Râler is very colloquial and often suggests grumbling.",
     "exampleFrench": "Il râle toujours quand le métro est en retard.",
     "exampleEnglish": "He always complains when the metro is late.",
-    "imagePrompt": "A commuter grumbling on a delayed metro platform, expressive urban illustration."
+    "imagePrompt": "A commuter grumbling on a delayed metro platform, expressive urban illustration.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "gain-belly",
@@ -561,7 +660,9 @@
     "note": "Used to talk about having a noticeable belly or gaining weight around the stomach.",
     "exampleFrench": "Depuis qu'il travaille assis toute la journée, il a pris du ventre.",
     "exampleEnglish": "Since he works sitting all day, he has gained a belly.",
-    "imagePrompt": "A casual lifestyle illustration showing body changes over time, friendly and non-judgmental."
+    "imagePrompt": "A casual lifestyle illustration showing body changes over time, friendly and non-judgmental.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "bite",
@@ -573,7 +674,9 @@
     "note": "Mordre means to bite; se faire mordre means to get bitten.",
     "exampleFrench": "Il s'est fait mordre par un chien dans le parc.",
     "exampleEnglish": "He got bitten by a dog in the park.",
-    "imagePrompt": "A park scene with a startled person and a barking dog, clear instructional illustration."
+    "imagePrompt": "A park scene with a startled person and a barking dog, clear instructional illustration.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "jealousy",
@@ -585,7 +688,9 @@
     "note": "Used for jealousy as a feeling or to describe a jealous person.",
     "exampleFrench": "Son comportement montre une jalousie maladive.",
     "exampleEnglish": "His behavior shows unhealthy jealousy.",
-    "imagePrompt": "A tense couple scene with a phone on the table and suspicious body language."
+    "imagePrompt": "A tense couple scene with a phone on the table and suspicious body language.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "search-rummage",
@@ -596,7 +701,9 @@
     "note": "Used when searching a place, bag, pocket, or someone else's things.",
     "exampleFrench": "Il a fouillé dans son sac pour retrouver ses clés.",
     "exampleEnglish": "He rummaged through his bag to find his keys.",
-    "imagePrompt": "Someone searching through a backpack on a hallway bench, candid daily-life illustration."
+    "imagePrompt": "Someone searching through a backpack on a hallway bench, candid daily-life illustration.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "angry",
@@ -609,7 +716,9 @@
     "note": "These expressions vary in intensity, with furieux usually sounding strongest.",
     "exampleFrench": "Elle est en colère parce qu'on a perdu ses documents.",
     "exampleEnglish": "She is angry because her documents were lost.",
-    "imagePrompt": "A frustrated office worker with scattered papers and strong body language."
+    "imagePrompt": "A frustrated office worker with scattered papers and strong body language.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "slap",
@@ -621,7 +730,9 @@
     "note": "Figuratively, prendre une gifle can also mean receiving a harsh shock or disappointment.",
     "exampleFrench": "Je pensais gagner, mais le résultat a été une vraie gifle.",
     "exampleEnglish": "I thought I would win, but the result was a real slap in the face.",
-    "imagePrompt": "A competition scoreboard revealing an unexpected loss, emotional editorial art."
+    "imagePrompt": "A competition scoreboard revealing an unexpected loss, emotional editorial art.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "lovable-fool",
@@ -633,7 +744,9 @@
     "note": "Attachant means endearing or likable despite flaws.",
     "exampleFrench": "Ce personnage est bête mais attachant, alors on lui pardonne tout.",
     "exampleEnglish": "That character is stupid but lovable, so we forgive him everything.",
-    "imagePrompt": "A clumsy but charming movie character smiling after making a mistake."
+    "imagePrompt": "A clumsy but charming movie character smiling after making a mistake.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "make-laugh",
@@ -645,7 +758,9 @@
     "note": "Useful for talking about humor and reactions.",
     "exampleFrench": "Tu me fais rire avec tes histoires absurdes.",
     "exampleEnglish": "You make me laugh with your absurd stories.",
-    "imagePrompt": "Friends laughing together at a dinner table, spontaneous lively illustration."
+    "imagePrompt": "Friends laughing together at a dinner table, spontaneous lively illustration.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "homesickness",
@@ -656,7 +771,9 @@
     "note": "The emotional pain of missing your home country or home place.",
     "exampleFrench": "Quand je suis parti étudier loin, j'ai eu le mal du pays.",
     "exampleEnglish": "When I left to study far away, I felt homesick.",
-    "imagePrompt": "A student in a foreign city looking at family photos, tender homesick atmosphere."
+    "imagePrompt": "A student in a foreign city looking at family photos, tender homesick atmosphere.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "diamonds-forever",
@@ -667,7 +784,9 @@
     "note": "A set phrase associated with jewelry, luxury, and permanence.",
     "exampleFrench": "Dans la publicité, on répète que les diamants sont éternels.",
     "exampleEnglish": "In the advertisement, they keep repeating that diamonds are forever.",
-    "imagePrompt": "A luxury jewelry ad scene with a diamond ring under dramatic spotlights."
+    "imagePrompt": "A luxury jewelry ad scene with a diamond ring under dramatic spotlights.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "engagement",
@@ -680,7 +799,9 @@
     "note": "Fiançailles means engagement, while bague de fiançailles and alliance refer to rings.",
     "exampleFrench": "Il lui a offert une bague de fiançailles au bord de la mer.",
     "exampleEnglish": "He gave her an engagement ring by the sea.",
-    "imagePrompt": "A seaside proposal scene with a ring box and golden evening light."
+    "imagePrompt": "A seaside proposal scene with a ring box and golden evening light.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "hide",
@@ -692,7 +813,9 @@
     "note": "Cacher is transitive, while se cacher means to hide oneself.",
     "exampleFrench": "L'enfant aime se cacher derrière le rideau.",
     "exampleEnglish": "The child likes to hide behind the curtain.",
-    "imagePrompt": "A playful indoor hide-and-seek scene with a child behind a curtain."
+    "imagePrompt": "A playful indoor hide-and-seek scene with a child behind a curtain.",
+    "category": "vocab",
+    "quizMode": "mcq"
   },
   {
     "id": "leave-without-goodbye",
@@ -704,6 +827,253 @@
     "note": "Used when someone leaves abruptly and impolitely.",
     "exampleFrench": "Elle est partie sans dire au revoir à personne.",
     "exampleEnglish": "She left without saying goodbye to anyone.",
-    "imagePrompt": "A person slipping out of a gathering while others are still talking, cinematic farewell scene."
+    "imagePrompt": "A person slipping out of a gathering while others are still talking, cinematic farewell scene.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "connectors-cause",
+    "terms": [
+      "car",
+      "en effet",
+      "en raison de",
+      "sous prétexte que",
+      "puisque",
+      "dans la mesure où"
+    ],
+    "english": "cause connectors",
+    "note": "Connectors used to express cause or reason in French.",
+    "quizMode": "cloze",
+    "blankTerm": "en effet",
+    "exampleFrench": "Je suis arrivé en retard au travail, en effet je me suis réveillé en retard ce matin.",
+    "exampleEnglish": "I arrived late to work, in fact I woke up late this morning.",
+    "imagePrompt": "A person waking up late and rushing to work.",
+    "category": "connectors"
+  },
+  {
+    "id": "connectors-comparaison",
+    "terms": [
+      "de même",
+      "de la même manière",
+      "ainsi que",
+      "comme"
+    ],
+    "english": "comparison connectors",
+    "note": "Connectors used to express comparison in French.",
+    "quizMode": "cloze",
+    "blankTerm": "de la même manière",
+    "exampleFrench": "Mon professeur d’université a été gentil avec moi, de la même manière, je suis gentil avec mes étudiants.",
+    "exampleEnglish": "My university professor was kind to me, in the same way, I am kind to my students.",
+    "imagePrompt": "Two people being kind to each other.",
+    "category": "connectors"
+  },
+  {
+    "id": "connectors-concession",
+    "terms": [
+      "malgré",
+      "sans doute",
+      "en dépit de",
+      "bien que",
+      "quoique"
+    ],
+    "english": "concession connectors",
+    "note": "Connectors used to express concession or contrast in French.",
+    "quizMode": "cloze",
+    "blankTerm": "Malgré",
+    "exampleFrench": "Malgré les efforts diplomatiques, la guerre n'a pas pu être évitée.",
+    "exampleEnglish": "Despite diplomatic efforts, the war could not be avoided.",
+    "imagePrompt": "Diplomatic efforts failing to prevent war.",
+    "category": "connectors"
+  },
+  {
+    "id": "connectors-supposition",
+    "terms": [
+      "en admettant que",
+      "au cas où",
+      "sans doute"
+    ],
+    "english": "supposition connectors",
+    "note": "Connectors used to express supposition or hypothesis in French.",
+    "quizMode": "cloze",
+    "blankTerm": "En admettant qu'il",
+    "exampleFrench": "En admettant qu’il a échoué, il a démissionné de son emploi.",
+    "exampleEnglish": "Admitting that he failed, he resigned from his job.",
+    "imagePrompt": "A person resigning after failure.",
+    "category": "connectors"
+  },
+  {
+    "id": "connectors-consequence",
+    "terms": [
+      "donc",
+      "c’est pourquoi",
+      "par suite",
+      "de là",
+      "d’où",
+      "dès lors",
+      "de sorte que",
+      "si bien que",
+      "par conséquent"
+    ],
+    "english": "consequence connectors",
+    "note": "Connectors used to express consequence or result in French.",
+    "quizMode": "cloze",
+    "blankTerm": "Par suite",
+    "exampleFrench": "J’ai beaucoup étudié. Par suite, j’ai réussi l’examen.",
+    "exampleEnglish": "I studied a lot. Consequently, I passed the exam.",
+    "imagePrompt": "A student studying and then passing.",
+    "category": "connectors"
+  },
+  {
+    "id": "connectors-explication",
+    "terms": [
+      "à savoir",
+      "c’est-à-dire",
+      "soit"
+    ],
+    "english": "explanation connectors",
+    "note": "Connectors used to provide explanation or clarification in French.",
+    "quizMode": "cloze",
+    "blankTerm": "à savoir",
+    "exampleFrench": "Il manque une chose, à savoir ta signature.",
+    "exampleEnglish": "One thing is missing, namely your signature.",
+    "imagePrompt": "A document missing a signature.",
+    "category": "connectors"
+  },
+  {
+    "id": "connectors-opposition",
+    "terms": [
+      "mais",
+      "au contraire",
+      "cependant",
+      "pourtant",
+      "en revanche",
+      "tandis que",
+      "alors que",
+      "néanmoins",
+      "toutefois",
+      "or"
+    ],
+    "english": "opposition connectors",
+    "note": "Connectors used to express opposition or contrast in French.",
+    "quizMode": "cloze",
+    "blankTerm": "cependant",
+    "exampleFrench": "L’équipe a bien joué, cependant ils ont perdu le match.",
+    "exampleEnglish": "The team played well, however they lost the match.",
+    "imagePrompt": "A team playing well but losing.",
+    "category": "connectors"
+  },
+  {
+    "id": "connectors-illustration",
+    "terms": [
+      "c’est ainsi que",
+      "entre autres",
+      "en particulier"
+    ],
+    "english": "illustration connectors",
+    "note": "Connectors used to provide examples or illustration in French.",
+    "quizMode": "cloze",
+    "blankTerm": "entre autres",
+    "exampleFrench": "J’ai visité, entre autres, D.C. et l’Ohio.",
+    "exampleEnglish": "I visited, among others, D.C. and Ohio.",
+    "imagePrompt": "Visiting various places.",
+    "category": "connectors"
+  },
+  {
+    "id": "connectors-addition",
+    "terms": [
+      "et",
+      "de plus",
+      "en outre",
+      "par ailleurs",
+      "surtout",
+      "non seulement",
+      "mais encore"
+    ],
+    "english": "addition connectors",
+    "note": "Connectors used to add information in French.",
+    "quizMode": "cloze",
+    "blankTerm": "De plus",
+    "exampleFrench": "De plus, nous avons décidé de rester la nuit.",
+    "exampleEnglish": "Moreover, we decided to stay the night.",
+    "imagePrompt": "People deciding to stay longer.",
+    "category": "connectors"
+  },
+  {
+    "id": "connectors-purpose",
+    "terms": [
+      "afin que",
+      "de peur que",
+      "pour que",
+      "en vue de"
+    ],
+    "english": "purpose connectors",
+    "note": "Connectors used to express purpose or intention in French.",
+    "quizMode": "cloze",
+    "blankTerm": "afin que",
+    "exampleFrench": "Il a marché lentement afin que nous puissions marcher ensemble.",
+    "exampleEnglish": "He walked slowly so that we could walk together.",
+    "imagePrompt": "People walking together slowly.",
+    "category": "connectors"
+  },
+  {
+    "id": "connectors-restriction",
+    "terms": [
+      "hormis",
+      "excepté",
+      "en dehors de",
+      "sauf",
+      "uniquement"
+    ],
+    "english": "restriction connectors",
+    "note": "Connectors used to express restriction or exception in French.",
+    "quizMode": "cloze",
+    "blankTerm": "hormis",
+    "exampleFrench": "Tout le monde est venu, hormis Guillaume.",
+    "exampleEnglish": "Everyone came, except Guillaume.",
+    "imagePrompt": "Everyone except one person.",
+    "category": "connectors"
+  },
+  {
+    "id": "connectors-structure",
+    "terms": [
+      "d’abord",
+      "ensuite",
+      "enfin",
+      "en somme",
+      "ainsi"
+    ],
+    "english": "structure connectors",
+    "note": "Connectors used to structure text or speech in French.",
+    "quizMode": "cloze",
+    "blankTerm": "D’abord",
+    "exampleFrench": "D’abord, je me réveille. Ensuite, je me brosse les dents. Enfin, je vais aller dans mon lit encore.",
+    "exampleEnglish": "First, I wake up. Then, I brush my teeth. Finally, I go back to bed.",
+    "imagePrompt": "A daily routine sequence.",
+    "category": "connectors"
+  },
+  {
+    "id": "pronoms-relatifs",
+    "terms": [
+      "lequel",
+      "laquelle",
+      "lesquels",
+      "lesquelles",
+      "duquel",
+      "de laquelle",
+      "desquels",
+      "desquelles",
+      "auquel",
+      "à laquelle",
+      "auxquels",
+      "auxquelles"
+    ],
+    "english": "relative pronouns",
+    "note": "Relative pronouns used in French after prepositions, with specific forms for de and à.",
+    "quizMode": "cloze",
+    "blankTerm": "lesquelles",
+    "exampleFrench": "Les raisons pour lesquelles nous sommes parties sont confidentielles.",
+    "exampleEnglish": "The reasons for which we left are confidential.",
+    "imagePrompt": "Examples of relative pronouns in sentences.",
+    "category": "pronoms relatifs"
   }
 ]

@@ -21,7 +21,7 @@ import './App.css'
 
 const ROUND_SIZE = 20
 const MIN_ROUND_SIZE = 8
-const MAX_ROUND_SIZE = Math.floor(vocabBank.length * 0.8)
+const MAX_ROUND_SIZE = 40
 const WEAK_WORDS_LIMIT = 8
 const PROGRESS_STORAGE_KEY = 'parlez-progress'
 const AUDIO_STORAGE_KEY = 'parlez-audio-enabled'
@@ -30,8 +30,12 @@ const CREATOR_SIGNATURE = 'Simul Bista'
 const MotionSpan = motion.span
 const vocabMap = Object.fromEntries(vocabBank.map((entry) => [entry.id, entry]))
 
-function createRound(progressById = {}, roundSize = ROUND_SIZE) {
-  return buildQuizDeck(vocabBank, roundSize, progressById)
+function createRound(progressById = {}, roundSize = ROUND_SIZE, category = 'mixed') {
+  let filteredBank = vocabBank
+  if (category !== 'mixed') {
+    filteredBank = vocabBank.filter(entry => entry.category === category)
+  }
+  return buildQuizDeck(filteredBank, roundSize, progressById)
 }
 
 function getInitialTheme() {
@@ -97,6 +101,7 @@ function getInitialSettings() {
     return {
       roundSize: ROUND_SIZE,
       backgroundVolume: getBackgroundMusicVolume(),
+      category: 'mixed',
     }
   }
 
@@ -107,6 +112,7 @@ function getInitialSettings() {
       return {
         roundSize: ROUND_SIZE,
         backgroundVolume: getBackgroundMusicVolume(),
+        category: 'mixed',
       }
     }
 
@@ -115,15 +121,18 @@ function getInitialSettings() {
     const nextVolume = Number(
       parsed.backgroundVolume ?? getBackgroundMusicVolume(),
     )
+    const nextCategory = parsed.category || 'mixed'
 
     return {
       roundSize: Math.max(MIN_ROUND_SIZE, Math.min(MAX_ROUND_SIZE, nextRoundSize)),
       backgroundVolume: Math.max(0, Math.min(1, nextVolume)),
+      category: nextCategory,
     }
   } catch {
     return {
       roundSize: ROUND_SIZE,
       backgroundVolume: getBackgroundMusicVolume(),
+      category: 'mixed',
     }
   }
 }
@@ -135,20 +144,21 @@ function App() {
   const [audioEnabled, setAudioEnabled] = useState(getInitialAudioEnabled)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [weakPaneOpen, setWeakPaneOpen] = useState(false)
-  const [weakPaneIds, setWeakPaneIds] = useState([])
   const [settingsSpinKey, setSettingsSpinKey] = useState(0)
   const [roundSize, setRoundSize] = useState(initialSettings.roundSize)
   const [backgroundVolume, setBackgroundVolume] = useState(
     initialSettings.backgroundVolume,
   )
+  const [category, setCategory] = useState(initialSettings.category)
   const [progressData, setProgressData] = useState(getInitialProgress)
   const [deck, setDeck] = useState(() =>
-    createRound(getInitialProgress().terms, initialSettings.roundSize),
+    createRound(getInitialProgress().terms, initialSettings.roundSize, initialSettings.category),
   )
   const [questionIndex, setQuestionIndex] = useState(0)
   const [selectedOptionId, setSelectedOptionId] = useState(null)
   const [expandedOptionId, setExpandedOptionId] = useState(null)
   const [score, setScore] = useState(0)
+  const [canAdvance, setCanAdvance] = useState(false)
   const { speak, stop, speakingId, speechSupported } = useSpeech()
 
   const sessionComplete = questionIndex >= deck.length
@@ -176,9 +186,20 @@ function App() {
     setBackgroundMusicVolume(backgroundVolume)
     window.localStorage.setItem(
       SETTINGS_STORAGE_KEY,
-      JSON.stringify({ roundSize, backgroundVolume }),
+      JSON.stringify({ roundSize, backgroundVolume, category }),
     )
-  }, [roundSize, backgroundVolume])
+  }, [roundSize, backgroundVolume, category])
+
+  useEffect(() => {
+    startTransition(() => {
+      setDeck(createRound(progressData.terms, roundSize, category))
+      setQuestionIndex(0)
+      setSelectedOptionId(null)
+      setExpandedOptionId(null)
+      setScore(0)
+      setCanAdvance(false)
+    })
+  }, [category, roundSize])
 
   useEffect(() => {
     return () => {
@@ -346,12 +367,10 @@ function App() {
       return
     }
 
-    setWeakPaneIds(topWeakTerms.map((term) => term.id))
     setWeakPaneOpen(true)
   }
 
   const clearWeakWord = (id) => {
-    setWeakPaneIds((current) => current.filter((itemId) => itemId !== id))
 
     setProgressData((current) => {
       const existing = current.terms[id]
@@ -385,8 +404,6 @@ function App() {
   }
 
   const clearAllWeakWords = () => {
-    setWeakPaneIds([])
-
     setProgressData((current) => {
       const nextTerms = {
         ...current.terms,
@@ -442,11 +459,12 @@ function App() {
     setSettingsOpen(false)
 
     startTransition(() => {
-      setDeck(createRound(progressData.terms, roundSize))
+      setDeck(createRound(progressData.terms, roundSize, category))
       setQuestionIndex(0)
       setSelectedOptionId(null)
       setExpandedOptionId(null)
       setScore(0)
+      setCanAdvance(false)
     })
   }
 
@@ -476,7 +494,12 @@ function App() {
     }
 
     setProgressData((current) => {
-      const existingTerm = current.terms[currentQuestion.answerId] || {
+      // For fill-in-the-blank questions, track progress for the source entry, not the term
+      const progressKey = currentQuestion.entryType === 'Fill in the blank' 
+        ? currentQuestion.id.split('-')[0]  // Extract entry ID from question ID
+        : currentQuestion.answerId
+
+      const existingTerm = current.terms[progressKey] || {
         correct: 0,
         incorrect: 0,
         lastOutcome: null,
@@ -497,7 +520,7 @@ function App() {
       return {
         terms: {
           ...current.terms,
-          [currentQuestion.answerId]: nextTerm,
+          [progressKey]: nextTerm,
         },
         currentStreak,
         bestStreak,
@@ -680,6 +703,19 @@ function App() {
               />
               <strong>{Math.round(backgroundVolume * 100)}%</strong>
             </div>
+            <div className="settings-row">
+              <label htmlFor="category">Category</label>
+              <select
+                id="category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                <option value="mixed">Mixed</option>
+                <option value="vocab">Vocabulary</option>
+                <option value="connectors">Connectors</option>
+                <option value="pronoms relatifs">Pronoms relatifs</option>
+              </select>
+            </div>
           </div>
         </section>
         <p className="signature-note">Made by {CREATOR_SIGNATURE}</p>
@@ -688,7 +724,9 @@ function App() {
     )
   }
 
-  const answerEntry = vocabMap[currentQuestion.answerId]
+  const answerEntry = currentQuestion.entryType === 'Fill in the blank' 
+    ? { english: currentQuestion.answerId, terms: [currentQuestion.answerId] }
+    : vocabMap[currentQuestion.answerId]
   const questionAudioLabel = speechSupported
     ? speakingId === questionAudioId
       ? 'Stop question pronunciation'
@@ -728,12 +766,16 @@ function App() {
 
         <div className="hero-meta">
           <div className="meta-pill">
-            <span>Loaded bank</span>
-            <strong>{vocabBank.length} entries</strong>
+            <span>Bank</span>
+            <strong>{vocabBank.length}</strong>
           </div>
           <div className="meta-pill">
-            <span>Session</span>
-            <strong>{roundSize}-question round</strong>
+            <span>Round</span>
+            <strong>{roundSize}</strong>
+          </div>
+          <div className="meta-pill">
+            <span>Category</span>
+            <strong>{category === 'mixed' ? 'Mixed' : category === 'vocab' ? 'Vocab' : category === 'connectors' ? 'Connectors' : 'Pronoms'}</strong>
           </div>
         </div>
       </section>
@@ -943,6 +985,19 @@ function App() {
               />
               <strong>{Math.round(backgroundVolume * 100)}%</strong>
             </div>
+            <div className="settings-row">
+              <label htmlFor="category">Category</label>
+              <select
+                id="category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                <option value="mixed">Mixed</option>
+                <option value="vocab">Vocabulary</option>
+                <option value="connectors">Connectors</option>
+                <option value="pronoms relatifs">Pronoms relatifs</option>
+              </select>
+            </div>
           </div>
         </section>
 
@@ -960,6 +1015,9 @@ function App() {
             <div className="question-header">
               <div className="question-phrase-row">
                 <p className="question-phrase">{currentQuestion.promptTerm}</p>
+                {currentQuestion.entryType === 'Fill in the blank' && currentQuestion.blankType && (
+                  <p className="question-blank-type">({currentQuestion.blankType})</p>
+                )}
                 <button
                   className="ghost-button icon-button audio-icon-button"
                   onClick={() => {
@@ -993,7 +1051,9 @@ function App() {
 
           <div className="options-grid">
             {currentQuestion.optionIds.map((optionId, optionIndex) => {
-              const entry = vocabMap[optionId]
+              const entry = currentQuestion.entryType === 'Fill in the blank'
+                ? currentQuestion.options.find(opt => opt.english === optionId)
+                : vocabMap[optionId]
 
               return (
                 <OptionCard
