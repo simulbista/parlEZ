@@ -14,14 +14,28 @@
   --success: #45d39f;
   --danger: #ff5a36;
   --shadow-soft: 0 16px 38px rgba(10, 15, 30, 0.5);
-  --font-body: 'Manrope', sans-serif;
-  --font-display: 'Fraunces', serif;
+  --font-body: 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Fraunces', Georgia, Cambria, 'Times New Roman', serif;
   --font-brand: 'Parisienne', 'Fraunces', cursive;
   --font-signature: 'Caveat', 'Parisienne', cursive;
+  --font-weight-body: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --text-xs: 0.81rem;
+  --text-sm: 0.94rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.94rem;
+  --text-4xl: 2.5rem;
+  --leading-body: 1.65;
+  --leading-heading: 1.12;
+  --leading-snug: 1.35;
   color: var(--ink);
   font-family: var(--font-body);
-  line-height: 1.5;
-  font-weight: 500;
+  line-height: var(--leading-body);
+  font-weight: var(--font-weight-body);
   background:
     radial-gradient(circle at 8% 8%, rgba(255, 141, 87, 0.12), transparent 34%),
     radial-gradient(circle at 88% 12%, rgba(75, 130, 180, 0.12), transparent 30%),
@@ -60,11 +74,63 @@
 
 html {
   min-height: 100%;
+  font-size: 100%;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
+  font-size: var(--text-base);
+  font-family: var(--font-body);
+  line-height: var(--leading-body);
+  font-weight: var(--font-weight-body);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  line-height: inherit;
+}
+
+button,
+select {
+  font-family: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--leading-heading);
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+p,
+li,
+label {
+  font-size: var(--text-base);
+}
+
+h1 {
+  font-size: clamp(2rem, 4.5vw, 2.75rem);
+}
+
+h2 {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+}
+
+h3 {
+  font-size: clamp(1.28rem, 3vw, 1.75rem);
 }
 
 body::before {

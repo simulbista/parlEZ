@@ -151,6 +151,8 @@ function App() {
   const [audioEnabled, setAudioEnabled] = useState(getInitialAudioEnabled)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [weakPaneOpen, setWeakPaneOpen] = useState(false)
+  const [topControlsOpen, setTopControlsOpen] = useState(true)
+  const [statsOpen, setStatsOpen] = useState(true)
   const [settingsSpinKey, setSettingsSpinKey] = useState(0)
   const [roundSize, setRoundSize] = useState(initialSettings.roundSize)
   const [backgroundVolume, setBackgroundVolume] = useState(
@@ -296,6 +298,8 @@ function App() {
     theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
   const audioLabel = audioEnabled ? 'Mute sound' : 'Enable sound'
   const settingsLabel = settingsOpen ? 'Close settings' : 'Open settings'
+  const topControlsLabel = topControlsOpen ? 'Hide top controls' : 'Show top controls'
+  const statsLabel = statsOpen ? 'Hide statistics' : 'Show statistics'
   const attemptedQuestions = questionIndex + (answered ? 1 : 0)
   const liveAccuracy = attemptedQuestions
     ? Math.round((score / attemptedQuestions) * 100)
@@ -363,9 +367,29 @@ function App() {
     setSettingsOpen((current) => !current)
   }
 
+  const toggleTopControls = () => {
+    setTopControlsOpen((current) => !current)
+  }
+
+  const toggleStatsOpen = () => {
+    setStatsOpen((current) => !current)
+  }
+
   const handleSettingsIconClick = () => {
     setSettingsSpinKey((current) => current + 1)
     toggleSettings()
+  }
+
+  const adjustRoundSize = (delta) => {
+    setRoundSize((current) =>
+      Math.max(MIN_ROUND_SIZE, Math.min(MAX_ROUND_SIZE, current + delta)),
+    )
+  }
+
+  const adjustVolume = (delta) => {
+    setBackgroundVolume((current) =>
+      Number(Math.max(0, Math.min(1, current + delta)).toFixed(2)),
+    )
   }
 
   const toggleWeakPane = () => {
@@ -628,15 +652,13 @@ function App() {
             >
               {audioEnabled ? (
                 <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M5 9v6h4l5 4V5L9 9H5z" />
-                  <path d="M16 9a5 5 0 0 1 0 6" />
-                  <path d="M18.5 6.5a8.5 8.5 0 0 1 0 11" />
+                  <path d="M3 9v6h4l5 5V4L7 9H3z" />
+                  <path d="M17 16.91c2.57-1.33 4.28-4.02 4.28-7.09 0-4.42-3.58-8-8-8s-8 3.58-8 8" />
                 </svg>
               ) : (
                 <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M5 9v6h4l5 4V5L9 9H5z" />
-                  <path d="M18 9l-6 6" />
-                  <path d="M12 9l6 6" />
+                  <path d="M3 9v6h4l5 5V4L7 9H3z" />
+                  <path d="M23 9l-6 6M17 9l6 6" />
                 </svg>
               )}
             </button>
@@ -738,109 +760,190 @@ function App() {
           </p>
         </div>
 
-        <div className="hero-meta">
-          <div className="meta-pill">
-            <span>Bank</span>
-            <strong>{vocabBank.length}</strong>
-          </div>
-          <div className="meta-pill meta-pill--range">
-            <label htmlFor="top-round-size">Round</label>
-            <input
-              id="top-round-size"
-              type="range"
-              min="8"
-              max="40"
-              step="1"
-              value={roundSize}
-              onChange={handleRoundSizeChange}
-            />
-            <strong>{roundSize}</strong>
-          </div>
-          <div className="meta-pill meta-pill--range">
-            <div className="volume-label">
-              <span>Volume</span>
-              <button
-                className="secondary-button icon-button audio-toggle"
-                onClick={toggleAudio}
-                aria-label={audioLabel}
-                title={audioLabel}
-              >
-                {audioEnabled ? (
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M5 9v6h4l5 4V5L9 9H5z" />
-                    <path d="M16 9a5 5 0 0 1 0 6" />
-                    <path d="M18.5 6.5a8.5 8.5 0 0 1 0 11" />
-                  </svg>
-                ) : (
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M5 9v6h4l5 4V5L9 9H5z" />
-                    <path d="M18 9l-6 6" />
-                    <path d="M12 9l6 6" />
-                  </svg>
-                )}
-              </button>
+        {topControlsOpen ? (
+          <div className="hero-meta-toggle-row">
+            <div className="hero-meta-row">
+              <div className="hero-meta-wrapper">
+                <div className="hero-meta">
+                  <div className="meta-pill">
+                    <span>Bank</span>
+                    <strong>{vocabBank.length}</strong>
+                  </div>
+                  <div className="meta-pill meta-pill--compact meta-pill--round">
+                    <span>Round</span>
+                    <div className="compact-control">
+                      <button
+                        className="ghost-button icon-button"
+                        type="button"
+                        onClick={() => adjustRoundSize(-1)}
+                        aria-label="Decrease round size"
+                        title="Decrease round size"
+                      >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M6 12h12" />
+                        </svg>
+                      </button>
+                      <strong>{roundSize}</strong>
+                      <button
+                        className="ghost-button icon-button"
+                        type="button"
+                        onClick={() => adjustRoundSize(1)}
+                        aria-label="Increase round size"
+                        title="Increase round size"
+                      >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M12 6v12" />
+                          <path d="M6 12h12" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                  <div className="meta-pill meta-pill--compact meta-pill--volume">
+                    <span>Volume</span>
+                    <div className="volume-row">
+                      <button
+                        className="secondary-button icon-button audio-toggle"
+                        onClick={toggleAudio}
+                        aria-label={audioLabel}
+                        title={audioLabel}
+                      >
+                        {audioEnabled ? (
+                          <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M3 10v4h3l4 4V6l-4 4H3z" />
+                            <path d="M16 8.82a4 4 0 0 1 0 6.36" stroke="currentColor" strokeWidth="2" fill="none" />
+                          </svg>
+                        ) : (
+                          <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M3 10v4h3l4 4V6l-4 4H3z" />
+                            <path d="M23 9l-6 6M17 9l6 6" />
+                          </svg>
+                        )}
+                      </button>
+                      <input
+                        className="mini-range"
+                        id="top-volume"
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.05"
+                        value={backgroundVolume}
+                        onChange={handleVolumeChange}
+                      />
+                    </div>
+                    <strong>{Math.round(backgroundVolume * 100)}%</strong>
+                  </div>
+                  <div className="meta-pill meta-pill--compact meta-pill--category">
+                    <span>Category</span>
+                    <select
+                      id="category"
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
+                    >
+                      <option value="mixed">Mixed</option>
+                      <option value="vocab">Vocabulary</option>
+                      <option value="connectors">Connectors</option>
+                      <option value="pronoms relatifs">Pronoms relatifs</option>
+                    </select>
+                  </div>
+                  <div className="meta-pill meta-pill--theme" aria-label={themeLabel} title={themeLabel}>
+                    <button
+                      className="secondary-button theme-toggle icon-button"
+                      onClick={toggleTheme}
+                      aria-label={themeLabel}
+                      title={themeLabel}
+                    >
+                      {theme === 'dark' ? (
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <circle cx="12" cy="12" r="4" />
+                          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+                        </svg>
+                      ) : (
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M21 12.79A9 9 0 1 1 11.21 3c-.11.56-.16 1.14-.16 1.73a7 7 0 0 0 8.95 6.7z" />
+                        </svg>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
-            <input
-              id="top-volume"
-              type="range"
-              min="0"
-              max="1"
-              step="0.05"
-              value={backgroundVolume}
-              onChange={handleVolumeChange}
-            />
-            <strong>{Math.round(backgroundVolume * 100)}%</strong>
-          </div>
-          <div className="meta-pill">
-            <span>Category</span>
-            <select
-              id="category"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
+            <button
+              type="button"
+              className="ghost-button icon-button section-toggle section-toggle--header"
+              onClick={toggleTopControls}
+              aria-expanded={topControlsOpen}
+              aria-label={topControlsLabel}
+              title={topControlsLabel}
             >
-              <option value="mixed">Mixed</option>
-              <option value="vocab">Vocabulary</option>
-              <option value="connectors">Connectors</option>
-              <option value="pronoms relatifs">Pronoms relatifs</option>
-            </select>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M6 15l6-6 6 6"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
           </div>
-        </div>
+        ) : (
+          <button
+            type="button"
+            className="ghost-button icon-button section-toggle section-toggle--collapsed"
+            onClick={toggleTopControls}
+            aria-expanded={topControlsOpen}
+            aria-label={topControlsLabel}
+            title={topControlsLabel}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M6 9l6 6 6-6"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
+        )}
       </section>
 
       <section className="stats-panel" aria-label="Learning stats">
-        <div className="stats-pill">
-          <span>Score</span>
-          <strong>
-            {attemptedQuestions ? `${score}/${attemptedQuestions}` : '0'}
-          </strong>
+        <div className="stats-panel-content">
+          <div className="stats-pill stat-expand">
+            <span>Score</span>
+            <strong>
+              {attemptedQuestions ? `${score}/${attemptedQuestions}` : '0'}
+            </strong>
+          </div>
+          <div className="stats-pill stat-expand">
+            <span>Accuracy</span>
+            <strong>{liveAccuracy}%</strong>
+          </div>
+          <div className="stats-pill stat-expand">
+            <span>Attempts</span>
+            <strong>{attemptedQuestions}</strong>
+          </div>
+          <div className="stats-pill stat-expand">
+            <span>Streak</span>
+            <strong>
+              {progressData.currentStreak} (best {progressData.bestStreak})
+            </strong>
+          </div>
+          <button
+            type="button"
+            className="stats-pill stats-pill--toughest stats-pill-toggle"
+            onClick={toggleWeakPane}
+            disabled={!weakTerms.length}
+            aria-expanded={weakPaneOpen}
+            aria-controls="weak-terms-pane"
+          >
+            <span>Review weak words</span>
+            <strong>
+              {weakPaneOpen ? 'Hide list' : `Open list (${weakTerms.length})`}
+            </strong>
+          </button>
         </div>
-        <div className="stats-pill">
-          <span>Accuracy</span>
-          <strong>{liveAccuracy}%</strong>
-        </div>
-        <div className="stats-pill">
-          <span>Attempts</span>
-          <strong>{attemptedQuestions}</strong>
-        </div>
-        <div className="stats-pill">
-          <span>Streak</span>
-          <strong>
-            {progressData.currentStreak} (best {progressData.bestStreak})
-          </strong>
-        </div>
-        <button
-          type="button"
-          className="stats-pill stats-pill--toughest stats-pill-toggle"
-          onClick={toggleWeakPane}
-          disabled={!weakTerms.length}
-          aria-expanded={weakPaneOpen}
-          aria-controls="weak-terms-pane"
-        >
-          <span>Review weak words</span>
-          <strong>
-            {weakPaneOpen ? 'Hide list' : `Open list (${weakTerms.length})`}
-          </strong>
-        </button>
       </section>
 
       <section
@@ -921,25 +1024,6 @@ function App() {
               Question {questionIndex + 1} of {deck.length}
             </p>
           </div>
-          <div className="header-actions">
-            <button
-              className="secondary-button theme-toggle icon-button"
-              onClick={toggleTheme}
-              aria-label={themeLabel}
-              title={themeLabel}
-            >
-              {theme === 'dark' ? (
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <circle cx="12" cy="12" r="4" />
-                  <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-                </svg>
-              ) : (
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M21 12.79A9 9 0 1 1 11.21 3c-.11.56-.16 1.14-.16 1.73a7 7 0 0 0 8.95 6.7z" />
-                </svg>
-              )}
-            </button>
-          </div>
         </div>
 
         <section
@@ -976,7 +1060,10 @@ function App() {
                       return
                     }
 
-                    speak(questionAudioId, currentQuestion.promptTerm)
+                    const speakText = currentQuestion.entryType === 'Fill in the blank'
+                      ? currentQuestion.promptTerm.replace(/_+/g, '').replace(/\s{2,}/g, ' ').trim()
+                      : currentQuestion.promptTerm
+                    speak(questionAudioId, speakText)
                   }}
                   disabled={!speechSupported}
                   aria-label={questionAudioLabel}
@@ -990,7 +1077,6 @@ function App() {
                     <svg viewBox="0 0 24 24" aria-hidden="true">
                       <path d="M5 9v6h4l5 4V5L9 9H5z" />
                       <path d="M16 9a5 5 0 0 1 0 6" />
-                      <path d="M18.5 6.5a8.5 8.5 0 0 1 0 11" />
                     </svg>
                   )}
                 </button>
