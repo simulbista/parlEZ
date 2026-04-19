@@ -1,0 +1,122 @@
+[
+  {
+    "id": "pronom-1",
+    "terms": ["lesquelles"],
+    "english": "relative pronoun",
+    "note": "Group: Preposition group (after preposition other than 'de'). Gender/Number: Feminine plural. Used for feminine plural nouns after a preposition other than 'de'. Here, 'raisons' is feminine plural, and the preposition is 'pour'.",
+    "exampleFrench": "Les raisons pour lesquelles nous sommes parties sont confidentielles.",
+    "exampleEnglish": "The reasons for which we left are confidential.",
+    "imagePrompt": "A woman whispering secrets to another, with confidential documents in the background.",
+    "category": "pronoms relatifs",
+    "quizMode": "cloze",
+    "blankTerm": "lesquelles"
+  },
+  {
+    "id": "pronom-2",
+    "terms": ["lequel"],
+    "english": "relative pronoun",
+    "note": "Group: Preposition group (after preposition other than 'de'). Gender/Number: Masculine singular. Used for masculine singular nouns after a preposition other than 'de'. Here, 'sac' is masculine singular, preposition 'dans'.",
+    "exampleFrench": "Elle a un sac à main dans lequel elle garde son argent.",
+    "exampleEnglish": "She has a handbag in which she keeps her money.",
+    "imagePrompt": "A woman holding a handbag with money inside, close-up on the bag.",
+    "category": "pronoms relatifs",
+    "quizMode": "cloze",
+    "blankTerm": "lequel"
+  },
+  {
+    "id": "pronom-3",
+    "terms": ["lesquels"],
+    "english": "relative pronoun",
+    "note": "Group: Preposition group (after preposition other than 'de'). Gender/Number: Masculine plural. Used for masculine plural nouns after a preposition other than 'de'. Here, 'hommes' is masculine plural, preposition 'entre'.",
+    "exampleFrench": "Les deux hommes entre lesquels je me trouvais ne me parlaient pas.",
+    "exampleEnglish": "The two men between whom I was standing were not talking to me.",
+    "imagePrompt": "Two men standing apart in a crowd, not interacting.",
+    "category": "pronoms relatifs",
+    "quizMode": "cloze",
+    "blankTerm": "lesquels"
+  },
+  {
+    "id": "pronom-4",
+    "terms": ["laquelle"],
+    "english": "relative pronoun",
+    "note": "Group: Preposition group (after preposition other than 'de'). Gender/Number: Feminine singular. Used for feminine singular nouns after a preposition other than 'de'. Here, 'chaise' is feminine singular, preposition 'sur'.",
+    "exampleFrench": "La chaise sur laquelle je suis assise est inconfortable.",
+    "exampleEnglish": "The chair on which I am sitting is uncomfortable.",
+    "imagePrompt": "A person sitting on an uncomfortable chair, looking annoyed.",
+    "category": "pronoms relatifs",
+    "quizMode": "cloze",
+    "blankTerm": "laquelle"
+  },
+  {
+    "id": "pronom-5",
+    "terms": ["duquel"],
+    "english": "relative pronoun",
+    "note": "Group: Locution prépositive group (with prepositional phrases starting with 'de'). This is 'de' plus the first group form. Gender/Number: Masculine singular. Used with prepositional phrases starting with 'de' (e.g., 'à bord de'). Here, 'bateau' is masculine singular.",
+    "exampleFrench": "Voici le bateau à bord duquel j’ai traversé le fleuve.",
+    "exampleEnglish": "Here is the boat on board which I crossed the river.",
+    "imagePrompt": "A boat on a river, with someone on board looking across.",
+    "category": "pronoms relatifs",
+    "quizMode": "cloze",
+    "blankTerm": "duquel"
+  },
+  {
+    "id": "pronom-6",
+    "terms": ["desquels"],
+    "english": "relative pronoun",
+    "note": "Group: Locution prépositive group (with prepositional phrases starting with 'de'). This is 'de' plus the first group form. Gender/Number: Masculine plural. Used with prepositional phrases starting with 'de' for masculine plural nouns. Here, 'chemins' is masculine plural, 'le long de'.",
+    "exampleFrench": "Les chemins le long desquels nous avons marché étaient en terre.",
+    "exampleEnglish": "The paths along which we walked were dirt roads.",
+    "imagePrompt": "People walking along dirt paths in a rural area.",
+    "category": "pronoms relatifs",
+    "quizMode": "cloze",
+    "blankTerm": "desquels"
+  },
+  {
+    "id": "pronom-7",
+    "terms": ["auquel"],
+    "english": "relative pronoun",
+    "note": "Group: Proposition relative group (when the relative clause verb is constructed with 'à'). This is 'à' plus the first group form. Gender/Number: Masculine singular. Used when the relative clause verb is constructed with 'à'. Here, 'pense' (penser à), 'garçon' is masculine singular.",
+    "exampleFrench": "Le garçon auquel pense tout le temps est déjà fiancé à une autre.",
+    "exampleEnglish": "The boy about whom she thinks all the time is already engaged to another.",
+    "imagePrompt": "A girl thinking about a boy who is with another girl.",
+    "category": "pronoms relatifs",
+    "quizMode": "cloze",
+    "blankTerm": "auquel"
+  },
+  {
+    "id": "pronom-8",
+    "terms": ["auxquelles"],
+    "english": "relative pronoun",
+    "note": "Group: Proposition relative group (when the relative clause verb is constructed with 'à'). This is 'à' plus the first group form. Gender/Number: Feminine plural. Used when the relative clause verb is constructed with 'à' for feminine plural nouns. Here, 'choses' is feminine plural, 'tenir à'.",
+    "exampleFrench": "Dans la vie, il y a peu de choses auxquelles nous devons tenir.",
+    "exampleEnglish": "In life, there are few things to which we must hold.",
+    "imagePrompt": "A person holding onto precious items in life.",
+    "category": "pronoms relatifs",
+    "quizMode": "cloze",
+    "blankTerm": "auxquelles"
+  },
+  {
+    "id": "pronom-9",
+    "terms": ["auxquels"],
+    "english": "relative pronoun",
+    "note": "Group: Proposition relative group (when the relative clause verb is constructed with 'à'). This is 'à' plus the first group form. Gender/Number: Masculine plural. Used when the relative clause verb is constructed with 'à' for masculine plural nouns. Here, 'événements' is masculine plural, 'faire référence à'.",
+    "exampleFrench": "Les événements auxquels vous faites référence sont regrettables.",
+    "exampleEnglish": "The events to which you are referring are regrettable.",
+    "imagePrompt": "People discussing past events with regret.",
+    "category": "pronoms relatifs",
+    "quizMode": "cloze",
+    "blankTerm": "auxquels"
+  },
+  {
+    "id": "pronom-10",
+    "terms": ["à laquelle"],
+    "english": "relative pronoun",
+    "note": "Group: Proposition relative group (when the relative clause verb is constructed with 'à'). This is 'à' plus the first group form. Gender/Number: Feminine singular. Used when the relative clause verb is constructed with 'à' for feminine singular nouns. Here, 'entreprise' is feminine singular, 'consacrer à'.",
+    "exampleFrench": "L’entreprise à laquelle nous avons consacré tant d’efforts est menacée.",
+    "exampleEnglish": "The company to which we have devoted so much effort is threatened.",
+    "imagePrompt": "Workers looking worried about their company's future.",
+    "category": "pronoms relatifs",
+    "quizMode": "cloze",
+    "blankTerm": "à laquelle"
+  }
+]

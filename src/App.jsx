@@ -3,6 +3,8 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { ExplanationPanel } from './components/ExplanationPanel'
 import { OptionCard } from './components/OptionCard'
 import vocabBank from './data/vocab.json'
+import connectorsBank from './data/connectors.json'
+import pronomsRelatifsBank from './data/pronoms-relatifs.json'
 import { useSpeech } from './hooks/useSpeech'
 import { buildQuizDeck } from './lib/buildQuizDeck'
 import {
@@ -22,20 +24,25 @@ import './App.css'
 const ROUND_SIZE = 20
 const MIN_ROUND_SIZE = 8
 const MAX_ROUND_SIZE = 40
-const WEAK_WORDS_LIMIT = 8
+const WEAK_WORDS_LIMIT = 10
 const PROGRESS_STORAGE_KEY = 'parlez-progress'
 const AUDIO_STORAGE_KEY = 'parlez-audio-enabled'
 const SETTINGS_STORAGE_KEY = 'parlez-settings'
 const CREATOR_SIGNATURE = 'Simul Bista'
 const MotionSpan = motion.span
-const vocabMap = Object.fromEntries(vocabBank.map((entry) => [entry.id, entry]))
+const allBanks = [...vocabBank, ...connectorsBank, ...pronomsRelatifsBank]
+const vocabMap = Object.fromEntries(allBanks.map((entry) => [entry.id, entry]))
+
+function getBankForCategory(category) {
+  if (category === 'vocab') return vocabBank
+  if (category === 'connectors') return connectorsBank
+  if (category === 'pronoms relatifs') return pronomsRelatifsBank
+  return allBanks // for mixed
+}
 
 function createRound(progressById = {}, roundSize = ROUND_SIZE, category = 'mixed') {
-  let filteredBank = vocabBank
-  if (category !== 'mixed') {
-    filteredBank = vocabBank.filter(entry => entry.category === category)
-  }
-  return buildQuizDeck(filteredBank, roundSize, progressById)
+  const bank = getBankForCategory(category)
+  return buildQuizDeck(bank, roundSize, progressById)
 }
 
 function getInitialTheme() {
@@ -295,6 +302,10 @@ function App() {
     : 0
 
   const rankedWeakTerms = Object.entries(progressData.terms)
+    .filter(([id]) => {
+      const entry = vocabMap[id]
+      return !entry || category === 'mixed' || entry.category === category
+    })
     .map(([id, stats]) => {
       const incorrect = Number(stats.incorrect || 0)
       const correct = Number(stats.correct || 0)
@@ -411,6 +422,11 @@ function App() {
       let changed = false
 
       Object.entries(current.terms).forEach(([id, stats]) => {
+        const entry = vocabMap[id]
+        if (entry && category !== 'mixed' && entry.category !== category) {
+          return // skip if not in current category
+        }
+
         const incorrect = Number(stats?.incorrect || 0)
 
         if (incorrect <= 0) {
@@ -494,9 +510,10 @@ function App() {
     }
 
     setProgressData((current) => {
-      // For fill-in-the-blank questions, track progress for the source entry, not the term
-      const progressKey = currentQuestion.entryType === 'Fill in the blank' 
-        ? currentQuestion.id.split('-')[0]  // Extract entry ID from question ID
+      // For fill-in-the-blank questions, track progress for the source entry, not the term.
+      // Use the original entry ID by removing only the trailing numeric index.
+      const progressKey = currentQuestion.entryType === 'Fill in the blank'
+        ? currentQuestion.id.split('-').slice(0, -1).join('-')
         : currentQuestion.answerId
 
       const existingTerm = current.terms[progressKey] || {
@@ -601,27 +618,10 @@ function App() {
             </div>
           </div>
 
-          <div className="hero-actions">
+          <div className="volume-control">
+            <span className="volume-label-text">Volume</span>
             <button
-              className="secondary-button icon-button"
-              onClick={handleSettingsIconClick}
-              aria-label={settingsLabel}
-              title={settingsLabel}
-            >
-              <motion.svg
-                key={`settings-summary-${settingsSpinKey}`}
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-                initial={{ rotate: 0, scale: 1 }}
-                animate={{ rotate: [0, 220, 360], scale: [1, 1.06, 1] }}
-                transition={{ duration: 0.55, ease: 'easeInOut' }}
-              >
-                <circle cx="12" cy="12" r="3" />
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 .6 1.65 1.65 0 0 0-.33 1V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-.33-1 1.65 1.65 0 0 0-1-.6 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-.6-1 1.65 1.65 0 0 0-1-.33H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1-.33 1.65 1.65 0 0 0 .6-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-.6 1.65 1.65 0 0 0 .33-1V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 .33 1 1.65 1.65 0 0 0 1 .6 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.24.3.44.64.6 1a1.65 1.65 0 0 0 1 .33H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1 .33 1.65 1.65 0 0 0-.51.34z" />
-              </motion.svg>
-            </button>
-            <button
-              className="secondary-button icon-button"
+              className="secondary-button icon-button audio-toggle"
               onClick={toggleAudio}
               aria-label={audioLabel}
               title={audioLabel}
@@ -665,6 +665,19 @@ function App() {
                 )}
               </motion.svg>
             </button>
+            <input
+              id="bg-volume"
+              type="range"
+              min="0"
+              max="1"
+              step="0.05"
+              value={backgroundVolume}
+              onChange={handleVolumeChange}
+            />
+            <strong>{Math.round(backgroundVolume * 100)}%</strong>
+          </div>
+
+          <div className="hero-actions">
             <button className="primary-button" onClick={resetRound}>
               Shuffle a new round
             </button>
@@ -677,45 +690,6 @@ function App() {
           aria-hidden={!settingsOpen}
         >
           <div className="settings-drawer-inner">
-            <div className="settings-row">
-              <label htmlFor="round-size">Round size</label>
-              <input
-                id="round-size"
-                type="range"
-                min="8"
-                max="40"
-                step="1"
-                value={roundSize}
-                onChange={handleRoundSizeChange}
-              />
-              <strong>{roundSize}</strong>
-            </div>
-            <div className="settings-row">
-              <label htmlFor="bg-volume">Music volume</label>
-              <input
-                id="bg-volume"
-                type="range"
-                min="0"
-                max="1"
-                step="0.05"
-                value={backgroundVolume}
-                onChange={handleVolumeChange}
-              />
-              <strong>{Math.round(backgroundVolume * 100)}%</strong>
-            </div>
-            <div className="settings-row">
-              <label htmlFor="category">Category</label>
-              <select
-                id="category"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              >
-                <option value="mixed">Mixed</option>
-                <option value="vocab">Vocabulary</option>
-                <option value="connectors">Connectors</option>
-                <option value="pronoms relatifs">Pronoms relatifs</option>
-              </select>
-            </div>
           </div>
         </section>
         <p className="signature-note">Made by {CREATOR_SIGNATURE}</p>
@@ -769,13 +743,66 @@ function App() {
             <span>Bank</span>
             <strong>{vocabBank.length}</strong>
           </div>
-          <div className="meta-pill">
-            <span>Round</span>
+          <div className="meta-pill meta-pill--range">
+            <label htmlFor="top-round-size">Round</label>
+            <input
+              id="top-round-size"
+              type="range"
+              min="8"
+              max="40"
+              step="1"
+              value={roundSize}
+              onChange={handleRoundSizeChange}
+            />
             <strong>{roundSize}</strong>
+          </div>
+          <div className="meta-pill meta-pill--range">
+            <div className="volume-label">
+              <span>Volume</span>
+              <button
+                className="secondary-button icon-button audio-toggle"
+                onClick={toggleAudio}
+                aria-label={audioLabel}
+                title={audioLabel}
+              >
+                {audioEnabled ? (
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M5 9v6h4l5 4V5L9 9H5z" />
+                    <path d="M16 9a5 5 0 0 1 0 6" />
+                    <path d="M18.5 6.5a8.5 8.5 0 0 1 0 11" />
+                  </svg>
+                ) : (
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M5 9v6h4l5 4V5L9 9H5z" />
+                    <path d="M18 9l-6 6" />
+                    <path d="M12 9l6 6" />
+                  </svg>
+                )}
+              </button>
+            </div>
+            <input
+              id="top-volume"
+              type="range"
+              min="0"
+              max="1"
+              step="0.05"
+              value={backgroundVolume}
+              onChange={handleVolumeChange}
+            />
+            <strong>{Math.round(backgroundVolume * 100)}%</strong>
           </div>
           <div className="meta-pill">
             <span>Category</span>
-            <strong>{category === 'mixed' ? 'Mixed' : category === 'vocab' ? 'Vocab' : category === 'connectors' ? 'Connectors' : 'Pronoms'}</strong>
+            <select
+              id="category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              <option value="mixed">Mixed</option>
+              <option value="vocab">Vocabulary</option>
+              <option value="connectors">Connectors</option>
+              <option value="pronoms relatifs">Pronoms relatifs</option>
+            </select>
           </div>
         </div>
       </section>
@@ -896,44 +923,6 @@ function App() {
           </div>
           <div className="header-actions">
             <button
-              className="secondary-button icon-button"
-              onClick={handleSettingsIconClick}
-              aria-label={settingsLabel}
-              title={settingsLabel}
-            >
-              <motion.svg
-                key={`settings-quiz-${settingsSpinKey}`}
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-                initial={{ rotate: 0, scale: 1 }}
-                animate={{ rotate: [0, 220, 360], scale: [1, 1.06, 1] }}
-                transition={{ duration: 0.55, ease: 'easeInOut' }}
-              >
-                <circle cx="12" cy="12" r="3" />
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 .6 1.65 1.65 0 0 0-.33 1V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-.33-1 1.65 1.65 0 0 0-1-.6 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-.6-1 1.65 1.65 0 0 0-1-.33H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1-.33 1.65 1.65 0 0 0 .6-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-.6 1.65 1.65 0 0 0 .33-1V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 .33 1 1.65 1.65 0 0 0 1 .6 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.24.3.44.64.6 1a1.65 1.65 0 0 0 1 .33H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1 .33 1.65 1.65 0 0 0-.51.34z" />
-              </motion.svg>
-            </button>
-            <button
-              className="secondary-button icon-button"
-              onClick={toggleAudio}
-              aria-label={audioLabel}
-              title={audioLabel}
-            >
-              {audioEnabled ? (
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M5 9v6h4l5 4V5L9 9H5z" />
-                  <path d="M16 9a5 5 0 0 1 0 6" />
-                  <path d="M18.5 6.5a8.5 8.5 0 0 1 0 11" />
-                </svg>
-              ) : (
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M5 9v6h4l5 4V5L9 9H5z" />
-                  <path d="M18 9l-6 6" />
-                  <path d="M12 9l6 6" />
-                </svg>
-              )}
-            </button>
-            <button
               className="secondary-button theme-toggle icon-button"
               onClick={toggleTheme}
               aria-label={themeLabel}
@@ -959,45 +948,6 @@ function App() {
           aria-hidden={!settingsOpen}
         >
           <div className="settings-drawer-inner">
-            <div className="settings-row">
-              <label htmlFor="round-size">Round size</label>
-              <input
-                id="round-size"
-                type="range"
-                min="8"
-                max="40"
-                step="1"
-                value={roundSize}
-                onChange={handleRoundSizeChange}
-              />
-              <strong>{roundSize}</strong>
-            </div>
-            <div className="settings-row">
-              <label htmlFor="bg-volume">Music volume</label>
-              <input
-                id="bg-volume"
-                type="range"
-                min="0"
-                max="1"
-                step="0.01"
-                value={backgroundVolume}
-                onChange={handleVolumeChange}
-              />
-              <strong>{Math.round(backgroundVolume * 100)}%</strong>
-            </div>
-            <div className="settings-row">
-              <label htmlFor="category">Category</label>
-              <select
-                id="category"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              >
-                <option value="mixed">Mixed</option>
-                <option value="vocab">Vocabulary</option>
-                <option value="connectors">Connectors</option>
-                <option value="pronoms relatifs">Pronoms relatifs</option>
-              </select>
-            </div>
           </div>
         </section>
 
