@@ -3,6 +3,8 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { ExplanationPanel } from './components/ExplanationPanel'
 import { OptionCard } from './components/OptionCard'
 import vocabBank from './data/vocab.json'
+import connectorsBank from './data/connectors.json'
+import pronomsRelatifsBank from './data/pronoms-relatifs.json'
 import { useSpeech } from './hooks/useSpeech'
 import { buildQuizDeck } from './lib/buildQuizDeck'
 import {
@@ -21,17 +23,26 @@ import './App.css'
 
 const ROUND_SIZE = 20
 const MIN_ROUND_SIZE = 8
-const MAX_ROUND_SIZE = Math.floor(vocabBank.length * 0.8)
-const WEAK_WORDS_LIMIT = 8
+const MAX_ROUND_SIZE = 40
+const WEAK_WORDS_LIMIT = 10
 const PROGRESS_STORAGE_KEY = 'parlez-progress'
 const AUDIO_STORAGE_KEY = 'parlez-audio-enabled'
 const SETTINGS_STORAGE_KEY = 'parlez-settings'
 const CREATOR_SIGNATURE = 'Simul Bista'
 const MotionSpan = motion.span
-const vocabMap = Object.fromEntries(vocabBank.map((entry) => [entry.id, entry]))
+const allBanks = [...vocabBank, ...connectorsBank, ...pronomsRelatifsBank]
+const vocabMap = Object.fromEntries(allBanks.map((entry) => [entry.id, entry]))
 
-function createRound(progressById = {}, roundSize = ROUND_SIZE) {
-  return buildQuizDeck(vocabBank, roundSize, progressById)
+function getBankForCategory(category) {
+  if (category === 'vocab') return vocabBank
+  if (category === 'connectors') return connectorsBank
+  if (category === 'pronoms relatifs') return pronomsRelatifsBank
+  return allBanks // for mixed
+}
+
+function createRound(progressById = {}, roundSize = ROUND_SIZE, category = 'mixed') {
+  const bank = getBankForCategory(category)
+  return buildQuizDeck(bank, roundSize, progressById)
 }
 
 function getInitialTheme() {
@@ -97,6 +108,7 @@ function getInitialSettings() {
     return {
       roundSize: ROUND_SIZE,
       backgroundVolume: getBackgroundMusicVolume(),
+      category: 'mixed',
     }
   }
 
@@ -107,6 +119,7 @@ function getInitialSettings() {
       return {
         roundSize: ROUND_SIZE,
         backgroundVolume: getBackgroundMusicVolume(),
+        category: 'mixed',
       }
     }
 
@@ -115,15 +128,18 @@ function getInitialSettings() {
     const nextVolume = Number(
       parsed.backgroundVolume ?? getBackgroundMusicVolume(),
     )
+    const nextCategory = parsed.category || 'mixed'
 
     return {
       roundSize: Math.max(MIN_ROUND_SIZE, Math.min(MAX_ROUND_SIZE, nextRoundSize)),
       backgroundVolume: Math.max(0, Math.min(1, nextVolume)),
+      category: nextCategory,
     }
   } catch {
     return {
       roundSize: ROUND_SIZE,
       backgroundVolume: getBackgroundMusicVolume(),
+      category: 'mixed',
     }
   }
 }
@@ -135,20 +151,23 @@ function App() {
   const [audioEnabled, setAudioEnabled] = useState(getInitialAudioEnabled)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [weakPaneOpen, setWeakPaneOpen] = useState(false)
-  const [weakPaneIds, setWeakPaneIds] = useState([])
+  const [topControlsOpen, setTopControlsOpen] = useState(true)
+  const [statsOpen, setStatsOpen] = useState(true)
   const [settingsSpinKey, setSettingsSpinKey] = useState(0)
   const [roundSize, setRoundSize] = useState(initialSettings.roundSize)
   const [backgroundVolume, setBackgroundVolume] = useState(
     initialSettings.backgroundVolume,
   )
+  const [category, setCategory] = useState(initialSettings.category)
   const [progressData, setProgressData] = useState(getInitialProgress)
   const [deck, setDeck] = useState(() =>
-    createRound(getInitialProgress().terms, initialSettings.roundSize),
+    createRound(getInitialProgress().terms, initialSettings.roundSize, initialSettings.category),
   )
   const [questionIndex, setQuestionIndex] = useState(0)
   const [selectedOptionId, setSelectedOptionId] = useState(null)
   const [expandedOptionId, setExpandedOptionId] = useState(null)
   const [score, setScore] = useState(0)
+  const [canAdvance, setCanAdvance] = useState(false)
   const { speak, stop, speakingId, speechSupported } = useSpeech()
 
   const sessionComplete = questionIndex >= deck.length
@@ -176,9 +195,20 @@ function App() {
     setBackgroundMusicVolume(backgroundVolume)
     window.localStorage.setItem(
       SETTINGS_STORAGE_KEY,
-      JSON.stringify({ roundSize, backgroundVolume }),
+      JSON.stringify({ roundSize, backgroundVolume, category }),
     )
-  }, [roundSize, backgroundVolume])
+  }, [roundSize, backgroundVolume, category])
+
+  useEffect(() => {
+    startTransition(() => {
+      setDeck(createRound(progressData.terms, roundSize, category))
+      setQuestionIndex(0)
+      setSelectedOptionId(null)
+      setExpandedOptionId(null)
+      setScore(0)
+      setCanAdvance(false)
+    })
+  }, [category, roundSize])
 
   useEffect(() => {
     return () => {
@@ -268,12 +298,18 @@ function App() {
     theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
   const audioLabel = audioEnabled ? 'Mute sound' : 'Enable sound'
   const settingsLabel = settingsOpen ? 'Close settings' : 'Open settings'
+  const topControlsLabel = topControlsOpen ? 'Hide top controls' : 'Show top controls'
+  const statsLabel = statsOpen ? 'Hide statistics' : 'Show statistics'
   const attemptedQuestions = questionIndex + (answered ? 1 : 0)
   const liveAccuracy = attemptedQuestions
     ? Math.round((score / attemptedQuestions) * 100)
     : 0
 
   const rankedWeakTerms = Object.entries(progressData.terms)
+    .filter(([id]) => {
+      const entry = vocabMap[id]
+      return !entry || category === 'mixed' || entry.category === category
+    })
     .map(([id, stats]) => {
       const incorrect = Number(stats.incorrect || 0)
       const correct = Number(stats.correct || 0)
@@ -331,9 +367,29 @@ function App() {
     setSettingsOpen((current) => !current)
   }
 
+  const toggleTopControls = () => {
+    setTopControlsOpen((current) => !current)
+  }
+
+  const toggleStatsOpen = () => {
+    setStatsOpen((current) => !current)
+  }
+
   const handleSettingsIconClick = () => {
     setSettingsSpinKey((current) => current + 1)
     toggleSettings()
+  }
+
+  const adjustRoundSize = (delta) => {
+    setRoundSize((current) =>
+      Math.max(MIN_ROUND_SIZE, Math.min(MAX_ROUND_SIZE, current + delta)),
+    )
+  }
+
+  const adjustVolume = (delta) => {
+    setBackgroundVolume((current) =>
+      Number(Math.max(0, Math.min(1, current + delta)).toFixed(2)),
+    )
   }
 
   const toggleWeakPane = () => {
@@ -346,12 +402,10 @@ function App() {
       return
     }
 
-    setWeakPaneIds(topWeakTerms.map((term) => term.id))
     setWeakPaneOpen(true)
   }
 
   const clearWeakWord = (id) => {
-    setWeakPaneIds((current) => current.filter((itemId) => itemId !== id))
 
     setProgressData((current) => {
       const existing = current.terms[id]
@@ -385,8 +439,6 @@ function App() {
   }
 
   const clearAllWeakWords = () => {
-    setWeakPaneIds([])
-
     setProgressData((current) => {
       const nextTerms = {
         ...current.terms,
@@ -394,6 +446,11 @@ function App() {
       let changed = false
 
       Object.entries(current.terms).forEach(([id, stats]) => {
+        const entry = vocabMap[id]
+        if (entry && category !== 'mixed' && entry.category !== category) {
+          return // skip if not in current category
+        }
+
         const incorrect = Number(stats?.incorrect || 0)
 
         if (incorrect <= 0) {
@@ -442,11 +499,12 @@ function App() {
     setSettingsOpen(false)
 
     startTransition(() => {
-      setDeck(createRound(progressData.terms, roundSize))
+      setDeck(createRound(progressData.terms, roundSize, category))
       setQuestionIndex(0)
       setSelectedOptionId(null)
       setExpandedOptionId(null)
       setScore(0)
+      setCanAdvance(false)
     })
   }
 
@@ -476,7 +534,13 @@ function App() {
     }
 
     setProgressData((current) => {
-      const existingTerm = current.terms[currentQuestion.answerId] || {
+      // For fill-in-the-blank questions, track progress for the source entry, not the term.
+      // Use the original entry ID by removing only the trailing numeric index.
+      const progressKey = currentQuestion.entryType === 'Fill in the blank'
+        ? currentQuestion.id.split('-').slice(0, -1).join('-')
+        : currentQuestion.answerId
+
+      const existingTerm = current.terms[progressKey] || {
         correct: 0,
         incorrect: 0,
         lastOutcome: null,
@@ -497,7 +561,7 @@ function App() {
       return {
         terms: {
           ...current.terms,
-          [currentQuestion.answerId]: nextTerm,
+          [progressKey]: nextTerm,
         },
         currentStreak,
         bestStreak,
@@ -578,42 +642,23 @@ function App() {
             </div>
           </div>
 
-          <div className="hero-actions">
+          <div className="volume-control">
+            <span className="volume-label-text">Volume</span>
             <button
-              className="secondary-button icon-button"
-              onClick={handleSettingsIconClick}
-              aria-label={settingsLabel}
-              title={settingsLabel}
-            >
-              <motion.svg
-                key={`settings-summary-${settingsSpinKey}`}
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-                initial={{ rotate: 0, scale: 1 }}
-                animate={{ rotate: [0, 220, 360], scale: [1, 1.06, 1] }}
-                transition={{ duration: 0.55, ease: 'easeInOut' }}
-              >
-                <circle cx="12" cy="12" r="3" />
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 .6 1.65 1.65 0 0 0-.33 1V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-.33-1 1.65 1.65 0 0 0-1-.6 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-.6-1 1.65 1.65 0 0 0-1-.33H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1-.33 1.65 1.65 0 0 0 .6-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-.6 1.65 1.65 0 0 0 .33-1V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 .33 1 1.65 1.65 0 0 0 1 .6 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.24.3.44.64.6 1a1.65 1.65 0 0 0 1 .33H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1 .33 1.65 1.65 0 0 0-.51.34z" />
-              </motion.svg>
-            </button>
-            <button
-              className="secondary-button icon-button"
+              className="secondary-button icon-button audio-toggle"
               onClick={toggleAudio}
               aria-label={audioLabel}
               title={audioLabel}
             >
               {audioEnabled ? (
                 <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M5 9v6h4l5 4V5L9 9H5z" />
-                  <path d="M16 9a5 5 0 0 1 0 6" />
-                  <path d="M18.5 6.5a8.5 8.5 0 0 1 0 11" />
+                  <path d="M3 9v6h4l5 5V4L7 9H3z" />
+                  <path d="M17 16.91c2.57-1.33 4.28-4.02 4.28-7.09 0-4.42-3.58-8-8-8s-8 3.58-8 8" />
                 </svg>
               ) : (
                 <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M5 9v6h4l5 4V5L9 9H5z" />
-                  <path d="M18 9l-6 6" />
-                  <path d="M12 9l6 6" />
+                  <path d="M3 9v6h4l5 5V4L7 9H3z" />
+                  <path d="M23 9l-6 6M17 9l6 6" />
                 </svg>
               )}
             </button>
@@ -642,6 +687,19 @@ function App() {
                 )}
               </motion.svg>
             </button>
+            <input
+              id="bg-volume"
+              type="range"
+              min="0"
+              max="1"
+              step="0.05"
+              value={backgroundVolume}
+              onChange={handleVolumeChange}
+            />
+            <strong>{Math.round(backgroundVolume * 100)}%</strong>
+          </div>
+
+          <div className="hero-actions">
             <button className="primary-button" onClick={resetRound}>
               Shuffle a new round
             </button>
@@ -654,32 +712,6 @@ function App() {
           aria-hidden={!settingsOpen}
         >
           <div className="settings-drawer-inner">
-            <div className="settings-row">
-              <label htmlFor="round-size">Round size</label>
-              <input
-                id="round-size"
-                type="range"
-                min="8"
-                max="40"
-                step="1"
-                value={roundSize}
-                onChange={handleRoundSizeChange}
-              />
-              <strong>{roundSize}</strong>
-            </div>
-            <div className="settings-row">
-              <label htmlFor="bg-volume">Music volume</label>
-              <input
-                id="bg-volume"
-                type="range"
-                min="0"
-                max="1"
-                step="0.05"
-                value={backgroundVolume}
-                onChange={handleVolumeChange}
-              />
-              <strong>{Math.round(backgroundVolume * 100)}%</strong>
-            </div>
           </div>
         </section>
         <p className="signature-note">Made by {CREATOR_SIGNATURE}</p>
@@ -688,7 +720,9 @@ function App() {
     )
   }
 
-  const answerEntry = vocabMap[currentQuestion.answerId]
+  const answerEntry = currentQuestion.entryType === 'Fill in the blank' 
+    ? { english: currentQuestion.answerId, terms: [currentQuestion.answerId] }
+    : vocabMap[currentQuestion.answerId]
   const questionAudioLabel = speechSupported
     ? speakingId === questionAudioId
       ? 'Stop question pronunciation'
@@ -726,52 +760,190 @@ function App() {
           </p>
         </div>
 
-        <div className="hero-meta">
-          <div className="meta-pill">
-            <span>Loaded bank</span>
-            <strong>{vocabBank.length} entries</strong>
+        {topControlsOpen ? (
+          <div className="hero-meta-toggle-row">
+            <div className="hero-meta-row">
+              <div className="hero-meta-wrapper">
+                <div className="hero-meta">
+                  <div className="meta-pill">
+                    <span>Bank</span>
+                    <strong>{vocabBank.length}</strong>
+                  </div>
+                  <div className="meta-pill meta-pill--compact meta-pill--round">
+                    <span>Round</span>
+                    <div className="compact-control">
+                      <button
+                        className="ghost-button icon-button"
+                        type="button"
+                        onClick={() => adjustRoundSize(-1)}
+                        aria-label="Decrease round size"
+                        title="Decrease round size"
+                      >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M6 12h12" />
+                        </svg>
+                      </button>
+                      <strong>{roundSize}</strong>
+                      <button
+                        className="ghost-button icon-button"
+                        type="button"
+                        onClick={() => adjustRoundSize(1)}
+                        aria-label="Increase round size"
+                        title="Increase round size"
+                      >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M12 6v12" />
+                          <path d="M6 12h12" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                  <div className="meta-pill meta-pill--compact meta-pill--volume">
+                    <span>Volume</span>
+                    <div className="volume-row">
+                      <button
+                        className="secondary-button icon-button audio-toggle"
+                        onClick={toggleAudio}
+                        aria-label={audioLabel}
+                        title={audioLabel}
+                      >
+                        {audioEnabled ? (
+                          <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M3 10v4h3l4 4V6l-4 4H3z" />
+                            <path d="M16 8.82a4 4 0 0 1 0 6.36" stroke="currentColor" strokeWidth="2" fill="none" />
+                          </svg>
+                        ) : (
+                          <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M3 10v4h3l4 4V6l-4 4H3z" />
+                            <path d="M23 9l-6 6M17 9l6 6" />
+                          </svg>
+                        )}
+                      </button>
+                      <input
+                        className="mini-range"
+                        id="top-volume"
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.05"
+                        value={backgroundVolume}
+                        onChange={handleVolumeChange}
+                      />
+                    </div>
+                    <strong>{Math.round(backgroundVolume * 100)}%</strong>
+                  </div>
+                  <div className="meta-pill meta-pill--compact meta-pill--category">
+                    <span>Category</span>
+                    <select
+                      id="category"
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
+                    >
+                      <option value="mixed">Mixed</option>
+                      <option value="vocab">Vocabulary</option>
+                      <option value="connectors">Connectors</option>
+                      <option value="pronoms relatifs">Pronoms relatifs</option>
+                    </select>
+                  </div>
+                  <div className="meta-pill meta-pill--theme" aria-label={themeLabel} title={themeLabel}>
+                    <button
+                      className="secondary-button theme-toggle icon-button"
+                      onClick={toggleTheme}
+                      aria-label={themeLabel}
+                      title={themeLabel}
+                    >
+                      {theme === 'dark' ? (
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <circle cx="12" cy="12" r="4" />
+                          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+                        </svg>
+                      ) : (
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M21 12.79A9 9 0 1 1 11.21 3c-.11.56-.16 1.14-.16 1.73a7 7 0 0 0 8.95 6.7z" />
+                        </svg>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              type="button"
+              className="ghost-button icon-button section-toggle section-toggle--header"
+              onClick={toggleTopControls}
+              aria-expanded={topControlsOpen}
+              aria-label={topControlsLabel}
+              title={topControlsLabel}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M6 15l6-6 6 6"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
           </div>
-          <div className="meta-pill">
-            <span>Session</span>
-            <strong>{roundSize}-question round</strong>
-          </div>
-        </div>
+        ) : (
+          <button
+            type="button"
+            className="ghost-button icon-button section-toggle section-toggle--collapsed"
+            onClick={toggleTopControls}
+            aria-expanded={topControlsOpen}
+            aria-label={topControlsLabel}
+            title={topControlsLabel}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M6 9l6 6 6-6"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
+        )}
       </section>
 
       <section className="stats-panel" aria-label="Learning stats">
-        <div className="stats-pill">
-          <span>Score</span>
-          <strong>
-            {attemptedQuestions ? `${score}/${attemptedQuestions}` : '0'}
-          </strong>
+        <div className="stats-panel-content">
+          <div className="stats-pill stat-expand">
+            <span>Score</span>
+            <strong>
+              {attemptedQuestions ? `${score}/${attemptedQuestions}` : '0'}
+            </strong>
+          </div>
+          <div className="stats-pill stat-expand">
+            <span>Accuracy</span>
+            <strong>{liveAccuracy}%</strong>
+          </div>
+          <div className="stats-pill stat-expand">
+            <span>Attempts</span>
+            <strong>{attemptedQuestions}</strong>
+          </div>
+          <div className="stats-pill stat-expand">
+            <span>Streak</span>
+            <strong>
+              {progressData.currentStreak} (best {progressData.bestStreak})
+            </strong>
+          </div>
+          <button
+            type="button"
+            className="stats-pill stats-pill--toughest stats-pill-toggle"
+            onClick={toggleWeakPane}
+            disabled={!weakTerms.length}
+            aria-expanded={weakPaneOpen}
+            aria-controls="weak-terms-pane"
+          >
+            <span>Review weak words</span>
+            <strong>
+              {weakPaneOpen ? 'Hide list' : `Open list (${weakTerms.length})`}
+            </strong>
+          </button>
         </div>
-        <div className="stats-pill">
-          <span>Accuracy</span>
-          <strong>{liveAccuracy}%</strong>
-        </div>
-        <div className="stats-pill">
-          <span>Attempts</span>
-          <strong>{attemptedQuestions}</strong>
-        </div>
-        <div className="stats-pill">
-          <span>Streak</span>
-          <strong>
-            {progressData.currentStreak} (best {progressData.bestStreak})
-          </strong>
-        </div>
-        <button
-          type="button"
-          className="stats-pill stats-pill--toughest stats-pill-toggle"
-          onClick={toggleWeakPane}
-          disabled={!weakTerms.length}
-          aria-expanded={weakPaneOpen}
-          aria-controls="weak-terms-pane"
-        >
-          <span>Review weak words</span>
-          <strong>
-            {weakPaneOpen ? 'Hide list' : `Open list (${weakTerms.length})`}
-          </strong>
-        </button>
       </section>
 
       <section
@@ -852,63 +1024,6 @@ function App() {
               Question {questionIndex + 1} of {deck.length}
             </p>
           </div>
-          <div className="header-actions">
-            <button
-              className="secondary-button icon-button"
-              onClick={handleSettingsIconClick}
-              aria-label={settingsLabel}
-              title={settingsLabel}
-            >
-              <motion.svg
-                key={`settings-quiz-${settingsSpinKey}`}
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-                initial={{ rotate: 0, scale: 1 }}
-                animate={{ rotate: [0, 220, 360], scale: [1, 1.06, 1] }}
-                transition={{ duration: 0.55, ease: 'easeInOut' }}
-              >
-                <circle cx="12" cy="12" r="3" />
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 .6 1.65 1.65 0 0 0-.33 1V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-.33-1 1.65 1.65 0 0 0-1-.6 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-.6-1 1.65 1.65 0 0 0-1-.33H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1-.33 1.65 1.65 0 0 0 .6-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-.6 1.65 1.65 0 0 0 .33-1V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 .33 1 1.65 1.65 0 0 0 1 .6 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.24.3.44.64.6 1a1.65 1.65 0 0 0 1 .33H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1 .33 1.65 1.65 0 0 0-.51.34z" />
-              </motion.svg>
-            </button>
-            <button
-              className="secondary-button icon-button"
-              onClick={toggleAudio}
-              aria-label={audioLabel}
-              title={audioLabel}
-            >
-              {audioEnabled ? (
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M5 9v6h4l5 4V5L9 9H5z" />
-                  <path d="M16 9a5 5 0 0 1 0 6" />
-                  <path d="M18.5 6.5a8.5 8.5 0 0 1 0 11" />
-                </svg>
-              ) : (
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M5 9v6h4l5 4V5L9 9H5z" />
-                  <path d="M18 9l-6 6" />
-                  <path d="M12 9l6 6" />
-                </svg>
-              )}
-            </button>
-            <button
-              className="secondary-button theme-toggle icon-button"
-              onClick={toggleTheme}
-              aria-label={themeLabel}
-              title={themeLabel}
-            >
-              {theme === 'dark' ? (
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <circle cx="12" cy="12" r="4" />
-                  <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-                </svg>
-              ) : (
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M21 12.79A9 9 0 1 1 11.21 3c-.11.56-.16 1.14-.16 1.73a7 7 0 0 0 8.95 6.7z" />
-                </svg>
-              )}
-            </button>
-          </div>
         </div>
 
         <section
@@ -917,32 +1032,6 @@ function App() {
           aria-hidden={!settingsOpen}
         >
           <div className="settings-drawer-inner">
-            <div className="settings-row">
-              <label htmlFor="round-size">Round size</label>
-              <input
-                id="round-size"
-                type="range"
-                min="8"
-                max="40"
-                step="1"
-                value={roundSize}
-                onChange={handleRoundSizeChange}
-              />
-              <strong>{roundSize}</strong>
-            </div>
-            <div className="settings-row">
-              <label htmlFor="bg-volume">Music volume</label>
-              <input
-                id="bg-volume"
-                type="range"
-                min="0"
-                max="1"
-                step="0.01"
-                value={backgroundVolume}
-                onChange={handleVolumeChange}
-              />
-              <strong>{Math.round(backgroundVolume * 100)}%</strong>
-            </div>
           </div>
         </section>
 
@@ -960,6 +1049,9 @@ function App() {
             <div className="question-header">
               <div className="question-phrase-row">
                 <p className="question-phrase">{currentQuestion.promptTerm}</p>
+                {currentQuestion.entryType === 'Fill in the blank' && currentQuestion.blankType && (
+                  <p className="question-blank-type">({currentQuestion.blankType})</p>
+                )}
                 <button
                   className="ghost-button icon-button audio-icon-button"
                   onClick={() => {
@@ -968,7 +1060,10 @@ function App() {
                       return
                     }
 
-                    speak(questionAudioId, currentQuestion.promptTerm)
+                    const speakText = currentQuestion.entryType === 'Fill in the blank'
+                      ? currentQuestion.promptTerm.replace(/_+/g, '').replace(/\s{2,}/g, ' ').trim()
+                      : currentQuestion.promptTerm
+                    speak(questionAudioId, speakText)
                   }}
                   disabled={!speechSupported}
                   aria-label={questionAudioLabel}
@@ -982,7 +1077,6 @@ function App() {
                     <svg viewBox="0 0 24 24" aria-hidden="true">
                       <path d="M5 9v6h4l5 4V5L9 9H5z" />
                       <path d="M16 9a5 5 0 0 1 0 6" />
-                      <path d="M18.5 6.5a8.5 8.5 0 0 1 0 11" />
                     </svg>
                   )}
                 </button>
@@ -993,7 +1087,9 @@ function App() {
 
           <div className="options-grid">
             {currentQuestion.optionIds.map((optionId, optionIndex) => {
-              const entry = vocabMap[optionId]
+              const entry = currentQuestion.entryType === 'Fill in the blank'
+                ? currentQuestion.options.find(opt => opt.english === optionId)
+                : vocabMap[optionId]
 
               return (
                 <OptionCard
