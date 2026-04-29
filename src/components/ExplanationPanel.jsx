@@ -56,7 +56,11 @@ export function ExplanationPanel({
                 )}
               </button>
             </div>
-            <p className="sentence-french">{entry.exampleFrench}</p>
+            <p className="sentence-french">
+              {entry.exampleFrench
+                ? entry.exampleFrench.replace(/_+/g, entry.blankTerm || '')
+                : ''}
+            </p>
             <p className="sentence-english">{entry.exampleEnglish}</p>
           </section>
 

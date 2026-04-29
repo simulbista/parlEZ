@@ -1,0 +1,222 @@
+[
+  {
+    "id": "conj-present-01",
+    "terms": ["parle"],
+    "english": "speaks (present)",
+    "note": "Present tense: regular action happening now",
+    "quizMode": "cloze",
+    "blankTerm": "parle",
+    "exampleFrench": "Je _____ avec mon ami chaque jour.",
+    "exampleEnglish": "I speak with my friend every day.",
+    "category": "conjugation"
+  },
+  {
+    "id": "conj-present-02",
+    "terms": ["travaillent"],
+    "english": "work (present)",
+    "note": "Present tense: third person plural",
+    "quizMode": "cloze",
+    "blankTerm": "travaillent",
+    "exampleFrench": "Ils _____ dans ce bureau depuis cinq ans.",
+    "exampleEnglish": "They have been working in this office for five years.",
+    "category": "conjugation"
+  },
+  {
+    "id": "conj-imperatif-01",
+    "terms": ["Parle"],
+    "english": "Speak! (imperative)",
+    "note": "Imperative: command or instruction",
+    "quizMode": "cloze",
+    "blankTerm": "Parle",
+    "exampleFrench": "_____ plus fort, je ne t'entends pas!",
+    "exampleEnglish": "Speak louder, I can't hear you!",
+    "category": "conjugation"
+  },
+  {
+    "id": "conj-imperatif-02",
+    "terms": ["Allez"],
+    "english": "Go! (imperative formal/plural)",
+    "note": "Imperative: formal or plural command",
+    "quizMode": "cloze",
+    "blankTerm": "Allez",
+    "exampleFrench": "_____ à l'école maintenant!",
+    "exampleEnglish": "Go to school now!",
+    "category": "conjugation"
+  },
+  {
+    "id": "conj-prog-01",
+    "terms": ["suis en train de lire"],
+    "english": "am reading (present progressive)",
+    "note": "Present progressive: être en train de + infinitive",
+    "quizMode": "cloze",
+    "blankTerm": "suis en train de lire",
+    "exampleFrench": "Je _____ un livre intéressant.",
+    "exampleEnglish": "I am reading an interesting book.",
+    "category": "conjugation"
+  },
+  {
+    "id": "conj-prog-02",
+    "terms": ["est en train de courir"],
+    "english": "is running (present progressive)",
+    "note": "Present progressive: être en train de + infinitive",
+    "quizMode": "cloze",
+    "blankTerm": "est en train de courir",
+    "exampleFrench": "Il _____ vers la gare.",
+    "exampleEnglish": "He is running towards the train station.",
+    "category": "conjugation"
+  },
+  {
+    "id": "conj-recent-01",
+    "terms": ["viens de finir"],
+    "english": "just finished (recent past)",
+    "note": "Recent past: venir de + infinitive",
+    "quizMode": "cloze",
+    "blankTerm": "viens de finir",
+    "exampleFrench": "Je _____ mon travail.",
+    "exampleEnglish": "I just finished my work.",
+    "category": "conjugation"
+  },
+  {
+    "id": "conj-recent-02",
+    "terms": ["vient d'arriver"],
+    "english": "just arrived (recent past)",
+    "note": "Recent past: venir de + infinitive",
+    "quizMode": "cloze",
+    "blankTerm": "vient d'arriver",
+    "exampleFrench": "Elle _____ à Paris hier soir.",
+    "exampleEnglish": "She just arrived in Paris yesterday evening.",
+    "category": "conjugation"
+  },
+  {
+    "id": "conj-passe-01",
+    "terms": ["ai parlé"],
+    "english": "spoke (passé composé)",
+    "note": "Passé composé: avoir/être + past participle",
+    "quizMode": "cloze",
+    "blankTerm": "ai parlé",
+    "exampleFrench": "Je _____ avec elle ce matin.",
+    "exampleEnglish": "I spoke with her this morning.",
+    "category": "conjugation"
+  },
+  {
+    "id": "conj-passe-02",
+    "terms": ["suis allé"],
+    "english": "went (passé composé)",
+    "note": "Passé composé: être + past participle for movement verbs",
+    "quizMode": "cloze",
+    "blankTerm": "suis allé",
+    "exampleFrench": "Je _____ au marché hier.",
+    "exampleEnglish": "I went to the market yesterday.",
+    "category": "conjugation"
+  },
+  {
+    "id": "conj-imparfait-01",
+    "terms": ["parlais"],
+    "english": "used to speak (imparfait)",
+    "note": "Imparfait: habitual past action or state",
+    "quizMode": "cloze",
+    "blankTerm": "parlais",
+    "exampleFrench": "Quand j'étais enfant, je _____ français avec ma grand-mère.",
+    "exampleEnglish": "When I was a child, I used to speak French with my grandmother.",
+    "category": "conjugation"
+  },
+  {
+    "id": "conj-imparfait-02",
+    "terms": ["avait"],
+    "english": "had (imparfait)",
+    "note": "Imparfait: state in past",
+    "quizMode": "cloze",
+    "blankTerm": "avait",
+    "exampleFrench": "Il _____ un petit chat noir.",
+    "exampleEnglish": "He had a small black cat.",
+    "category": "conjugation"
+  },
+  {
+    "id": "conj-plusqparf-01",
+    "terms": ["avais mangé"],
+    "english": "had eaten (plus-que-parfait)",
+    "note": "Plus-que-parfait: action completed before another past action",
+    "quizMode": "cloze",
+    "blankTerm": "avais mangé",
+    "exampleFrench": "Quand il est arrivé, j'_____ déjà.",
+    "exampleEnglish": "When he arrived, I had already eaten.",
+    "category": "conjugation"
+  },
+  {
+    "id": "conj-plusqparf-02",
+    "terms": ["étaient partis"],
+    "english": "had left (plus-que-parfait)",
+    "note": "Plus-que-parfait: être + past participle",
+    "quizMode": "cloze",
+    "blankTerm": "étaient partis",
+    "exampleFrench": "Ils _____ avant mon arrivée.",
+    "exampleEnglish": "They had left before my arrival.",
+    "category": "conjugation"
+  },
+  {
+    "id": "conj-proche-01",
+    "terms": ["vais manger"],
+    "english": "am going to eat (futur proche)",
+    "note": "Futur proche: aller + infinitive (near future)",
+    "quizMode": "cloze",
+    "blankTerm": "vais manger",
+    "exampleFrench": "Je _____ dans une heure.",
+    "exampleEnglish": "I am going to eat in an hour.",
+    "category": "conjugation"
+  },
+  {
+    "id": "conj-proche-02",
+    "terms": ["va arriver"],
+    "english": "is going to arrive (futur proche)",
+    "note": "Futur proche: aller + infinitive (near future)",
+    "quizMode": "cloze",
+    "blankTerm": "va arriver",
+    "exampleFrench": "Le train _____ dans dix minutes.",
+    "exampleEnglish": "The train is going to arrive in ten minutes.",
+    "category": "conjugation"
+  },
+  {
+    "id": "conj-simple-01",
+    "terms": ["parlerai"],
+    "english": "will speak (futur simple)",
+    "note": "Futur simple: future action",
+    "quizMode": "cloze",
+    "blankTerm": "parlerai",
+    "exampleFrench": "Je te _____ demain.",
+    "exampleEnglish": "I will speak to you tomorrow.",
+    "category": "conjugation"
+  },
+  {
+    "id": "conj-simple-02",
+    "terms": ["iront"],
+    "english": "will go (futur simple)",
+    "note": "Futur simple: future action, third person plural",
+    "quizMode": "cloze",
+    "blankTerm": "iront",
+    "exampleFrench": "Ils _____ à la plage l'été prochain.",
+    "exampleEnglish": "They will go to the beach next summer.",
+    "category": "conjugation"
+  },
+  {
+    "id": "conj-anterieur-01",
+    "terms": ["aurai fini"],
+    "english": "will have finished (futur antérieur)",
+    "note": "Futur antérieur: future perfect, action finished before another future event",
+    "quizMode": "cloze",
+    "blankTerm": "aurai fini",
+    "exampleFrench": "J'_____ le travail avant ton retour.",
+    "exampleEnglish": "I will have finished the work before your return.",
+    "category": "conjugation"
+  },
+  {
+    "id": "conj-anterieur-02",
+    "terms": ["sera partie"],
+    "english": "will have left (futur antérieur)",
+    "note": "Futur antérieur: être + past participle in future perfect",
+    "quizMode": "cloze",
+    "blankTerm": "sera partie",
+    "exampleFrench": "Elle _____ quand tu arriveras.",
+    "exampleEnglish": "She will have left when you arrive.",
+    "category": "conjugation"
+  }
+]

@@ -44,6 +44,15 @@ function getFrenchElisionVariant(term) {
 }
 
 function matchTermInExample(example, term) {
+  // If example already has blanks, treat that as the match point
+  const blankMatch = example.match(/_+/)
+  if (blankMatch) {
+    return {
+      matchedText: blankMatch[0],
+      answerTerm: term,
+    }
+  }
+
   const attempts = [term, getFrenchElisionVariant(term)]
 
   for (const attempt of attempts) {
@@ -106,10 +115,14 @@ function getClozeDistractors(entry, vocabBank, answerTerm) {
 
   if (entry.category === 'pronoms relatifs') {
     pool = uniqueTerms(entry.terms)
-  } else if (entry.category === 'connectors') {
+  } else if (
+    entry.category === 'connectors' ||
+    entry.category === 'subjonctif & indicatif' ||
+    entry.category === 'émotions et sentiments'
+  ) {
     pool = uniqueTerms(
       vocabBank
-        .filter((candidate) => candidate.id !== entry.id && candidate.category === 'connectors')
+        .filter((candidate) => candidate.id !== entry.id && candidate.category === entry.category)
         .flatMap((candidate) => candidate.terms),
     )
   } else {
@@ -224,6 +237,7 @@ export function buildQuizDeck(vocabBank, roundSize, progressById = {}) {
           note: sourceEntry.note,
           exampleFrench: sourceEntry.exampleFrench,
           exampleEnglish: sourceEntry.exampleEnglish,
+          blankTerm: sourceEntry.blankTerm || term,
         }
       })
 

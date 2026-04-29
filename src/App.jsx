@@ -1,10 +1,14 @@
-import { startTransition, useEffect, useState } from 'react'
+import { startTransition, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ExplanationPanel } from './components/ExplanationPanel'
 import { OptionCard } from './components/OptionCard'
 import vocabBank from './data/vocab.json'
 import connectorsBank from './data/connectors.json'
 import pronomsRelatifsBank from './data/pronoms-relatifs.json'
+import subjonctifIndicatifBank from './data/subjonctif-indicatif.json'
+import emotionsSentimentsBank from './data/emotions-sentiments.json'
+import conjugationBank from './data/conjugation.json'
+import categoryNotes from './data/category-notes.json'
 import { useSpeech } from './hooks/useSpeech'
 import { buildQuizDeck } from './lib/buildQuizDeck'
 import {
@@ -23,26 +27,41 @@ import './App.css'
 
 const ROUND_SIZE = 20
 const MIN_ROUND_SIZE = 8
-const MAX_ROUND_SIZE = 40
 const WEAK_WORDS_LIMIT = 10
 const PROGRESS_STORAGE_KEY = 'parlez-progress'
 const AUDIO_STORAGE_KEY = 'parlez-audio-enabled'
 const SETTINGS_STORAGE_KEY = 'parlez-settings'
 const CREATOR_SIGNATURE = 'Simul Bista'
 const MotionSpan = motion.span
-const allBanks = [...vocabBank, ...connectorsBank, ...pronomsRelatifsBank]
+const allBanks = [
+  ...vocabBank,
+  ...connectorsBank,
+  ...pronomsRelatifsBank,
+  ...subjonctifIndicatifBank,
+  ...emotionsSentimentsBank,
+  ...conjugationBank,
+]
 const vocabMap = Object.fromEntries(allBanks.map((entry) => [entry.id, entry]))
 
 function getBankForCategory(category) {
   if (category === 'vocab') return vocabBank
   if (category === 'connectors') return connectorsBank
   if (category === 'pronoms relatifs') return pronomsRelatifsBank
+  if (category === 'subjonctif & indicatif') return subjonctifIndicatifBank
+  if (category === 'émotions et sentiments') return emotionsSentimentsBank
+  if (category === 'conjugation') return conjugationBank
   return allBanks // for mixed
 }
 
 function createRound(progressById = {}, roundSize = ROUND_SIZE, category = 'mixed') {
   const bank = getBankForCategory(category)
   return buildQuizDeck(bank, roundSize, progressById)
+}
+
+function clampRoundSizeForCategory(value, category) {
+  const maxForCategory = Math.max(1, getBankForCategory(category).length)
+  const minForCategory = Math.min(MIN_ROUND_SIZE, maxForCategory)
+  return Math.max(minForCategory, Math.min(maxForCategory, value))
 }
 
 function getInitialTheme() {
@@ -131,7 +150,7 @@ function getInitialSettings() {
     const nextCategory = parsed.category || 'mixed'
 
     return {
-      roundSize: Math.max(MIN_ROUND_SIZE, Math.min(MAX_ROUND_SIZE, nextRoundSize)),
+      roundSize: clampRoundSizeForCategory(nextRoundSize, nextCategory),
       backgroundVolume: Math.max(0, Math.min(1, nextVolume)),
       category: nextCategory,
     }
@@ -144,16 +163,97 @@ function getInitialSettings() {
   }
 }
 
+function parseNotesSections(tips = []) {
+  const sections = []
+
+  const ensureSection = (title) => {
+    const existing = sections.find((section) => section.title === title)
+
+    if (existing) {
+      return existing
+    }
+
+    const nextSection = { title, items: [] }
+    sections.push(nextSection)
+    return nextSection
+  }
+
+  const splitTip = (tip) => {
+    const colonIndex = tip.indexOf(':')
+
+    if (colonIndex === -1) {
+      return { heading: '', body: tip.trim() }
+    }
+
+    return {
+      heading: tip.slice(0, colonIndex).trim(),
+      body: tip.slice(colonIndex + 1).trim(),
+    }
+  }
+
+  tips.forEach((tip) => {
+    if (!tip || typeof tip !== 'string') {
+      return
+    }
+
+    const normalized = tip.trim()
+    const groupMatch = normalized.match(/^Group\s+([1-3])\b/i)
+    const formsGroupMatch = normalized.match(/^Forms\s+Group\s+([1-3])\b/i)
+    const examplesGroupMatch = normalized.match(/^Examples\s+Group\s+([1-3])\b/i)
+    const { heading, body } = splitTip(normalized)
+
+    if (groupMatch) {
+      const section = ensureSection(`Group ${groupMatch[1]}`)
+      section.items.push({ label: 'Rule', text: body || normalized })
+      return
+    }
+
+    if (formsGroupMatch) {
+      const section = ensureSection(`Group ${formsGroupMatch[1]}`)
+      section.items.push({ label: 'Forms', text: body || normalized })
+      return
+    }
+
+    if (examplesGroupMatch) {
+      const section = ensureSection(`Group ${examplesGroupMatch[1]}`)
+      section.items.push({ label: 'Examples', text: body || normalized })
+      return
+    }
+
+    if (/^Formation\b/i.test(normalized) || /^Contractions\b/i.test(normalized)) {
+      const section = ensureSection('Forms')
+      section.items.push({ label: heading || 'Forms', text: body || normalized })
+      return
+    }
+
+    if (
+      /^Examples?\b/i.test(normalized)
+      || /^More examples?\b/i.test(normalized)
+      || /^Subjonctif examples\b/i.test(normalized)
+      || /^Indicatif examples\b/i.test(normalized)
+      || /sentence example\b/i.test(normalized)
+      || /^Example review set\b/i.test(normalized)
+    ) {
+      const section = ensureSection('Examples')
+      section.items.push({ label: heading || 'Example', text: body || normalized })
+      return
+    }
+
+    const section = ensureSection('Key Points')
+    section.items.push({ label: heading && heading.length < 28 ? heading : '', text: body || normalized })
+  })
+
+  return sections
+}
+
 function App() {
   const initialSettings = getInitialSettings()
   const [theme, setTheme] = useState(getInitialTheme)
-  const [themeTransition, setThemeTransition] = useState(false)
   const [audioEnabled, setAudioEnabled] = useState(getInitialAudioEnabled)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [weakPaneOpen, setWeakPaneOpen] = useState(false)
   const [topControlsOpen, setTopControlsOpen] = useState(true)
-  const [statsOpen, setStatsOpen] = useState(true)
-  const [settingsSpinKey, setSettingsSpinKey] = useState(0)
+  const [notesOpen, setNotesOpen] = useState(false)
   const [roundSize, setRoundSize] = useState(initialSettings.roundSize)
   const [backgroundVolume, setBackgroundVolume] = useState(
     initialSettings.backgroundVolume,
@@ -167,7 +267,7 @@ function App() {
   const [selectedOptionId, setSelectedOptionId] = useState(null)
   const [expandedOptionId, setExpandedOptionId] = useState(null)
   const [score, setScore] = useState(0)
-  const [canAdvance, setCanAdvance] = useState(false)
+  const progressTermsRef = useRef(progressData.terms)
   const { speak, stop, speakingId, speechSupported } = useSpeech()
 
   const sessionComplete = questionIndex >= deck.length
@@ -177,6 +277,14 @@ function App() {
   const progressValue = sessionComplete
     ? 100
     : ((questionIndex + (answered ? 1 : 0)) / deck.length) * 100
+  const activeBankSize = getBankForCategory(category).length
+  const maxRoundSize = Math.max(1, activeBankSize)
+  const activeNotes = categoryNotes[category] || {}
+  const noteSections = parseNotesSections(activeNotes.tips || [])
+  const conjugationTimeline = Array.isArray(activeNotes.timeline)
+    ? activeNotes.timeline
+    : []
+  const isConjugationTimeline = category === 'conjugation' && conjugationTimeline.length > 0
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -200,13 +308,16 @@ function App() {
   }, [roundSize, backgroundVolume, category])
 
   useEffect(() => {
+    progressTermsRef.current = progressData.terms
+  }, [progressData.terms])
+
+  useEffect(() => {
     startTransition(() => {
-      setDeck(createRound(progressData.terms, roundSize, category))
+      setDeck(createRound(progressTermsRef.current, roundSize, category))
       setQuestionIndex(0)
       setSelectedOptionId(null)
       setExpandedOptionId(null)
       setScore(0)
-      setCanAdvance(false)
     })
   }, [category, roundSize])
 
@@ -281,25 +392,13 @@ function App() {
   }, [audioEnabled, sessionComplete, answered])
 
   const toggleTheme = () => {
-    setThemeTransition(true)
     setTheme((current) => (current === 'dark' ? 'light' : 'dark'))
   }
-
-  useEffect(() => {
-    if (themeTransition) {
-      const timer = setTimeout(() => {
-        setThemeTransition(false)
-      }, 900)
-      return () => clearTimeout(timer)
-    }
-  }, [themeTransition])
 
   const themeLabel =
     theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
   const audioLabel = audioEnabled ? 'Mute sound' : 'Enable sound'
-  const settingsLabel = settingsOpen ? 'Close settings' : 'Open settings'
   const topControlsLabel = topControlsOpen ? 'Hide top controls' : 'Show top controls'
-  const statsLabel = statsOpen ? 'Hide statistics' : 'Show statistics'
   const attemptedQuestions = questionIndex + (answered ? 1 : 0)
   const liveAccuracy = attemptedQuestions
     ? Math.round((score / attemptedQuestions) * 100)
@@ -343,6 +442,7 @@ function App() {
 
   const topWeakTerms = rankedWeakTerms.slice(0, WEAK_WORDS_LIMIT)
   const weakTerms = topWeakTerms
+  const isWeakPaneOpen = weakPaneOpen && weakTerms.length > 0
 
   const toggleAudio = () => {
     setAudioEnabled((current) => {
@@ -363,32 +463,13 @@ function App() {
     })
   }
 
-  const toggleSettings = () => {
-    setSettingsOpen((current) => !current)
-  }
-
   const toggleTopControls = () => {
     setTopControlsOpen((current) => !current)
   }
 
-  const toggleStatsOpen = () => {
-    setStatsOpen((current) => !current)
-  }
-
-  const handleSettingsIconClick = () => {
-    setSettingsSpinKey((current) => current + 1)
-    toggleSettings()
-  }
-
   const adjustRoundSize = (delta) => {
     setRoundSize((current) =>
-      Math.max(MIN_ROUND_SIZE, Math.min(MAX_ROUND_SIZE, current + delta)),
-    )
-  }
-
-  const adjustVolume = (delta) => {
-    setBackgroundVolume((current) =>
-      Number(Math.max(0, Math.min(1, current + delta)).toFixed(2)),
+      clampRoundSizeForCategory(current + delta, category),
     )
   }
 
@@ -484,14 +565,28 @@ function App() {
     })
   }
 
-  const handleRoundSizeChange = (event) => {
-    const next = Number(event.target.value)
-    setRoundSize(Math.max(MIN_ROUND_SIZE, Math.min(MAX_ROUND_SIZE, next)))
+  const handleCategoryChange = (event) => {
+    const nextCategory = event.target.value
+    setCategory(nextCategory)
+    setRoundSize((current) => clampRoundSizeForCategory(current, nextCategory))
+    setNotesOpen(false)
   }
 
   const handleVolumeChange = (event) => {
     const next = Number(event.target.value)
-    setBackgroundVolume(Math.max(0, Math.min(1, next)))
+    const normalizedVolume = Math.max(0, Math.min(1, next))
+
+    setBackgroundVolume(normalizedVolume)
+
+    if (!audioEnabled) {
+      setAudioEnabled(true)
+      initializeAudio()
+      restoreBackgroundMusicVolume()
+
+      if (!answered && !sessionComplete && normalizedVolume > 0) {
+        playBackgroundMusic()
+      }
+    }
   }
 
   const resetRound = () => {
@@ -504,7 +599,6 @@ function App() {
       setSelectedOptionId(null)
       setExpandedOptionId(null)
       setScore(0)
-      setCanAdvance(false)
     })
   }
 
@@ -595,7 +689,13 @@ function App() {
       return
     }
 
-    speak(entry.id, entry.exampleFrench)
+    const speakText = entry.exampleFrench
+      ? entry.exampleFrench
+          .replace(/_+/g, entry.blankTerm || '')
+          .replace(/\s{2,}/g, ' ')
+          .trim()
+      : ''
+    speak(entry.id, speakText)
   }
 
   if (sessionComplete) {
@@ -603,23 +703,13 @@ function App() {
 
     return (
       <>
-        {themeTransition && (
-          <motion.div
-            className="theme-transition-overlay"
-            data-theme={theme === 'dark' ? 'to-dark' : 'to-light'}
-            initial={{ x: '-100%' }}
-            animate={{ x: '100%' }}
-            transition={{ duration: 0.9, ease: 'easeInOut' }}
-            onAnimationComplete={() => setThemeTransition(false)}
-          />
-        )}
         <main className="app-shell">
         <section className="hero-card hero-card--summary">
           <p className="eyebrow">ParlEZ practice recap</p>
           <h1>Round complete.</h1>
           <p className="hero-copy">
             You answered {score} of {deck.length} questions correctly. The bank still
-            holds {vocabBank.length} French terms, so every reshuffle gives you a new
+            holds {activeBankSize} French terms, so every reshuffle gives you a new
             mix of prompts and distractors.
           </p>
 
@@ -634,7 +724,7 @@ function App() {
             </div>
             <div>
               <span className="summary-label">Vocab bank</span>
-              <strong>{vocabBank.length} entries</strong>
+              <strong>{activeBankSize} entries</strong>
             </div>
             <div>
               <span className="summary-label">Best streak</span>
@@ -652,13 +742,15 @@ function App() {
             >
               {audioEnabled ? (
                 <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M3 9v6h4l5 5V4L7 9H3z" />
-                  <path d="M17 16.91c2.57-1.33 4.28-4.02 4.28-7.09 0-4.42-3.58-8-8-8s-8 3.58-8 8" />
+                  <path d="M4 10v4h4l5 4V6L8 10H4z" fill="currentColor" />
+                  <path d="M16 9a4 4 0 0 1 0 6" stroke="currentColor" strokeWidth="2" fill="none" />
+                  <path d="M18.5 6.5a8.5 8.5 0 0 1 0 11" stroke="currentColor" strokeWidth="2" fill="none" />
                 </svg>
               ) : (
                 <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M3 9v6h4l5 5V4L7 9H3z" />
-                  <path d="M23 9l-6 6M17 9l6 6" />
+                  <path d="M4 10v4h4l5 4V6L8 10H4z" fill="currentColor" />
+                  <path d="M15 9l6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" fill="none" />
+                  <path d="M21 9l-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" fill="none" />
                 </svg>
               )}
             </button>
@@ -714,7 +806,7 @@ function App() {
           <div className="settings-drawer-inner">
           </div>
         </section>
-        <p className="signature-note">Made by {CREATOR_SIGNATURE}</p>
+        <p className="signature-note">Par {CREATOR_SIGNATURE}</p>
       </main>
       </>
     )
@@ -731,27 +823,18 @@ function App() {
 
   return (
     <>
-      {themeTransition && (
-        <motion.div
-          className="theme-transition-overlay"
-          data-theme={theme === 'dark' ? 'to-dark' : 'to-light'}
-          initial={{ x: '-100%' }}
-          animate={{ x: '100%' }}
-          transition={{ duration: 0.9, ease: 'easeInOut' }}
-          onAnimationComplete={() => setThemeTransition(false)}
-        />
-      )}
       <main className="app-shell">
         <section className="hero-card hero-card--top">
         <div>
           <p className="eyebrow">French vocab practice for English speakers</p>
           <div className="brand-row">
             <h1 className="brand-title">
-              <span className="brand-word">ParlEZ</span>
+              <span className="brand-word">Parl</span>
+              <span className="brand-word brand-word--ez">EZ</span>
               <span className="brand-flag" aria-hidden="true" />
             </h1>
             <p className="signature-note signature-note--mobile">
-              Made by {CREATOR_SIGNATURE}
+              Par {CREATOR_SIGNATURE}
             </p>
           </div>
           <p className="hero-copy">
@@ -767,7 +850,7 @@ function App() {
                 <div className="hero-meta">
                   <div className="meta-pill">
                     <span>Bank</span>
-                    <strong>{vocabBank.length}</strong>
+                    <strong>{activeBankSize}</strong>
                   </div>
                   <div className="meta-pill meta-pill--compact meta-pill--round">
                     <span>Round</span>
@@ -788,6 +871,7 @@ function App() {
                         className="ghost-button icon-button"
                         type="button"
                         onClick={() => adjustRoundSize(1)}
+                        disabled={roundSize >= maxRoundSize}
                         aria-label="Increase round size"
                         title="Increase round size"
                       >
@@ -809,13 +893,15 @@ function App() {
                       >
                         {audioEnabled ? (
                           <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M3 10v4h3l4 4V6l-4 4H3z" />
+                            <path d="M4 10v4h4l5 4V6L8 10H4z" fill="currentColor" />
                             <path d="M16 8.82a4 4 0 0 1 0 6.36" stroke="currentColor" strokeWidth="2" fill="none" />
+                            <path d="M18.6 6.5a7 7 0 0 1 0 11" stroke="currentColor" strokeWidth="2" fill="none" />
                           </svg>
                         ) : (
                           <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M3 10v4h3l4 4V6l-4 4H3z" />
-                            <path d="M23 9l-6 6M17 9l6 6" />
+                            <path d="M4 10v4h4l5 4V6L8 10H4z" fill="currentColor" />
+                            <path d="M15 9l6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" fill="none" />
+                            <path d="M21 9l-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" fill="none" />
                           </svg>
                         )}
                       </button>
@@ -837,12 +923,15 @@ function App() {
                     <select
                       id="category"
                       value={category}
-                      onChange={(e) => setCategory(e.target.value)}
+                      onChange={handleCategoryChange}
                     >
                       <option value="mixed">Mixed</option>
                       <option value="vocab">Vocabulary</option>
                       <option value="connectors">Connectors</option>
                       <option value="pronoms relatifs">Pronoms relatifs</option>
+                      <option value="subjonctif & indicatif">Subjonctif & Indicatif</option>
+                      <option value="émotions et sentiments">Émotions et sentiments</option>
+                      <option value="conjugation">Conjugation</option>
                     </select>
                   </div>
                   <div className="meta-pill meta-pill--theme" aria-label={themeLabel} title={themeLabel}>
@@ -935,12 +1024,12 @@ function App() {
             className="stats-pill stats-pill--toughest stats-pill-toggle"
             onClick={toggleWeakPane}
             disabled={!weakTerms.length}
-            aria-expanded={weakPaneOpen}
+            aria-expanded={isWeakPaneOpen}
             aria-controls="weak-terms-pane"
           >
             <span>Review weak words</span>
             <strong>
-              {weakPaneOpen ? 'Hide list' : `Open list (${weakTerms.length})`}
+              {isWeakPaneOpen ? 'Hide list' : `Open list (${weakTerms.length})`}
             </strong>
           </button>
         </div>
@@ -948,9 +1037,9 @@ function App() {
 
       <section
         id="weak-terms-pane"
-        className={`weak-terms-pane ${weakPaneOpen ? 'is-open' : ''}`}
+        className={`weak-terms-pane ${isWeakPaneOpen ? 'is-open' : ''}`}
         onClick={() => {
-          if (weakPaneOpen) {
+          if (isWeakPaneOpen) {
             setWeakPaneOpen(false)
           }
         }}
@@ -1007,11 +1096,7 @@ function App() {
                 </AnimatePresence>
               </ul>
             </>
-          ) : (
-            <p className="weak-terms-empty">
-              No weak terms yet. Keep practicing and this list will update.
-            </p>
-          )}
+          ) : null}
         </div>
       </section>
 
@@ -1024,6 +1109,21 @@ function App() {
               Question {questionIndex + 1} of {deck.length}
             </p>
           </div>
+          <button
+            type="button"
+            className={`ghost-button notes-toggle ${notesOpen ? 'is-open' : ''}`}
+            onClick={() => setNotesOpen((current) => !current)}
+            aria-expanded={notesOpen}
+            aria-label="Toggle category notes"
+            title="Category notes and tips"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 4h8l4 4v12H7z" />
+              <path d="M15 4v4h4" />
+              <path d="M10 13h6M10 17h4" />
+            </svg>
+            <span className="notes-toggle-label">Notes</span>
+          </button>
         </div>
 
         <section
@@ -1032,6 +1132,53 @@ function App() {
           aria-hidden={!settingsOpen}
         >
           <div className="settings-drawer-inner">
+          </div>
+        </section>
+
+        <section
+          className={`category-notes-panel ${notesOpen ? 'is-open' : ''}`}
+          aria-label="Category notes"
+          aria-hidden={!notesOpen}
+        >
+          <div className="category-notes-inner">
+            <div className="notes-content">
+              <h3>{activeNotes.title || 'Notes'}</h3>
+              <p className="notes-description">{activeNotes.description}</p>
+              {isConjugationTimeline && (
+                <div className="conjugation-timeline" aria-label="Conjugation timeline">
+                  <div className="conjugation-timeline-grid" role="list">
+                    {conjugationTimeline.map((tense) => (
+                      <article className="tense-card" key={tense.tense} role="listitem">
+                        <p className="tense-time">{tense.time}</p>
+                        <h4>{tense.tense}</h4>
+                        <p className="tense-formation">
+                          <span className="notes-point-label">Formation:</span> {tense.formation}
+                        </p>
+                        <p className="tense-example-french">{tense.exampleFrench}</p>
+                        <p className="tense-example-english">{tense.exampleEnglish}</p>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {!isConjugationTimeline && noteSections.length > 0 && (
+                <div className="notes-sections" role="list" aria-label="Category note sections">
+                  {noteSections.map((section) => (
+                    <section className="notes-section-card" key={section.title} role="listitem">
+                      <h4>{section.title}</h4>
+                      <ul className="notes-points">
+                        {section.items.map((item, index) => (
+                          <li key={`${section.title}-${index}`}>
+                            {item.label ? <span className="notes-point-label">{item.label}:</span> : null}
+                            <span>{item.text}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </section>
 
@@ -1129,7 +1276,7 @@ function App() {
           {questionIndex === deck.length - 1 ? 'Finish round' : 'Next question'}
         </button>
       </div>
-      <p className="signature-note signature-note--footer">Made by {CREATOR_SIGNATURE}</p>
+      <p className="signature-note signature-note--footer">Par {CREATOR_SIGNATURE}</p>
     </main>
     </>
   )
