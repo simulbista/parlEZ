@@ -1,0 +1,158 @@
+{
+  "vocab": {
+    "title": "Vocabulary",
+    "description": "Build your French vocabulary with essential words and phrases.",
+    "tips": [
+      "Focus on pronunciation: listen to each word carefully.",
+      "Pay attention to gender (masculine/feminine) for nouns.",
+      "Try to use new words in sentences to remember them better.",
+      "Review weak words regularly to solidify learning.",
+      "Example: un livre (a book), une voiture (a car), j'achète un livre."
+    ]
+  },
+  "connectors": {
+    "title": "Connectors (Connecteurs)",
+    "description": "Master French discourse connectors to link ideas naturally in conversation and writing.",
+    "tips": [
+      "Connectors help you organize thoughts: cause, consequence, opposition, addition.",
+      "Each connector has specific uses—pay attention to when to use each one.",
+      "Practice using connectors in sentences to improve fluency.",
+      "These are essential for advanced writing and formal speech.",
+      "Examples: Je suis fatigue, donc je dors. Il pleut, mais je sors.",
+      "More examples: Je travaille, donc je progresse. Il est tard, pourtant je continue."
+    ]
+  },
+  "pronoms relatifs": {
+    "title": "Relative Pronouns (Pronoms Relatifs)",
+    "description": "Three-group method: learn Group 1 first, then build Groups 2 and 3 directly from it.",
+    "tips": [
+      "Group 1 (after a preposition other than de): lequel (m.s.), laquelle (f.s.), lesquels (m.pl.), lesquelles (f.pl.).",
+      "Examples Group 1: La chaise sur laquelle je suis assise... Les raisons pour lesquelles nous sommes parties...",
+      "Group 2 (with a prepositional phrase in de, like pres de, a cote de, au centre de): add de to Group 1 forms.",
+      "Forms Group 2: duquel, de laquelle, desquels, desquelles.",
+      "Examples Group 2: Le bateau a bord duquel j'ai traverse le fleuve. Le parc au centre duquel il y a de vieux arbres.",
+      "Group 3 (when the relative verb is built with a): add a to Group 1 forms with contractions.",
+      "Forms Group 3: auquel, a laquelle, auxquels, auxquelles.",
+      "Contractions to remember: a + lequel = auquel, a + lesquels = auxquels, a + lesquelles = auxquelles.",
+      "Examples Group 3: L'entreprise a laquelle nous avons consacre tant d'efforts... Les evenements auxquels vous faites reference..."
+    ]
+  },
+  "subjonctif & indicatif": {
+    "title": "Subjunctive vs. Indicative (Subjonctif & Indicatif)",
+    "description": "Quick rule: use subjonctif for uncertainty/emotion (WEIRD), and indicatif for facts or what you believe to be true.",
+    "tips": [
+      "Subjonctif = WEIRD: W = Want (je veux que), E = Emotion (je suis content que), I = Impersonal expression (il faut que), R = Recommendation (il est important que), D = Doubt (je doute que).",
+      "Formation (subjonctif present, most verbs): take the present 'ils' form, remove '-ent', then add endings: -e, -es, -e, -ions, -iez, -ent.",
+      "Remember: nous and vous endings in subjonctif (-ions, -iez) look like imparfait endings.",
+      "Subjonctif examples: Je veux qu'il vienne. Il faut que nous partions. Je doute qu'ils aient raison.",
+      "Indicatif = facts, certainty, or what you treat as true.",
+      "Indicatif examples: Je pense qu'il vient. Je crois qu'elle est prete. Je sais qu'ils arrivent.",
+      "More indicative examples: Je crois qu'il comprend. Je vois qu'elle travaille."
+    ]
+  },
+  "émotions et sentiments": {
+    "title": "Emotions & Feelings (Émotions et Sentiments)",
+    "description": "Express your emotions and feelings naturally in French using authentic expressions.",
+    "tips": [
+      "Use 'ça me rend' + adjective to describe how something makes you feel.",
+      "Use 'ça m'émeut' for emotional impact or movement.",
+      "Use 'ça m'inquiète', 'ça me tracasse' for worry and concern.",
+      "Use 'ça m'irrite', 'ça m'énerve' for annoyance.",
+      "These expressions are much more natural than simple adjectives alone.",
+      "Examples: Ca me rend triste. Ca m'inquiete. Ca m'enerve.",
+      "More examples: Cette chanson m'emeut. Son retard me tracasse."
+    ]
+  },
+  "mixed": {
+    "title": "Mixed Categories",
+    "description": "Practice all categories together to reinforce your French learning across different domains.",
+    "tips": [
+      "Mixed mode combines vocabulary, connectors, relative pronouns, subjunctive/indicative, emotions, and conjugation.",
+      "This helps you develop well-rounded French skills.",
+      "Pay attention to which category each question belongs to.",
+      "Use this mode to review and consolidate your learning.",
+      "Example review set: un livre, donc, qui, il faut que..., ca m'inquiete.",
+      "Mixed sentence example: Je veux qu'il vienne, car ca m'inquiete quand il est en retard."
+    ]
+  },
+  "conjugation": {
+    "title": "French Verb Conjugation (Conjugaison)",
+    "description": "Timeline view: move from past to present to future, and use each tense based on when the action happens.",
+    "tips": [
+      "Read left to right: distant past -> recent past -> now -> near future -> distant future.",
+      "Each tense card shows exactly how to form it and one model sentence."
+    ],
+    "timeline": [
+      {
+        "time": "Past before past",
+        "tense": "Plus-que-parfait",
+        "formation": "Imparfait of avoir/etre + participe passe",
+        "exampleFrench": "Quand il est arrive, j'avais deja mange.",
+        "exampleEnglish": "When he arrived, I had already eaten."
+      },
+      {
+        "time": "Background past",
+        "tense": "Imparfait",
+        "formation": "Nous form stem + -ais, -ais, -ait, -ions, -iez, -aient",
+        "exampleFrench": "Quand j'etais petit, je jouais ici.",
+        "exampleEnglish": "When I was little, I used to play here."
+      },
+      {
+        "time": "Completed past",
+        "tense": "Passe compose",
+        "formation": "Present of avoir/etre + participe passe",
+        "exampleFrench": "Hier, j'ai parle avec elle.",
+        "exampleEnglish": "Yesterday, I spoke with her."
+      },
+      {
+        "time": "Just now",
+        "tense": "Passe recent",
+        "formation": "Present of venir + de + infinitive",
+        "exampleFrench": "Elle vient d'arriver a Paris.",
+        "exampleEnglish": "She just arrived in Paris."
+      },
+      {
+        "time": "Right now",
+        "tense": "Present progressif",
+        "formation": "Present of etre + en train de + infinitive",
+        "exampleFrench": "Je suis en train de lire.",
+        "exampleEnglish": "I am reading."
+      },
+      {
+        "time": "Now / habit",
+        "tense": "Present",
+        "formation": "Regular endings: -e, -es, -e, -ons, -ez, -ent (or irregular stem)",
+        "exampleFrench": "Ils travaillent dans ce bureau.",
+        "exampleEnglish": "They work in this office."
+      },
+      {
+        "time": "Command",
+        "tense": "Imperatif",
+        "formation": "Use present forms for tu/nous/vous (subject omitted)",
+        "exampleFrench": "Parle plus fort!",
+        "exampleEnglish": "Speak louder!"
+      },
+      {
+        "time": "Near future",
+        "tense": "Futur proche",
+        "formation": "Present of aller + infinitive",
+        "exampleFrench": "Je vais manger dans une heure.",
+        "exampleEnglish": "I am going to eat in an hour."
+      },
+      {
+        "time": "Future",
+        "tense": "Futur simple",
+        "formation": "Infinitive (or irregular stem) + -ai, -as, -a, -ons, -ez, -ont",
+        "exampleFrench": "Demain, je parlerai avec lui.",
+        "exampleEnglish": "Tomorrow, I will speak with him."
+      },
+      {
+        "time": "Future before future",
+        "tense": "Futur anterieur",
+        "formation": "Futur simple of avoir/etre + participe passe",
+        "exampleFrench": "J'aurai fini avant ton retour.",
+        "exampleEnglish": "I will have finished before your return."
+      }
+    ]
+  }
+}
