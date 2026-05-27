@@ -1,0 +1,332 @@
+[
+  {
+    "id": "nom-acquerir",
+    "terms": ["acquerir"],
+    "english": "acquisition",
+    "note": "Nominalisation: acquerir -> acquisition.",
+    "exampleFrench": "L'acquisition de nouvelles competences prend du temps.",
+    "exampleEnglish": "The acquisition of new skills takes time.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-couper",
+    "terms": ["couper"],
+    "english": "coupure",
+    "note": "Nominalisation: couper -> coupure.",
+    "exampleFrench": "La coupure de courant a dure une heure.",
+    "exampleEnglish": "The power cut lasted an hour.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-connaitre",
+    "terms": ["connaitre"],
+    "english": "connaissance",
+    "note": "Nominalisation: connaitre -> connaissance.",
+    "exampleFrench": "La connaissance du sujet aide a mieux argumenter.",
+    "exampleEnglish": "Knowledge of the topic helps you argue better.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-diviser",
+    "terms": ["diviser"],
+    "english": "division",
+    "note": "Nominalisation: diviser -> division.",
+    "exampleFrench": "La division du travail rend l'equipe plus efficace.",
+    "exampleEnglish": "Division of work makes the team more efficient.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-user",
+    "terms": ["user"],
+    "english": "usure",
+    "note": "Nominalisation: user -> usure.",
+    "exampleFrench": "L'usure du materiel oblige l'ecole a remplacer des tables.",
+    "exampleEnglish": "Wear and tear forced the school to replace desks.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-mettre-en-place",
+    "terms": ["mettre en place"],
+    "english": "mise en place",
+    "note": "Nominalisation: mettre en place -> mise en place.",
+    "exampleFrench": "La mise en place du projet prend plusieurs semaines.",
+    "exampleEnglish": "Setting up the project takes several weeks.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-passif",
+    "terms": ["passif"],
+    "english": "passivite",
+    "note": "Nominalisation: passif -> passivite.",
+    "exampleFrench": "La passivite en classe peut freiner l'apprentissage.",
+    "exampleEnglish": "Passivity in class can slow learning.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-reviser",
+    "terms": ["reviser"],
+    "english": "revision",
+    "note": "Nominalisation: reviser -> revision.",
+    "exampleFrench": "Une bonne revision avant l'examen reduit le stress.",
+    "exampleEnglish": "Good revision before the exam reduces stress.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-exister",
+    "terms": ["exister"],
+    "english": "existence",
+    "note": "Nominalisation: exister -> existence.",
+    "exampleFrench": "L'existence de cette option rassure les parents.",
+    "exampleEnglish": "The existence of this option reassures parents.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-certain",
+    "terms": ["certain"],
+    "english": "certitude",
+    "note": "Nominalisation: certain -> certitude.",
+    "exampleFrench": "La certitude de reussir motive les etudiants.",
+    "exampleEnglish": "The certainty of success motivates students.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-argumenter",
+    "terms": ["argumenter"],
+    "english": "argumentation",
+    "note": "Nominalisation: argumenter -> argumentation.",
+    "exampleFrench": "Son argumentation est claire et bien structuree.",
+    "exampleEnglish": "His argumentation is clear and well-structured.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-inquiet",
+    "terms": ["inquiet"],
+    "english": "inquietude",
+    "note": "Nominalisation: inquiet -> inquietude.",
+    "exampleFrench": "L'inquietude des enseignants est legitime.",
+    "exampleEnglish": "The teachers' concern is legitimate.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-connecter",
+    "terms": ["connecter"],
+    "english": "connexion",
+    "note": "Nominalisation: connecter -> connexion.",
+    "exampleFrench": "La connexion internet est indispensable en classe hybride.",
+    "exampleEnglish": "Internet connection is essential in a hybrid class.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-equiper",
+    "terms": ["equiper"],
+    "english": "equipement",
+    "note": "Nominalisation: equiper -> equipement.",
+    "exampleFrench": "L'equipement numerique de l'ecole est en cours.",
+    "exampleEnglish": "The school's digital equipment process is underway.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-maladroit",
+    "terms": ["maladroit"],
+    "english": "maladresse",
+    "note": "Nominalisation: maladroit -> maladresse.",
+    "exampleFrench": "Une maladresse dans la consigne peut creer une confusion.",
+    "exampleEnglish": "A clumsy instruction can create confusion.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-ignorer",
+    "terms": ["ignorer"],
+    "english": "ignorance",
+    "note": "Nominalisation: ignorer -> ignorance.",
+    "exampleFrench": "L'ignorance des regles complique la collaboration.",
+    "exampleEnglish": "Ignorance of the rules complicates collaboration.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-passer",
+    "terms": ["passer"],
+    "english": "passage",
+    "note": "Nominalisation: passer -> passage.",
+    "exampleFrench": "Le passage au numerique demande de l'accompagnement.",
+    "exampleEnglish": "The move to digital requires support.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-autonome",
+    "terms": ["autonome"],
+    "english": "autonomie",
+    "note": "Nominalisation: autonome -> autonomie.",
+    "exampleFrench": "L'autonomie de l'eleve se developpe avec des projets.",
+    "exampleEnglish": "Student autonomy develops through projects.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-difficile",
+    "terms": ["difficile"],
+    "english": "difficulte",
+    "note": "Nominalisation: difficile -> difficulte.",
+    "exampleFrench": "La difficulte principale est le manque de temps.",
+    "exampleEnglish": "The main difficulty is lack of time.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-reflechir",
+    "terms": ["reflechir"],
+    "english": "reflexion",
+    "note": "Nominalisation: reflechir -> reflexion.",
+    "exampleFrench": "La reflexion collective a abouti a une bonne solution.",
+    "exampleEnglish": "Collective reflection led to a good solution.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-adroit",
+    "terms": ["adroit"],
+    "english": "adresse",
+    "note": "Nominalisation: adroit -> adresse.",
+    "exampleFrench": "Son adresse manuelle impressionne toute la classe.",
+    "exampleEnglish": "His manual skill impresses the whole class.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-gentil",
+    "terms": ["gentil"],
+    "english": "gentillesse",
+    "note": "Nominalisation: gentil -> gentillesse.",
+    "exampleFrench": "La gentillesse du professeur cree un climat positif.",
+    "exampleEnglish": "The teacher's kindness creates a positive atmosphere.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-reel",
+    "terms": ["reel"],
+    "english": "realite",
+    "note": "Nominalisation: reel -> realite.",
+    "exampleFrench": "La realite du terrain est plus complexe que la theorie.",
+    "exampleEnglish": "Reality in the field is more complex than theory.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-amenager",
+    "terms": ["amenager"],
+    "english": "amenagement",
+    "note": "Nominalisation: amenager -> amenagement.",
+    "exampleFrench": "L'amenagement de la classe favorise la cooperation.",
+    "exampleEnglish": "Classroom arrangement encourages cooperation.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-apprendre",
+    "terms": ["apprendre"],
+    "english": "apprentissage",
+    "note": "Nominalisation: apprendre -> apprentissage.",
+    "exampleFrench": "L'apprentissage actif augmente la motivation.",
+    "exampleEnglish": "Active learning increases motivation.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-prendre-en-compte",
+    "terms": ["prendre en compte"],
+    "english": "prise en compte",
+    "note": "Nominalisation: prendre en compte -> prise en compte.",
+    "exampleFrench": "La prise en compte des besoins des eleves est prioritaire.",
+    "exampleEnglish": "Taking students' needs into account is a priority.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-optimiste",
+    "terms": ["optimiste"],
+    "english": "optimisme",
+    "note": "Nominalisation: optimiste -> optimisme.",
+    "exampleFrench": "L'optimisme de l'equipe aide a avancer.",
+    "exampleEnglish": "The team's optimism helps move things forward.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-rompre",
+    "terms": ["rompre"],
+    "english": "rupture",
+    "note": "Nominalisation: rompre -> rupture.",
+    "exampleFrench": "La rupture avec les anciennes habitudes est difficile.",
+    "exampleEnglish": "Breaking with old habits is difficult.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-collectif",
+    "terms": ["collectif"],
+    "english": "collectivite",
+    "note": "Nominalisation: collectif -> collectivite.",
+    "exampleFrench": "La collectivite finance une partie du projet.",
+    "exampleEnglish": "The local authority funds part of the project.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-enseigner",
+    "terms": ["enseigner"],
+    "english": "enseignement",
+    "note": "Nominalisation: enseigner -> enseignement.",
+    "exampleFrench": "L'enseignement hybride demande une bonne organisation.",
+    "exampleEnglish": "Hybrid teaching requires good organization.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-facile",
+    "terms": ["facile"],
+    "english": "facilite",
+    "note": "Nominalisation: facile -> facilite.",
+    "exampleFrench": "La facilite d'utilisation de l'outil rassure les debutants.",
+    "exampleEnglish": "Ease of use reassures beginners.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-faciliter",
+    "terms": ["faciliter"],
+    "english": "facilitation",
+    "note": "Nominalisation: faciliter -> facilitation.",
+    "exampleFrench": "La facilitation des echanges ameliore la participation.",
+    "exampleEnglish": "Facilitating exchanges improves participation.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "nom-activiste",
+    "terms": ["activiste"],
+    "english": "activisme",
+    "note": "Nominalisation: activiste -> activisme.",
+    "exampleFrench": "L'activisme etudiant influence certains debats publics.",
+    "exampleEnglish": "Student activism influences some public debates.",
+    "category": "nominalisation",
+    "quizMode": "mcq"
+  }
+]

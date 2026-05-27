@@ -8,6 +8,7 @@ import pronomsRelatifsBank from './data/pronoms-relatifs.json'
 import subjonctifIndicatifBank from './data/subjonctif-indicatif.json'
 import emotionsSentimentsBank from './data/emotions-sentiments.json'
 import conjugationBank from './data/conjugation.json'
+import nominalisationBank from './data/nominalisation.json'
 import categoryNotes from './data/category-notes.json'
 import { useSpeech } from './hooks/useSpeech'
 import { buildQuizDeck } from './lib/buildQuizDeck'
@@ -28,6 +29,7 @@ import './App.css'
 const ROUND_SIZE = 20
 const MIN_ROUND_SIZE = 8
 const WEAK_WORDS_LIMIT = 10
+const IDLE_TIMEOUT_MS = 10000
 const PROGRESS_STORAGE_KEY = 'parlez-progress'
 const AUDIO_STORAGE_KEY = 'parlez-audio-enabled'
 const SETTINGS_STORAGE_KEY = 'parlez-settings'
@@ -40,6 +42,7 @@ const allBanks = [
   ...subjonctifIndicatifBank,
   ...emotionsSentimentsBank,
   ...conjugationBank,
+  ...nominalisationBank,
 ]
 const vocabMap = Object.fromEntries(allBanks.map((entry) => [entry.id, entry]))
 
@@ -50,6 +53,7 @@ function getBankForCategory(category) {
   if (category === 'subjonctif & indicatif') return subjonctifIndicatifBank
   if (category === 'émotions et sentiments') return emotionsSentimentsBank
   if (category === 'conjugation') return conjugationBank
+  if (category === 'nominalisation') return nominalisationBank
   return allBanks // for mixed
 }
 
@@ -254,6 +258,7 @@ function App() {
   const [weakPaneOpen, setWeakPaneOpen] = useState(false)
   const [topControlsOpen, setTopControlsOpen] = useState(true)
   const [notesOpen, setNotesOpen] = useState(false)
+  const [isIdleDimmed, setIsIdleDimmed] = useState(false)
   const [roundSize, setRoundSize] = useState(initialSettings.roundSize)
   const [backgroundVolume, setBackgroundVolume] = useState(
     initialSettings.backgroundVolume,
@@ -268,6 +273,7 @@ function App() {
   const [expandedOptionId, setExpandedOptionId] = useState(null)
   const [score, setScore] = useState(0)
   const progressTermsRef = useRef(progressData.terms)
+  const idleTimerRef = useRef(null)
   const { speak, stop, speakingId, speechSupported } = useSpeech()
 
   const sessionComplete = questionIndex >= deck.length
@@ -290,6 +296,42 @@ function App() {
     document.documentElement.setAttribute('data-theme', theme)
     window.localStorage.setItem('parlez-theme', theme)
   }, [theme])
+
+  useEffect(() => {
+    const resetIdleTimer = () => {
+      setIsIdleDimmed(false)
+      window.clearTimeout(idleTimerRef.current)
+      idleTimerRef.current = window.setTimeout(() => {
+        setIsIdleDimmed(true)
+      }, IDLE_TIMEOUT_MS)
+    }
+
+    const events = [
+      'mousemove',
+      'mousedown',
+      'click',
+      'keydown',
+      'scroll',
+      'touchstart',
+      'pointerdown',
+      'pointermove',
+      'wheel',
+      'focusin',
+    ]
+
+    events.forEach((eventName) => {
+      window.addEventListener(eventName, resetIdleTimer, { passive: true })
+    })
+
+    resetIdleTimer()
+
+    return () => {
+      window.clearTimeout(idleTimerRef.current)
+      events.forEach((eventName) => {
+        window.removeEventListener(eventName, resetIdleTimer)
+      })
+    }
+  }, [])
 
   useEffect(() => {
     window.localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(progressData))
@@ -823,7 +865,7 @@ function App() {
 
   return (
     <>
-      <main className="app-shell">
+      <main className={`app-shell ${isIdleDimmed ? 'is-idle-dim' : ''}`}>
         <section className="hero-card hero-card--top">
         <div>
           <p className="eyebrow">French vocab practice for English speakers</p>
@@ -932,6 +974,7 @@ function App() {
                       <option value="subjonctif & indicatif">Subjonctif & Indicatif</option>
                       <option value="émotions et sentiments">Émotions et sentiments</option>
                       <option value="conjugation">Conjugation</option>
+                      <option value="nominalisation">Nominalisation</option>
                     </select>
                   </div>
                   <div className="meta-pill meta-pill--theme" aria-label={themeLabel} title={themeLabel}>
@@ -1276,6 +1319,39 @@ function App() {
           {questionIndex === deck.length - 1 ? 'Finish round' : 'Next question'}
         </button>
       </div>
+
+      <div
+        className={`idle-controls ${isIdleDimmed ? 'is-visible' : ''}`}
+        aria-label="Quick controls while idle"
+        aria-hidden={!isIdleDimmed}
+      >
+          <label className="idle-control-category" htmlFor="idle-category">
+            <span>Category</span>
+            <select
+              id="idle-category"
+              value={category}
+              onChange={handleCategoryChange}
+            >
+              <option value="mixed">Mixed</option>
+              <option value="vocab">Vocabulary</option>
+              <option value="connectors">Connectors</option>
+              <option value="pronoms relatifs">Pronoms relatifs</option>
+              <option value="subjonctif & indicatif">Subjonctif & Indicatif</option>
+              <option value="émotions et sentiments">Émotions et sentiments</option>
+              <option value="conjugation">Conjugation</option>
+              <option value="nominalisation">Nominalisation</option>
+            </select>
+          </label>
+
+          <button
+            className="primary-button idle-next-button"
+            onClick={handleNext}
+            disabled={!answered}
+          >
+            {questionIndex === deck.length - 1 ? 'Finish round' : 'Next question'}
+          </button>
+        </div>
+
       <p className="signature-note signature-note--footer">Par {CREATOR_SIGNATURE}</p>
     </main>
     </>

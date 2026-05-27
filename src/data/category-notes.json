@@ -27,11 +27,14 @@
     "description": "Three-group method: learn Group 1 first, then build Groups 2 and 3 directly from it.",
     "tips": [
       "Group 1 (after a preposition other than de): lequel (m.s.), laquelle (f.s.), lesquels (m.pl.), lesquelles (f.pl.).",
+      "Group 1: When to choose it: apres une preposition autre que de (sur, sous, avec, dans, pour, chez, par, etc.).",
       "Examples Group 1: La chaise sur laquelle je suis assise... Les raisons pour lesquelles nous sommes parties...",
       "Group 2 (with a prepositional phrase in de, like pres de, a cote de, au centre de): add de to Group 1 forms.",
+      "Group 2: When to choose it: avec une locution prepositive (pres de, loin de, a cote de, a l'interieur de, etc.).",
       "Forms Group 2: duquel, de laquelle, desquels, desquelles.",
       "Examples Group 2: Le bateau a bord duquel j'ai traverse le fleuve. Le parc au centre duquel il y a de vieux arbres.",
       "Group 3 (when the relative verb is built with a): add a to Group 1 forms with contractions.",
+      "Group 3: When to choose it: lorsque le verbe de la proposition relative est construit avec la preposition a.",
       "Forms Group 3: auquel, a laquelle, auxquels, auxquelles.",
       "Contractions to remember: a + lequel = auquel, a + lesquels = auxquels, a + lesquelles = auxquelles.",
       "Examples Group 3: L'entreprise a laquelle nous avons consacre tant d'efforts... Les evenements auxquels vous faites reference..."
@@ -61,6 +64,18 @@
       "These expressions are much more natural than simple adjectives alone.",
       "Examples: Ca me rend triste. Ca m'inquiete. Ca m'enerve.",
       "More examples: Cette chanson m'emeut. Son retard me tracasse."
+    ]
+  },
+  "nominalisation": {
+    "title": "Nominalisation",
+    "description": "Transform verbs and adjectives into nouns for more academic French.",
+    "tips": [
+      "Step 1: identify the base form in the prompt (verb or adjective).",
+      "Step 2: match common endings: -er -> -ation/-age/-ement, -ir -> -ion, adjective -> -ity/-ness/-ism style nouns.",
+      "Step 3: memorize irregular pairs: connaitre -> connaissance, prendre en compte -> prise en compte.",
+      "Quick check: does the noun fit naturally after de/la/le? (for example, la reflexion, la mise en place).",
+      "Useful examples: acquerir -> acquisition, connecter -> connexion, amenager -> amenagement, apprendre -> apprentissage, difficile -> difficulte.",
+      "FR/EN themes de phrase: inquietude des enseignants / teacher concern; reflexion de l'equipe / team reflection; experimentation d'une classe hybride / hybrid-class trial; cooperation architectes-designers-enseignants / cooperation between architects, designers, and teachers; difficulte de la mise en place / setup difficulty."
     ]
   },
   "mixed": {
