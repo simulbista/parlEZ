@@ -17,6 +17,16 @@ function samplePromptTerm(entry) {
   return entry.terms[Math.floor(Math.random() * entry.terms.length)]
 }
 
+function getPromptTerm(entry) {
+  const term = samplePromptTerm(entry)
+
+  if (entry.category === 'nominalisation') {
+    return `Base form: ${term}`
+  }
+
+  return term
+}
+
 function shouldUseCloze(entry) {
   return (
     entry.category === 'connectors' ||
@@ -259,11 +269,15 @@ export function buildQuizDeck(vocabBank, roundSize, progressById = {}) {
         ),
       ).slice(0, 3)
 
+      const entryType = entry.category === 'nominalisation'
+        ? 'Choose the correct noun form'
+        : 'Choose the correct answer'
+
       return {
         id: `${entry.id}-${index}`,
-        promptTerm: samplePromptTerm(entry),
+        promptTerm: getPromptTerm(entry),
         answerId: entry.id,
-        entryType: 'Choose the correct answer',
+        entryType,
         optionIds: shuffle([entry, ...distractors]).map((option) => option.id),
       }
     }
