@@ -29,7 +29,7 @@ import './App.css'
 const ROUND_SIZE = 20
 const MIN_ROUND_SIZE = 8
 const WEAK_WORDS_LIMIT = 10
-const IDLE_TIMEOUT_MS = 10000
+const IDLE_TIMEOUT_MS = 18000
 const PROGRESS_STORAGE_KEY = 'parlez-progress'
 const AUDIO_STORAGE_KEY = 'parlez-audio-enabled'
 const SETTINGS_STORAGE_KEY = 'parlez-settings'
@@ -291,6 +291,18 @@ function App() {
     ? activeNotes.timeline
     : []
   const isConjugationTimeline = category === 'conjugation' && conjugationTimeline.length > 0
+  const isMixedCategory = category === 'mixed'
+  const mixedCategorySections = isMixedCategory
+    ? Object.entries(categoryNotes)
+        .filter(([key]) => key !== 'mixed')
+        .map(([key, note]) => ({
+          key,
+          title: note?.title || key,
+          description: note?.description || '',
+          parsedSections: parseNotesSections(Array.isArray(note?.tips) ? note.tips : []),
+          timeline: Array.isArray(note?.timeline) ? note.timeline : [],
+        }))
+    : []
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -885,9 +897,9 @@ function App() {
           </p>
         </div>
 
-        {topControlsOpen ? (
-          <div className="hero-meta-toggle-row">
-            <div className="hero-meta-row">
+        <div className="hero-meta-toggle-row">
+          <div className="hero-meta-row">
+            {topControlsOpen ? (
               <div className="hero-meta-wrapper">
                 <div className="hero-meta">
                   <div className="meta-pill">
@@ -977,7 +989,7 @@ function App() {
                       <option value="nominalisation">Nominalisation</option>
                     </select>
                   </div>
-                  <div className="meta-pill meta-pill--theme" aria-label={themeLabel} title={themeLabel}>
+                  <div className="theme-toggle-slot" aria-label={themeLabel} title={themeLabel}>
                     <button
                       className="secondary-button theme-toggle icon-button"
                       onClick={toggleTheme}
@@ -998,30 +1010,11 @@ function App() {
                   </div>
                 </div>
               </div>
-            </div>
-            <button
-              type="button"
-              className="ghost-button icon-button section-toggle section-toggle--header"
-              onClick={toggleTopControls}
-              aria-expanded={topControlsOpen}
-              aria-label={topControlsLabel}
-              title={topControlsLabel}
-            >
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path
-                  d="M6 15l6-6 6 6"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </button>
+            ) : null}
           </div>
-        ) : (
           <button
             type="button"
-            className="ghost-button icon-button section-toggle section-toggle--collapsed"
+            className="ghost-button icon-button section-toggle section-toggle--header"
             onClick={toggleTopControls}
             aria-expanded={topControlsOpen}
             aria-label={topControlsLabel}
@@ -1029,7 +1022,7 @@ function App() {
           >
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path
-                d="M6 9l6 6 6-6"
+                d={topControlsOpen ? 'M6 15l6-6 6 6' : 'M6 9l6 6 6-6'}
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2"
@@ -1037,7 +1030,7 @@ function App() {
               />
             </svg>
           </button>
-        )}
+        </div>
       </section>
 
       <section className="stats-panel" aria-label="Learning stats">
@@ -1204,7 +1197,49 @@ function App() {
                   </div>
                 </div>
               )}
-              {!isConjugationTimeline && noteSections.length > 0 && (
+              {isMixedCategory && (
+                <div className="mixed-notes-grid" role="list" aria-label="Mixed category note sections">
+                  {mixedCategorySections.map((section) => (
+                    <section className="notes-section-card mixed-note-card" key={section.key} role="listitem">
+                      <h4>{section.title}</h4>
+                      <p className="mixed-note-description">{section.description}</p>
+                      {section.timeline.length > 0 ? (
+                        <div className="mixed-conjugation-list" role="list" aria-label={`${section.title} timeline`}>
+                          {section.timeline.map((tense) => (
+                            <article className="mixed-conjugation-item" key={`${section.key}-${tense.tense}`} role="listitem">
+                              <p className="tense-time">{tense.time}</p>
+                              <p className="mixed-conjugation-title">{tense.tense}</p>
+                              <p className="mixed-conjugation-copy">
+                                <span className="notes-point-label">Formation:</span> {tense.formation}
+                              </p>
+                              <p className="mixed-conjugation-copy">{tense.exampleFrench}</p>
+                              <p className="mixed-conjugation-copy mixed-conjugation-copy--muted">{tense.exampleEnglish}</p>
+                            </article>
+                          ))}
+                        </div>
+                      ) : null}
+                      {section.parsedSections.length > 0 ? (
+                        <div className="mixed-note-subsections" role="list" aria-label={`${section.title} detail sections`}>
+                          {section.parsedSections.map((subsection) => (
+                            <section className="notes-section-card" key={`${section.key}-${subsection.title}`} role="listitem">
+                              <h4>{subsection.title}</h4>
+                              <ul className="notes-points">
+                                {subsection.items.map((item, index) => (
+                                  <li key={`${section.key}-${subsection.title}-${index}`}>
+                                    {item.label ? <span className="notes-point-label">{item.label}:</span> : null}
+                                    <span>{item.text}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </section>
+                          ))}
+                        </div>
+                      ) : null}
+                    </section>
+                  ))}
+                </div>
+              )}
+              {!isConjugationTimeline && !isMixedCategory && noteSections.length > 0 && (
                 <div className="notes-sections" role="list" aria-label="Category note sections">
                   {noteSections.map((section) => (
                     <section className="notes-section-card" key={section.title} role="listitem">
