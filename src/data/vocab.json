@@ -830,5 +830,497 @@
     "imagePrompt": "A person slipping out of a gathering while others are still talking, cinematic farewell scene.",
     "category": "vocab",
     "quizMode": "mcq"
+  },
+  {
+    "id": "user-paysages-enneiges",
+    "terms": [
+      "paysages enneigés"
+    ],
+    "english": "snow-covered landscapes",
+    "note": "Snow-covered landscapes; natural scenery covered with snow.",
+    "exampleFrench": "Les paysages enneigés des Alpes attirent de nombreux touristes en hiver.",
+    "exampleEnglish": "Snow-covered landscapes; natural scenery covered with snow.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-peaux-pour-habits",
+    "terms": [
+      "les peaux pour les habits"
+    ],
+    "english": "skins used for clothing",
+    "note": "Animal skins or hides used to make clothing.",
+    "exampleFrench": "Autrefois, les peaux pour les habits étaient essentielles pour se protéger du froid.",
+    "exampleEnglish": "Animal skins or hides used to make clothing.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-ennuyeuse",
+    "terms": [
+      "ennuyeuse"
+    ],
+    "english": "boring",
+    "note": "Boring; something or someone that causes boredom (feminine form of ennuyeux).",
+    "exampleFrench": "La réunion était tellement ennuyeuse que plusieurs personnes ont regardé leur téléphone.",
+    "exampleEnglish": "Boring; something or someone that causes boredom.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-reglement",
+    "terms": [
+      "règlement"
+    ],
+    "english": "rule / regulation",
+    "note": "A rule, regulation, or set of rules governing behavior or procedures.",
+    "exampleFrench": "Il est important de respecter le règlement de l'école.",
+    "exampleEnglish": "A rule, regulation, or set of rules governing behavior or procedures.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-conduite",
+    "terms": [
+      "conduite"
+    ],
+    "english": "behavior / conduct",
+    "note": "Behavior, conduct, or the act of driving depending on the context.",
+    "exampleFrench": "Sa conduite exemplaire lui a valu les félicitations de ses enseignants.",
+    "exampleEnglish": "Behavior, conduct, or the act of driving depending on the context.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-par-rapport-a",
+    "terms": [
+      "par rapport à"
+    ],
+    "english": "in relation to / compared with",
+    "note": "In relation to; compared with; regarding.",
+    "exampleFrench": "Par rapport à l'année dernière, ses résultats se sont beaucoup améliorés.",
+    "exampleEnglish": "In relation to; compared with; regarding.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-egalement",
+    "terms": [
+      "également"
+    ],
+    "english": "also / likewise",
+    "note": "Also; as well; likewise.",
+    "exampleFrench": "Elle parle français et également espagnol.",
+    "exampleEnglish": "Also; as well; likewise.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-enseignants-lycees",
+    "terms": [
+      "les enseignants des lycées"
+    ],
+    "english": "high school teachers",
+    "note": "High school teachers.",
+    "exampleFrench": "Les enseignants des lycées jouent un rôle important dans l'orientation des élèves.",
+    "exampleEnglish": "High school teachers.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-envie",
+    "terms": [
+      "l'envie"
+    ],
+    "english": "desire / urge",
+    "note": "Desire, wish, or urge to do something.",
+    "exampleFrench": "J'ai envie d'apprendre une nouvelle langue cette année.",
+    "exampleEnglish": "Desire, wish, or urge to do something.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-metre-en-rapport",
+    "terms": [
+      "mettre en rapport"
+    ],
+    "english": "to connect / link",
+    "note": "To connect, link, or bring into contact with someone or something.",
+    "exampleFrench": "Cette association met en rapport les étudiants et les professionnels du secteur.",
+    "exampleEnglish": "To connect, link, or bring into contact with someone or something.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-milieu-associatif",
+    "terms": [
+      "le milieu associatif"
+    ],
+    "english": "the non-profit sector",
+    "note": "The non-profit, volunteer, or community organization sector.",
+    "exampleFrench": "Elle travaille depuis plusieurs années dans le milieu associatif.",
+    "exampleEnglish": "The non-profit, volunteer, or community organization sector.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-ca-commence-comme-ca",
+    "terms": [
+      "ça a commencé comme ça"
+    ],
+    "english": "that's how it started",
+    "note": "That's how it started; it began like that.",
+    "exampleFrench": "Une simple conversation, et ça a commencé comme ça.",
+    "exampleEnglish": "That's how it started; it began like that.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-plein",
+    "terms": [
+      "plein"
+    ],
+    "english": "full / plenty of",
+    "note": "Full; a lot of; plenty of (depending on context).",
+    "exampleFrench": "Il y avait plein de monde au festival ce week-end.",
+    "exampleEnglish": "Full; a lot of; plenty of (depending on context).",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-expulsons-les",
+    "terms": [
+      "expulsons-les"
+    ],
+    "english": "let's expel them",
+    "note": "Let's expel them; a call to remove or force people out.",
+    "exampleFrench": "Le slogan 'Expulsons-les' a provoqué une vive controverse dans les médias.",
+    "exampleEnglish": "Let's expel them; a call to remove or force people out.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-une-affiche",
+    "terms": [
+      "une affiche"
+    ],
+    "english": "a poster",
+    "note": "A poster or public notice displayed for advertising or information.",
+    "exampleFrench": "Une affiche a été placardée dans toute la ville pour promouvoir l'événement.",
+    "exampleEnglish": "A poster or public notice displayed for advertising or information.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-visant",
+    "terms": [
+      "visant"
+    ],
+    "english": "aiming at / targeting",
+    "note": "Aiming at; targeting; intended to achieve a particular goal.",
+    "exampleFrench": "Une campagne visant à sensibiliser les jeunes a été lancée cette semaine.",
+    "exampleEnglish": "Aiming at; targeting; intended to achieve a particular goal.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-menacerait",
+    "terms": [
+      "menacerait"
+    ],
+    "english": "would threaten",
+    "note": "Would threaten (conditional form of menacer).",
+    "exampleFrench": "Selon certains experts, cette mesure menacerait l'économie locale.",
+    "exampleEnglish": "Would threaten (conditional form of menacer).",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-coup-de-communication",
+    "terms": [
+      "un coup de communication"
+    ],
+    "english": "a publicity stunt",
+    "note": "A publicity stunt; a communication tactic designed to attract attention.",
+    "exampleFrench": "Beaucoup considèrent cette annonce comme un simple coup de communication.",
+    "exampleEnglish": "A publicity stunt; a communication tactic designed to attract attention.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-haine-ressortissants",
+    "terms": [
+      "la haine envers les ressortissants"
+    ],
+    "english": "hatred toward nationals",
+    "note": "Hatred toward nationals or citizens of a particular country.",
+    "exampleFrench": "Le discours risquait d'alimenter la haine envers les ressortissants étrangers.",
+    "exampleEnglish": "Hatred toward nationals or citizens of a particular country.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-indiquait",
+    "terms": [
+      "indiquait"
+    ],
+    "english": "indicated / stated",
+    "note": "Indicated; stated; pointed out (imperfect tense of indiquer).",
+    "exampleFrench": "Le rapport indiquait une baisse significative du chômage.",
+    "exampleEnglish": "Indicated; stated; pointed out.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-fond-noir-ciel-etoile",
+    "terms": [
+      "un fond noir imitant un ciel étoilé"
+    ],
+    "english": "a black starry-sky-like background",
+    "note": "A black background imitating a starry sky.",
+    "exampleFrench": "L'affiche utilisait un fond noir imitant un ciel étoilé pour attirer l'attention.",
+    "exampleEnglish": "A black background imitating a starry sky.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-pretend-reveler",
+    "terms": [
+      "prétend révéler"
+    ],
+    "english": "claims to reveal",
+    "note": "Claims to reveal.",
+    "exampleFrench": "Le documentaire prétend révéler des informations inédites.",
+    "exampleEnglish": "Claims to reveal.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-secret-etroitement-garde",
+    "terms": [
+      "un secret étroitement gardé"
+    ],
+    "english": "a closely guarded secret",
+    "note": "A closely guarded secret.",
+    "exampleFrench": "L'emplacement exact est resté un secret étroitement gardé pendant des années.",
+    "exampleEnglish": "A closely guarded secret.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-interagissent",
+    "terms": [
+      "interagissent"
+    ],
+    "english": "interact",
+    "note": "Interact; communicate or act upon one another.",
+    "exampleFrench": "Les utilisateurs interagissent avec l'application quotidiennement.",
+    "exampleEnglish": "Interact; communicate or act upon one another.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-humaine-apparemment-normale",
+    "terms": [
+      "humaine apparemment normale"
+    ],
+    "english": "apparently normal human",
+    "note": "Apparently normal human.",
+    "exampleFrench": "Elle semblait être une personne humaine apparemment normale.",
+    "exampleEnglish": "Apparently normal human.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-sauf-que",
+    "terms": [
+      "sauf que"
+    ],
+    "english": "except that / however",
+    "note": "Except that; the thing is; however.",
+    "exampleFrench": "Je voulais sortir, sauf que la météo était mauvaise.",
+    "exampleEnglish": "Except that; the thing is; however.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-couvert-obscurite",
+    "terms": [
+      "sous le couvert de l’obscurité"
+    ],
+    "english": "under the cover of darkness",
+    "note": "Under the cover of darkness.",
+    "exampleFrench": "Ils ont quitté les lieux sous le couvert de l'obscurité.",
+    "exampleEnglish": "Under the cover of darkness.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-incrustes",
+    "terms": [
+      "incrustés"
+    ],
+    "english": "embedded",
+    "note": "Embedded; inserted firmly into something.",
+    "exampleFrench": "Des écrans étaient incrustés dans les murs du bâtiment.",
+    "exampleEnglish": "Embedded; inserted firmly into something.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-ovnis",
+    "terms": [
+      "ovnis"
+    ],
+    "english": "UFOs",
+    "note": "UFOs (Objets Volants Non Identifiés).",
+    "exampleFrench": "Certaines personnes affirment avoir observé des ovnis dans le ciel.",
+    "exampleEnglish": "UFOs.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-revendique",
+    "terms": [
+      "revendique"
+    ],
+    "english": "claims / asserts",
+    "note": "Claims; asserts ownership or responsibility.",
+    "exampleFrench": "Le groupe revendique l'origine de cette campagne publicitaire.",
+    "exampleEnglish": "Claims; asserts ownership or responsibility.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-clandestins",
+    "terms": [
+      "clandestins"
+    ],
+    "english": "undocumented migrants",
+    "note": "Illegal immigrants; undocumented migrants; people acting secretly or unlawfully.",
+    "exampleFrench": "Le débat portait sur la situation des migrants clandestins.",
+    "exampleEnglish": "Illegal immigrants; undocumented migrants.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-compteur",
+    "terms": [
+      "compteur"
+    ],
+    "english": "counter / meter",
+    "note": "Counter; meter; device used to count or measure.",
+    "exampleFrench": "Le compteur affichait le nombre total de visiteurs.",
+    "exampleEnglish": "Counter; meter; device used to count or measure.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-apparemment",
+    "terms": [
+      "apparemment"
+    ],
+    "english": "apparently",
+    "note": "Apparently; seemingly; according to appearances.",
+    "exampleFrench": "Apparemment, le projet sera lancé le mois prochain.",
+    "exampleEnglish": "Apparently; seemingly; according to appearances.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-detaillant",
+    "terms": [
+      "détaillant"
+    ],
+    "english": "retailer",
+    "note": "Retailer; a business selling directly to consumers.",
+    "exampleFrench": "Ce détaillant est spécialisé dans les produits électroniques.",
+    "exampleEnglish": "Retailer; a business selling directly to consumers.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-preuves",
+    "terms": [
+      "preuves"
+    ],
+    "english": "evidence / proof",
+    "note": "Evidence; proof supporting a claim.",
+    "exampleFrench": "Les enquêteurs recherchent des preuves supplémentaires.",
+    "exampleEnglish": "Evidence; proof supporting a claim.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-combat-mene",
+    "terms": [
+      "du combat mené"
+    ],
+    "english": "of the fight carried out",
+    "note": "Of the fight carried out; of the struggle undertaken.",
+    "exampleFrench": "Le rapport retrace l'histoire du combat mené pour les droits civiques.",
+    "exampleEnglish": "Of the fight carried out; of the struggle undertaken.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-contre-pretendus-envahisseurs",
+    "terms": [
+      "contre ces prétendus envahisseurs"
+    ],
+    "english": "against these so-called invaders",
+    "note": "Against these so-called invaders.",
+    "exampleFrench": "Le discours était dirigé contre ces prétendus envahisseurs.",
+    "exampleEnglish": "Against these so-called invaders.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-qui-ont-envahi",
+    "terms": [
+      "qui ont envahi"
+    ],
+    "english": "who invaded",
+    "note": "Who invaded; who entered and occupied.",
+    "exampleFrench": "Selon le récit, ce sont eux qui ont envahi le territoire.",
+    "exampleEnglish": "Who invaded; who entered and occupied.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-fini-de-dissimuler",
+    "terms": [
+      "fini de dissimuler"
+    ],
+    "english": "no more hiding",
+    "note": "No more hiding; finished concealing.",
+    "exampleFrench": "Fini de dissimuler la vérité, il est temps d'être transparent.",
+    "exampleEnglish": "No more hiding; finished concealing.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-etancheite-frontieres",
+    "terms": [
+      "assurons l’étanchéité des frontières"
+    ],
+    "english": "let's ensure border sealing",
+    "note": "Let's ensure the sealing/security of the borders.",
+    "exampleFrench": "Le slogan politique était : 'Assurons l'étanchéité des frontières'.",
+    "exampleEnglish": "Let's ensure the sealing/security of the borders.",
+    "category": "vocab",
+    "quizMode": "mcq"
+  },
+  {
+    "id": "user-au-dela-plaidoyer-anti-immigration",
+    "terms": [
+      "au-delà de son plaidoyer anti-immigration"
+    ],
+    "english": "beyond anti-immigration advocacy",
+    "note": "Beyond his anti-immigration advocacy or stance.",
+    "exampleFrench": "Au-delà de son plaidoyer anti-immigration, le candidat abordait d'autres sujets.",
+    "exampleEnglish": "Beyond his anti-immigration advocacy or stance.",
+    "category": "vocab",
+    "quizMode": "mcq"
   }
 ]

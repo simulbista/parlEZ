@@ -30,6 +30,9 @@ const ROUND_SIZE = 20
 const MIN_ROUND_SIZE = 8
 const WEAK_WORDS_LIMIT = 10
 const IDLE_TIMEOUT_MS = 18000
+const ROUND_HOLD_DELAY_MS = 700
+const ROUND_HOLD_INTERVAL_MS = 180
+const ROUND_HOLD_STEP = 10
 const PROGRESS_STORAGE_KEY = 'parlez-progress'
 const AUDIO_STORAGE_KEY = 'parlez-audio-enabled'
 const SETTINGS_STORAGE_KEY = 'parlez-settings'
@@ -274,6 +277,9 @@ function App() {
   const [score, setScore] = useState(0)
   const progressTermsRef = useRef(progressData.terms)
   const idleTimerRef = useRef(null)
+  const roundHoldTimeoutRef = useRef(null)
+  const roundHoldIntervalRef = useRef(null)
+  const suppressRoundClickRef = useRef({ increase: false, decrease: false })
   const { speak, stop, speakingId, speechSupported } = useSpeech()
 
   const sessionComplete = questionIndex >= deck.length
@@ -526,6 +532,42 @@ function App() {
       clampRoundSizeForCategory(current + delta, category),
     )
   }
+
+  const stopRoundSizeHold = () => {
+    window.clearTimeout(roundHoldTimeoutRef.current)
+    window.clearInterval(roundHoldIntervalRef.current)
+    roundHoldTimeoutRef.current = null
+    roundHoldIntervalRef.current = null
+  }
+
+  const startRoundSizeHold = (delta, clickKey) => {
+    stopRoundSizeHold()
+    suppressRoundClickRef.current[clickKey] = false
+
+    roundHoldTimeoutRef.current = window.setTimeout(() => {
+      suppressRoundClickRef.current[clickKey] = true
+      adjustRoundSize(delta * ROUND_HOLD_STEP)
+
+      roundHoldIntervalRef.current = window.setInterval(() => {
+        adjustRoundSize(delta * ROUND_HOLD_STEP)
+      }, ROUND_HOLD_INTERVAL_MS)
+    }, ROUND_HOLD_DELAY_MS)
+  }
+
+  const handleRoundSizeClick = (delta, clickKey) => {
+    if (suppressRoundClickRef.current[clickKey]) {
+      suppressRoundClickRef.current[clickKey] = false
+      return
+    }
+
+    adjustRoundSize(delta)
+  }
+
+  useEffect(() => {
+    return () => {
+      stopRoundSizeHold()
+    }
+  }, [])
 
   const toggleWeakPane = () => {
     if (!rankedWeakTerms.length) {
@@ -912,9 +954,13 @@ function App() {
                       <button
                         className="ghost-button icon-button"
                         type="button"
-                        onClick={() => adjustRoundSize(-1)}
+                        onClick={() => handleRoundSizeClick(-1, 'decrease')}
+                        onPointerDown={() => startRoundSizeHold(-1, 'decrease')}
+                        onPointerUp={stopRoundSizeHold}
+                        onPointerLeave={stopRoundSizeHold}
+                        onPointerCancel={stopRoundSizeHold}
                         aria-label="Decrease round size"
-                        title="Decrease round size"
+                        title="Decrease round size (hold briefly to step by 10)"
                       >
                         <svg viewBox="0 0 24 24" aria-hidden="true">
                           <path d="M6 12h12" />
@@ -924,10 +970,14 @@ function App() {
                       <button
                         className="ghost-button icon-button"
                         type="button"
-                        onClick={() => adjustRoundSize(1)}
+                        onClick={() => handleRoundSizeClick(1, 'increase')}
+                        onPointerDown={() => startRoundSizeHold(1, 'increase')}
+                        onPointerUp={stopRoundSizeHold}
+                        onPointerLeave={stopRoundSizeHold}
+                        onPointerCancel={stopRoundSizeHold}
                         disabled={roundSize >= maxRoundSize}
                         aria-label="Increase round size"
-                        title="Increase round size"
+                        title="Increase round size (hold briefly to step by 10)"
                       >
                         <svg viewBox="0 0 24 24" aria-hidden="true">
                           <path d="M12 6v12" />
